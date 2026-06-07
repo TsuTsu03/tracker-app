@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card, Avatar, Badge, Progress, AIBadge } from "@/components/ui";
-import { CLIENTS } from "@/lib/demo-data";
+import { getClient } from "@/lib/data";
 import { peso, formatDate, relativeDays, cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -36,7 +36,7 @@ export default async function ClientDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const client = CLIENTS.find((c) => c.id === id);
+  const client = await getClient(id);
   if (!client) notFound();
 
   const coverage = client.policies.reduce((s, p) => s + p.faceAmount, 0);

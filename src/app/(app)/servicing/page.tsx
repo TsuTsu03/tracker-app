@@ -1,5 +1,5 @@
 import { PageHeader, Card, Badge, Avatar } from "@/components/ui";
-import { CLIENTS, TICKETS, CLAIMS } from "@/lib/demo-data";
+import { getClients, getTickets, getClaims } from "@/lib/data";
 import { peso, formatDate, daysSince, cn } from "@/lib/utils";
 import {
   ShieldCheck,
@@ -10,7 +10,12 @@ import {
   Clock,
 } from "lucide-react";
 
-export default function ServicingPage() {
+export default async function ServicingPage() {
+  const [CLIENTS, TICKETS, CLAIMS] = await Promise.all([
+    getClients(),
+    getTickets(),
+    getClaims(),
+  ]);
   // Build premium tracking from client policies
   const premiums = CLIENTS.flatMap((c) =>
     c.policies.map((p) => ({

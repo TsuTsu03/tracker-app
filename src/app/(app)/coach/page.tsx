@@ -61,7 +61,6 @@ const PRESETS = [
 function Objections() {
   const [input, setInput] = useState("I already have insurance.");
   const [loading, setLoading] = useState(false);
-  const [live, setLive] = useState(false);
   const [responses, setResponses] = useState<Record<string, string> | null>(
     null,
   );
@@ -70,10 +69,7 @@ function Objections() {
     setInput(text);
     setLoading(true);
     setResponses(null);
-    const result = await aiObjectionResponses(text);
-    const { live: isLive, ...data } = result;
-    setLive(isLive);
-    setResponses(data);
+    setResponses(await aiObjectionResponses(text));
     setLoading(false);
   };
 
@@ -131,15 +127,6 @@ function Objections() {
             AI returns 4 response styles — Soft, Consultative, Aggressive,
             Educational.
           </Card>
-        )}
-        {responses && (
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            {live ? (
-              <span className="font-semibold text-money-600">● Gemini Live</span>
-            ) : (
-              <span>● Demo mode — add GOOGLE_AI_API_KEY to go live</span>
-            )}
-          </div>
         )}
         {responses &&
           Object.entries(responses).map(([tone, text]) => (

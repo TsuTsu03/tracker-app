@@ -1,5 +1,5 @@
 import { PageHeader, Card, Avatar, Badge, Progress, AIBadge } from "@/components/ui";
-import { ADVISORS, FUNNEL } from "@/lib/demo-data";
+import { getTeam, getFunnel, getProfile } from "@/lib/data";
 import { peso, num, cn } from "@/lib/utils";
 import {
   Building2,
@@ -12,32 +12,48 @@ import {
   CalendarCheck,
 } from "lucide-react";
 
-export default function AgencyPage() {
+export default async function AgencyPage() {
+  const [ADVISORS, FUNNEL, profile] = await Promise.all([
+    getTeam(),
+    getFunnel(),
+    getProfile(),
+  ]);
+  const youName = profile?.name ?? "";
   const ranked = [...ADVISORS].sort((a, b) => b.production - a.production);
   const totalProduction = ADVISORS.reduce((s, a) => s + a.production, 0);
   const totalAppts = ADVISORS.reduce((s, a) => s + a.appointments, 0);
   const totalApps = ADVISORS.reduce((s, a) => s + a.applications, 0);
-  const avgConversion = Math.round(
-    ADVISORS.reduce((s, a) => s + a.conversion, 0) / ADVISORS.length,
-  );
+  const avgConversion = ADVISORS.length
+    ? Math.round(ADVISORS.reduce((s, a) => s + a.conversion, 0) / ADVISORS.length)
+    : 0;
 
+  // Insights derived live from the team's numbers
+  const byAppts = [...ADVISORS].sort((a, b) => a.appointments - b.appointments)[0];
+  const byConv = [...ADVISORS].sort((a, b) => a.conversion - b.conversion)[0];
+  const byPersistency = [...ADVISORS].sort(
+    (a, b) => b.persistency - a.persistency,
+  )[0];
   const insights = [
-    {
+    byAppts && {
       icon: AlertTriangle,
       tone: "risk" as const,
-      text: "Paolo Rivera is struggling with prospecting — only 12 appointments (avg 22). Recommend pairing with a top performer for joint fieldwork.",
+      text: `${byAppts.name} has the fewest appointments (${byAppts.appointments} vs team avg ${ADVISORS.length ? Math.round(totalAppts / ADVISORS.length) : 0}). Recommend pairing with a top performer for joint fieldwork.`,
     },
-    {
+    byConv && {
       icon: Target,
       tone: "gold" as const,
-      text: "Miguel Torres has strong activity but a 33% conversion (team avg 39%). Suggest closing-skills coaching via the AI Sales Coach.",
+      text: `${byConv.name} has the lowest conversion (${byConv.conversion}% vs team avg ${avgConversion}%). Suggest closing-skills coaching via the AI Sales Coach.`,
     },
-    {
+    byPersistency && {
       icon: Trophy,
       tone: "money" as const,
-      text: "Jasmine Yu leads on persistency (96%) and conversion (48%). Have her run a unit huddle on referral techniques.",
+      text: `${byPersistency.name} leads on persistency (${byPersistency.persistency}%) and converts at ${byPersistency.conversion}%. Have them run a unit huddle on referral techniques.`,
     },
-  ];
+  ].filter(Boolean) as {
+    icon: typeof AlertTriangle;
+    tone: "risk" | "gold" | "money";
+    text: string;
+  }[];
 
   return (
     <div className="animate-in">
@@ -82,7 +98,7 @@ export default function AgencyPage() {
                     key={a.id}
                     className={cn(
                       "border-b border-slate-50",
-                      a.name.includes("Den Jansen") && "bg-brand-500/5",
+                      a.name === youName && "bg-brand-500/5",
                     )}
                   >
                     <td className="py-3 pr-3">
@@ -107,7 +123,7 @@ export default function AgencyPage() {
                         <div>
                           <p className="font-semibold text-navy-900">
                             {a.name}
-                            {a.name.includes("Den Jansen") && (
+                            {a.name === youName && (
                               <span className="ml-1.5 text-xs font-normal text-brand-600">
                                 (You)
                               </span>
@@ -178,7 +194,10 @@ export default function AgencyPage() {
                     <span className="text-slate-600">{f.stage}</span>
                     <span className="font-semibold text-navy-900">{f.value}</span>
                   </div>
-                  <Progress value={(f.value / FUNNEL[0].value) * 100} tone="brand" />
+                  <Progress
+                    value={FUNNEL[0]?.value ? (f.value / FUNNEL[0].value) * 100 : 0}
+                    tone="brand"
+                  />
                 </div>
               ))}
             </div>

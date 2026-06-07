@@ -1,10 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import { Avatar } from "./ui";
-import { CURRENT_ADVISOR } from "@/lib/demo-data";
-import { Bell, Menu, Search, Sparkles } from "lucide-react";
+import { signOut } from "@/app/actions/auth";
+import { Bell, Menu, Search, Sparkles, LogOut, ChevronDown } from "lucide-react";
 
-export function Topbar({ onMenu }: { onMenu: () => void }) {
+export function Topbar({
+  onMenu,
+  name,
+  role,
+  avatarSeed,
+}: {
+  onMenu: () => void;
+  name: string;
+  role: string;
+  avatarSeed: string;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-slate-200/70 glass px-4 lg:px-8">
       <button
@@ -30,16 +43,42 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           <Bell className="h-5 w-5" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-risk-500 ring-2 ring-white" />
         </button>
-        <div className="flex items-center gap-2.5 rounded-xl py-1 pl-1 pr-1 sm:pr-3 sm:hover:bg-slate-100">
-          <Avatar name={CURRENT_ADVISOR.avatarSeed} size={36} />
-          <div className="hidden leading-tight sm:block">
-            <p className="text-sm font-semibold text-navy-900">
-              {CURRENT_ADVISOR.name}
-            </p>
-            <p className="text-[11px] text-slate-500">
-              {CURRENT_ADVISOR.role}
-            </p>
-          </div>
+
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex items-center gap-2.5 rounded-xl py-1 pl-1 pr-1 sm:pr-2.5 sm:hover:bg-slate-100"
+          >
+            <Avatar name={avatarSeed} size={36} />
+            <div className="hidden leading-tight sm:block">
+              <p className="text-sm font-semibold text-navy-900">{name}</p>
+              <p className="text-[11px] text-slate-500">{role}</p>
+            </div>
+            <ChevronDown className="hidden h-4 w-4 text-slate-400 sm:block" />
+          </button>
+
+          {menuOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-10"
+                onClick={() => setMenuOpen(false)}
+              />
+              <div className="absolute right-0 z-20 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
+                <div className="border-b border-slate-100 px-4 py-2.5 sm:hidden">
+                  <p className="text-sm font-semibold text-navy-900">{name}</p>
+                  <p className="text-[11px] text-slate-500">{role}</p>
+                </div>
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50"
+                  >
+                    <LogOut className="h-4 w-4 text-slate-400" /> Sign out
+                  </button>
+                </form>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>

@@ -2,15 +2,15 @@ import Link from "next/link";
 import { Card, AIBadge, Avatar, Badge, ScoreRing } from "@/components/ui";
 import { ProductionAreaChart, FunnelBars } from "@/components/charts";
 import {
-  LEADS,
-  TASKS,
-  PRODUCTION_TREND,
-  FUNNEL,
-  ACTIVITY_FEED,
-  CURRENT_ADVISOR,
-} from "@/lib/demo-data";
+  getLeads,
+  getTasks,
+  getClaims,
+  getProductionTrend,
+  getFunnel,
+  getProfile,
+} from "@/lib/data";
 import { leadHealthAlerts } from "@/lib/ai";
-import { peso, num, cn } from "@/lib/utils";
+import { peso, num, cn, relativeDays } from "@/lib/utils";
 import {
   TrendingUp,
   Users,
@@ -24,13 +24,59 @@ import {
   Flame,
 } from "lucide-react";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const [LEADS, TASKS, CLAIMS, PRODUCTION_TREND, FUNNEL, profile] =
+    await Promise.all([
+      getLeads(),
+      getTasks(),
+      getClaims(),
+      getProductionTrend(),
+      getFunnel(),
+      getProfile(),
+    ]);
+  const advisorName = profile?.name ?? "Advisor";
+
   const hotLeads = LEADS.filter((l) => l.temperature === "Hot").length;
   const pipelineValue = LEADS.filter(
     (l) => l.stage !== "Closed Lost",
   ).reduce((s, l) => s + l.potentialPremium, 0);
   const alerts = leadHealthAlerts(LEADS);
   const todayTasks = TASKS.filter((t) => !t.done);
+
+  const closedWon = LEADS.filter((l) => l.stage === "Closed Won");
+  const wonLeads = closedWon.length;
+  const decided = wonLeads + LEADS.filter((l) => l.stage === "Closed Lost").length;
+  const conversion = decided ? Math.round((wonLeads / decided) * 100) : 0;
+
+  const lastMonth = PRODUCTION_TREND[PRODUCTION_TREND.length - 1];
+  const mtdProduction = lastMonth?.production ?? 0;
+  const mtdPctOfTarget = lastMonth?.target
+    ? Math.round((mtdProduction / lastMonth.target) * 100)
+    : 0;
+
+  // Live activity derived from real records
+  const ACTIVITY_FEED = [
+    ...CLAIMS.filter((c) => c.status === "Released" || c.status === "Approved").map(
+      (c) => ({
+        who: c.client,
+        what: `claim ${c.status.toLowerCase()} — ${peso(c.amount, { compact: true })}`,
+        when: relativeDays(c.filed),
+        type: "win" as const,
+      }),
+    ),
+    ...alerts.slice(0, 2).map((a) => ({
+      who: a.lead.fullName,
+      what: `no contact in ${a.days} days`,
+      when: relativeDays(a.lead.lastContact),
+      type: "risk" as const,
+    })),
+    ...closedWon.slice(0, 2).map((l) => ({
+      who: l.fullName,
+      what: `closed — ${peso(l.potentialPremium, { compact: true })}/yr`,
+      when: relativeDays(l.lastContact),
+      type: "win" as const,
+    })),
+  ].slice(0, 5);
 
   const stats = [
     {
@@ -39,7 +85,7 @@ export default function DashboardPage() {
       sub: `${hotLeads} hot`,
       icon: Users,
       tone: "brand" as const,
-      delta: "+12%",
+      delta: `${LEADS.length} total`,
     },
     {
       label: "Pipeline Value",
@@ -51,19 +97,19 @@ export default function DashboardPage() {
     },
     {
       label: "MTD Production",
-      value: peso(1280000, { compact: true }),
-      sub: "142% of target",
+      value: peso(mtdProduction, { compact: true }),
+      sub: `${mtdPctOfTarget}% of target`,
       icon: Banknote,
       tone: "money" as const,
       delta: "+24%",
     },
     {
       label: "Conversion Rate",
-      value: "46%",
-      sub: "vs 38% last mo",
+      value: `${conversion}%`,
+      sub: `${wonLeads} closed won`,
       icon: TrendingUp,
       tone: "gold" as const,
-      delta: "+8pts",
+      delta: `${decided} decided`,
     },
   ];
 
@@ -87,7 +133,7 @@ export default function DashboardPage() {
             })}
           </p>
           <h1 className="text-2xl font-bold tracking-tight text-navy-900">
-            Kumusta, {CURRENT_ADVISOR.name.split(" ")[0]}! 👋
+            Kumusta, {advisorName.split(" ")[0]}! 👋
           </h1>
           <p className="mt-0.5 text-sm text-slate-500">
             You have <b className="text-navy-900">{todayTasks.length} tasks</b>{" "}

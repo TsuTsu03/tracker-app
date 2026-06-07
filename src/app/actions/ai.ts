@@ -31,6 +31,12 @@ export type MeetingSummaryResult = {
   nextAction: string;
 };
 
+export type BusinessAdviceResult = {
+  weaknesses: string[];
+  recommendations: string[];
+  plan: string[];
+};
+
 export type ProposalResult = {
   recommendedCover: number;
   existing: number;
@@ -155,6 +161,37 @@ Return a JSON object:
   "budget": "budget range mentioned (e.g. ₱8,000–₱12,000/month)",
   "nextAction": "specific next step the advisor should take"
 }`);
+}
+
+export async function aiBusinessAdvice(
+  question: string,
+  stats: {
+    totalLeads: number;
+    hotLeads: number;
+    staleHotLeads: number;
+    pipelineValue: number;
+    closedWon: number;
+    closedLost: number;
+    atRiskClients: number;
+  },
+): Promise<BusinessAdviceResult> {
+  return promptJSON<BusinessAdviceResult>(`You are a personal AI business advisor for a financial advisor in the Philippines.
+The advisor asks: "${question}"
+
+Here is their REAL current CRM data:
+- Total leads: ${stats.totalLeads}
+- Hot leads: ${stats.hotLeads} (of which ${stats.staleHotLeads} have gone 7+ days without contact)
+- Open pipeline value (potential annual premium): ₱${stats.pipelineValue.toLocaleString()}
+- Closed Won: ${stats.closedWon} · Closed Lost: ${stats.closedLost}
+- At-risk clients (relationship health < 60): ${stats.atRiskClients}
+
+Analyze THIS data and answer. Return a JSON object:
+{
+  "weaknesses": ["2-3 specific, data-grounded weaknesses — reference the numbers above"],
+  "recommendations": ["3 concrete, prioritized recommendations"],
+  "plan": ["3 action items framed as Today / This week / This month"]
+}
+Be specific and reference the actual numbers. Filipino financial-advisory context.`);
 }
 
 export async function aiGenerateProposal(input: {

@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { PageHeader, Card, Avatar, Badge, Progress, AIBadge } from "@/components/ui";
-import { CLIENTS } from "@/lib/demo-data";
+import { getClients } from "@/lib/data";
 import { peso, relativeDays, daysSince, cn } from "@/lib/utils";
 import { UserCheck, ChevronRight, AlertTriangle, Heart } from "lucide-react";
 
-export default function ClientsPage() {
+export default async function ClientsPage() {
+  const CLIENTS = await getClients();
+  const atRisk = [...CLIENTS]
+    .filter((c) => c.relationshipScore < 60 || daysSince(c.lastContact) > 120)
+    .sort((a, b) => a.relationshipScore - b.relationshipScore)[0];
   const totalAUM = CLIENTS.reduce(
     (s, c) => s + c.policies.reduce((p, pol) => p + pol.faceAmount, 0),
     0,
@@ -34,24 +38,27 @@ export default function ClientsPage() {
         />
       </div>
 
-      {/* AI Relationship Manager banner */}
-      <Card className="mb-6 flex flex-wrap items-center gap-3 border-l-4 border-l-ai-500 bg-gradient-to-r from-ai-500/5 to-transparent">
-        <AIBadge>Relationship Manager</AIBadge>
-        <p className="flex-1 text-sm text-slate-700">
-          <b>Andrea Lopez</b> hasn&apos;t been contacted in 190 days and her health
-          policy is in grace period.
-          <span className="font-semibold text-ai-700">
-            {" "}
-            Suggested action: Schedule an Annual Financial Review.
-          </span>
-        </p>
-        <Link
-          href="/clients/C-002"
-          className="rounded-lg bg-ai-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-ai-600"
-        >
-          Review now
-        </Link>
-      </Card>
+      {/* AI Relationship Manager banner — derived from live data */}
+      {atRisk && (
+        <Card className="mb-6 flex flex-wrap items-center gap-3 border-l-4 border-l-ai-500 bg-gradient-to-r from-ai-500/5 to-transparent">
+          <AIBadge>Relationship Manager</AIBadge>
+          <p className="flex-1 text-sm text-slate-700">
+            <b>{atRisk.fullName}</b> hasn&apos;t been contacted in{" "}
+            {daysSince(atRisk.lastContact)} days (health score{" "}
+            {atRisk.relationshipScore}/100).
+            <span className="font-semibold text-ai-700">
+              {" "}
+              Suggested action: Schedule an Annual Financial Review.
+            </span>
+          </p>
+          <Link
+            href={`/clients/${atRisk.id}`}
+            className="rounded-lg bg-ai-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-ai-600"
+          >
+            Review now
+          </Link>
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {CLIENTS.map((c) => {

@@ -21,15 +21,12 @@ export default function ProposalsPage() {
   const [dependents, setDependents] = useState(2);
   const [goal, setGoal] = useState("Protect my family & build retirement savings");
   const [loading, setLoading] = useState(false);
-  const [proposalLive, setProposalLive] = useState(false);
   const [result, setResult] = useState<ProposalResult | null>(null);
 
   const run = async () => {
     setLoading(true);
     setResult(null);
-    const { live, ...data } = await aiGenerateProposal({ age, income, dependents, goal });
-    setProposalLive(live);
-    setResult(data);
+    setResult(await aiGenerateProposal({ age, income, dependents, goal }));
     setLoading(false);
   };
 
@@ -168,11 +165,8 @@ export default function ProposalsPage() {
 
               {/* Presentation script */}
               <Card className="border-l-4 border-l-ai-500">
-                <h3 className="mb-2 flex flex-wrap items-center gap-2 font-semibold text-navy-900">
+                <h3 className="mb-2 flex items-center gap-2 font-semibold text-navy-900">
                   <Sparkles className="h-4 w-4 text-ai-500" /> Presentation Script
-                  {proposalLive && (
-                    <span className="text-xs font-normal text-money-600">● Gemini Live</span>
-                  )}
                 </h3>
                 <p className="text-sm leading-relaxed text-slate-700">
                   {result.script}
