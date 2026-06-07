@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Badge, Avatar } from "@/components/ui";
-import { followUpMessage, sleep, AI_THINKING_MS } from "@/lib/ai";
+import { aiFollowUpMessage } from "@/app/actions/ai";
 import { LEADS, TASKS } from "@/lib/demo-data";
 import { cn, daysSince } from "@/lib/utils";
 import {
@@ -154,13 +154,22 @@ function Generator() {
   const [language, setLanguage] = useState("Taglish");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [msgLive, setMsgLive] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const run = async () => {
     setLoading(true);
     setMsg(null);
-    await sleep(AI_THINKING_MS);
-    setMsg(followUpMessage({ name: lead.fullName, channel, tone, language }));
+    const result = await aiFollowUpMessage({
+      name: lead.fullName,
+      occupation: lead.occupation,
+      stage: lead.stage,
+      channel: channel as "Messenger" | "SMS" | "Email",
+      tone,
+      language: language as "Taglish" | "English",
+    });
+    setMsg(result.message);
+    setMsgLive(result.live);
     setLoading(false);
   };
 
@@ -256,6 +265,13 @@ function Generator() {
 
       {msg && (
         <div className="mt-4 rounded-xl bg-slate-50 p-4">
+          <p className="mb-2 text-[11px] font-semibold">
+            {msgLive ? (
+              <span className="text-money-600">● Gemini Live</span>
+            ) : (
+              <span className="text-slate-400">● Demo mode</span>
+            )}
+          </p>
           <p className="whitespace-pre-wrap text-sm leading-relaxed text-navy-900">
             {msg}
           </p>

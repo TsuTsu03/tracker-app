@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Badge, Avatar } from "@/components/ui";
-import { prospectResearch, sleep, AI_THINKING_MS } from "@/lib/ai";
+import { sleep, AI_THINKING_MS } from "@/lib/ai";
+import { aiProspectResearch, type ProspectResearchResult } from "@/app/actions/ai";
 import { cn } from "@/lib/utils";
 import {
   Radar,
@@ -96,7 +97,8 @@ export default function LeadGeneratorPage() {
   const [results, setResults] = useState<Discovered[]>([]);
   const [research, setResearch] = useState<{
     name: string;
-    data: ReturnType<typeof prospectResearch>;
+    live: boolean;
+    data: ProspectResearchResult;
   } | null>(null);
   const [researching, setResearching] = useState(false);
 
@@ -114,8 +116,9 @@ export default function LeadGeneratorPage() {
   const doResearch = async (d: Discovered) => {
     setResearching(true);
     setResearch(null);
-    await sleep(AI_THINKING_MS);
-    setResearch({ name: d.name, data: prospectResearch(d.name, d.occupation) });
+    const result = await aiProspectResearch(d.name, d.occupation);
+    const { live, ...data } = result;
+    setResearch({ name: d.name, live, data });
     setResearching(false);
   };
 
@@ -272,7 +275,13 @@ export default function LeadGeneratorPage() {
             <Card className="ai-glow">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="font-semibold text-navy-900">AI Prospect Research</h2>
-                <AIBadge />
+                {research?.live ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-money-500/10 px-2.5 py-0.5 text-xs font-semibold text-money-700 ring-1 ring-inset ring-money-500/20">
+                    <Sparkles className="h-3 w-3" /> Gemini Live
+                  </span>
+                ) : (
+                  <AIBadge>Demo</AIBadge>
+                )}
               </div>
               {researching && (
                 <div className="flex items-center gap-3 py-10 text-sm text-slate-500">

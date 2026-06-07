@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Badge } from "@/components/ui";
-import { meetingSummary, sleep, AI_THINKING_MS } from "@/lib/ai";
+import { sleep, AI_THINKING_MS } from "@/lib/ai";
+import { aiStructureNotes, aiMeetingSummary } from "@/app/actions/ai";
 import { LEADS } from "@/lib/demo-data";
 import { cn } from "@/lib/utils";
 import {
@@ -220,30 +221,14 @@ function Notes() {
   );
   const [loading, setLoading] = useState(false);
   const [structured, setStructured] = useState<string | null>(null);
+  const [notesLive, setNotesLive] = useState(false);
 
   const convert = async () => {
     setLoading(true);
     setStructured(null);
-    await sleep(AI_THINKING_MS);
-    setStructured(`**Family Situation**
-- Married, 2 children (ages 8 & 5)
-- Sole breadwinner; spouse is a homemaker
-
-**Concerns & Goals**
-- Funding children's education (primary concern)
-- Wants to retire by age 60
-
-**Current Coverage**
-- SSS only — significant protection gap
-
-**Budget**
-- ~₱10,000 / month
-
-**Interest**
-- Open to VUL (protection + investment)
-
-**Next Action**
-- Follow up next week with VUL proposal + education rider`);
+    const result = await aiStructureNotes(raw);
+    setStructured(result.structured);
+    setNotesLive(result.live);
     setLoading(false);
   };
 
@@ -273,7 +258,13 @@ function Notes() {
       <Card className={structured ? "ai-glow" : ""}>
         <div className="mb-2 flex items-center justify-between">
           <h3 className="font-semibold text-navy-900">Structured CRM notes</h3>
-          <AIBadge />
+          {notesLive ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-money-500/10 px-2.5 py-0.5 text-xs font-semibold text-money-700 ring-1 ring-inset ring-money-500/20">
+              <Sparkles className="h-3 w-3" /> Gemini Live
+            </span>
+          ) : (
+            <AIBadge>Demo</AIBadge>
+          )}
         </div>
         {!structured && !loading && (
           <p className="py-16 text-center text-sm text-slate-400">
@@ -301,15 +292,22 @@ function Notes() {
 
 function Summary() {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<ReturnType<typeof meetingSummary> | null>(
-    null,
-  );
+  const [summaryLive, setSummaryLive] = useState(false);
+  const [data, setData] = useState<{
+    concerns: string[];
+    painPoints: string[];
+    objections: string[];
+    budget: string;
+    nextAction: string;
+  } | null>(null);
 
   const run = async () => {
     setLoading(true);
     setData(null);
-    await sleep(AI_THINKING_MS);
-    setData(meetingSummary());
+    const result = await aiMeetingSummary();
+    const { live, ...rest } = result;
+    setSummaryLive(live);
+    setData(rest);
     setLoading(false);
   };
 
@@ -317,9 +315,16 @@ function Summary() {
     <div className="mx-auto max-w-3xl">
       <Card className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-navy-900">
-            Generate Meeting Summary
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-navy-900">
+              Generate Meeting Summary
+            </h3>
+            {summaryLive && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-money-500/10 px-2.5 py-0.5 text-xs font-semibold text-money-700 ring-1 ring-inset ring-money-500/20">
+                <Sparkles className="h-3 w-3" /> Gemini Live
+              </span>
+            )}
+          </div>
           <p className="text-sm text-slate-500">
             From your notes, extract the key takeaways and next action.
           </p>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Progress } from "@/components/ui";
-import { generateProposal, sleep, AI_THINKING_MS } from "@/lib/ai";
+import { aiGenerateProposal, type ProposalResult } from "@/app/actions/ai";
 import { peso, cn } from "@/lib/utils";
 import {
   FileText,
@@ -21,15 +21,15 @@ export default function ProposalsPage() {
   const [dependents, setDependents] = useState(2);
   const [goal, setGoal] = useState("Protect my family & build retirement savings");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ReturnType<typeof generateProposal> | null>(
-    null,
-  );
+  const [proposalLive, setProposalLive] = useState(false);
+  const [result, setResult] = useState<ProposalResult | null>(null);
 
   const run = async () => {
     setLoading(true);
     setResult(null);
-    await sleep(AI_THINKING_MS + 300);
-    setResult(generateProposal({ age, income, dependents, goal }));
+    const { live, ...data } = await aiGenerateProposal({ age, income, dependents, goal });
+    setProposalLive(live);
+    setResult(data);
     setLoading(false);
   };
 
@@ -168,8 +168,11 @@ export default function ProposalsPage() {
 
               {/* Presentation script */}
               <Card className="border-l-4 border-l-ai-500">
-                <h3 className="mb-2 flex items-center gap-2 font-semibold text-navy-900">
+                <h3 className="mb-2 flex flex-wrap items-center gap-2 font-semibold text-navy-900">
                   <Sparkles className="h-4 w-4 text-ai-500" /> Presentation Script
+                  {proposalLive && (
+                    <span className="text-xs font-normal text-money-600">● Gemini Live</span>
+                  )}
                 </h3>
                 <p className="text-sm leading-relaxed text-slate-700">
                   {result.script}
