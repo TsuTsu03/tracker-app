@@ -155,10 +155,10 @@ export function Sidebar({
 
         <div className="mx-3 mb-4 rounded-xl bg-gradient-to-br from-ai-600/30 to-brand-600/20 p-4 ring-1 ring-white/10">
           <p className="flex items-center gap-1.5 text-xs font-semibold text-white">
-            <Sparkles className="h-3.5 w-3.5 text-ai-400" /> Demo Mode
+            <Sparkles className="h-3.5 w-3.5 text-ai-400" /> Powered by Gemini
           </p>
           <p className="mt-1 text-[11px] leading-relaxed text-slate-300">
-            Running on sample data. Connect Supabase to go live.
+            AI features live on gemini-1.5-flash.
           </p>
         </div>
       </aside>
