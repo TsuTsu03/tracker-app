@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/*
+  WealthFlow — Color Psychology for Financial Advisors
+  ----------------------------------------------------
+  Navy / Indigo  → trust, stability, security, authority (the bedrock of finance)
+  Emerald        → growth, money, prosperity, "go", positive performance
+  Gold / Amber   → premium, wealth, optimism, high-value highlights
+  Violet         → intelligence & AI features (innovation, the "magic")
+  Slate          → calm, clarity, professional neutral canvas
+  Rose           → risk, churn, urgency (used sparingly)
+*/
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Brand scale — Navy/Indigo (trust) */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #312e81;
+  --color-brand-900: #1e1b4b;
+  --color-brand-950: #0f0d2e;
+
+  /* Navy — deep trust surface */
+  --color-navy-700: #16224a;
+  --color-navy-800: #0f1838;
+  --color-navy-900: #0a1027;
+  --color-navy-950: #060a1a;
+
+  /* Money / growth (emerald) */
+  --color-money-400: #34d399;
+  --color-money-500: #10b981;
+  --color-money-600: #059669;
+  --color-money-700: #047857;
+
+  /* Premium (gold/amber) */
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+
+  /* AI (violet) */
+  --color-ai-400: #a78bfa;
+  --color-ai-500: #8b5cf6;
+  --color-ai-600: #7c3aed;
+
+  /* Risk (rose) */
+  --color-risk-400: #fb7185;
+  --color-risk-500: #f43f5e;
+  --color-risk-600: #e11d48;
+
+  --radius-xl2: 1.25rem;
+}
+
+:root {
+  --background: #f6f7fb;
+  --foreground: #0f1838;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thin, elegant scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c7cbe0 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #c7cbe0;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #a5abce;
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 24, 56, 0.06);
+    border-radius: 1rem;
+    box-shadow:
+      0 1px 2px rgba(15, 24, 56, 0.04),
+      0 8px 24px -12px rgba(15, 24, 56, 0.12);
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, #4f46e5, #8b5cf6 60%, #10b981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ai-glow {
+    box-shadow:
+      0 0 0 1px rgba(139, 92, 246, 0.25),
+      0 8px 30px -8px rgba(139, 92, 246, 0.35);
+  }
+  .animate-in {
+    animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .hover-lift {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -16px rgba(15, 24, 56, 0.25);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
