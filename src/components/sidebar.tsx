@@ -158,7 +158,7 @@ export function Sidebar({
             <Sparkles className="h-3.5 w-3.5 text-ai-400" /> Powered by Gemini
           </p>
           <p className="mt-1 text-[11px] leading-relaxed text-slate-300">
-            AI features live on gemini-1.5-flash.
+            AI features live on Gemini Flash.
           </p>
         </div>
       </aside>

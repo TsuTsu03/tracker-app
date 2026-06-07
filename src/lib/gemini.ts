@@ -1,6 +1,6 @@
 /**
  * Google Gemini client — server-side only.
- * Model: gemini-1.5-flash (free tier: 15 RPM, 1,500 RPD, 1M TPM)
+ * Model: gemini-flash-latest (rolling alias to the current free fast model)
  * Set GOOGLE_AI_API_KEY in .env.local — get one at: https://aistudio.google.com/app/apikey
  */
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -10,7 +10,7 @@ function getModel() {
   if (!apiKey) throw new Error("GOOGLE_AI_API_KEY is not set in .env.local");
   const genAI = new GoogleGenerativeAI(apiKey);
   return genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-flash-latest",
     generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
   });
 }
