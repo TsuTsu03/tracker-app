@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useTheme } from "./theme-provider";
 import {
   LayoutDashboard,
   Users,
@@ -17,7 +16,6 @@ import {
   ShieldCheck,
   Building2,
   BrainCircuit,
-  BookOpen,
   Sparkles,
   X,
 } from "lucide-react";
@@ -32,8 +30,6 @@ type Item = {
 type Section = {
   title: string;
   items: Item[];
-  /** Only shown once the advisor has registered a company. */
-  requiresCompany?: boolean;
 };
 
 const SECTIONS: Section[] = [
@@ -67,13 +63,6 @@ const SECTIONS: Section[] = [
     ],
   },
   {
-    title: "Knowledge",
-    requiresCompany: true,
-    items: [
-      { href: "/company", label: "My Company & Products", icon: BookOpen },
-    ],
-  },
-  {
     title: "Management",
     items: [{ href: "/agency", label: "Agency Dashboard", icon: Building2 }],
   },
@@ -87,8 +76,7 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
-  const { company, hasCompany } = useTheme();
-  const sections = SECTIONS.filter((s) => !s.requiresCompany || hasCompany);
+  const sections = SECTIONS;
   return (
     <>
       {/* mobile backdrop */}
@@ -128,28 +116,6 @@ export function Sidebar({
             <X className="h-5 w-5" />
           </button>
         </div>
-
-        {/* Active company chip */}
-        <Link
-          href="/company"
-          onClick={onClose}
-          className="mx-3 mb-3 flex items-center gap-2.5 rounded-xl bg-white/5 px-3 py-2.5 ring-1 ring-white/10 transition hover:bg-white/10"
-        >
-          <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20"
-            style={{ background: company ? company.color : "rgba(255,255,255,0.12)" }}
-          >
-            {!company && <BookOpen className="h-3.5 w-3.5 text-white/70" />}
-          </span>
-          <span className="min-w-0 flex-1 leading-tight">
-            <span className="block text-[10px] uppercase tracking-wider text-slate-400">
-              {company ? "Your company" : "Get started"}
-            </span>
-            <span className="block truncate text-sm font-semibold text-white">
-              {company ? company.short : "Choose your company"}
-            </span>
-          </span>
-        </Link>
 
         <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-6">
           {sections.map((section) => (

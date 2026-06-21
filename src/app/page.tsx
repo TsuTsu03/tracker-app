@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { COMPANIES } from "@/lib/insurance-companies";
 import {
   Sparkles,
   ArrowRight,
@@ -63,9 +62,6 @@ function LandingNav() {
           </a>
           <a href="#intelligence" className="text-sm font-medium text-slate-600 transition-colors hover:text-navy-900">
             Intelligence
-          </a>
-          <a href="#carriers" className="text-sm font-medium text-slate-600 transition-colors hover:text-navy-900">
-            Carriers
           </a>
         </div>
 
@@ -188,8 +184,8 @@ function Hero() {
 
 function Stats() {
   const stats = [
-    { value: "10+", label: "PH carriers supported" },
-    { value: "70+", label: "Real products to master" },
+    { value: "Live web", label: "Real prospects, not invented" },
+    { value: "Llama 3.3", label: "Free AI on Groq" },
     { value: "7", label: "AI copilots, end to end" },
   ];
   return (
@@ -415,25 +411,6 @@ function FinalCTA() {
         className="pointer-events-none absolute -bottom-64 -left-64 h-[600px] w-[600px] rounded-full bg-gold-400/10 blur-3xl"
       />
       <div className="relative mx-auto max-w-[1280px] px-5 text-center lg:px-12">
-        {/* Real PH carrier strip */}
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-          Master the line-up of every major PH insurer
-        </p>
-        <div className="mx-auto mb-16 flex max-w-3xl flex-wrap justify-center gap-2">
-          {COMPANIES.slice(0, 10).map((c) => (
-            <span
-              key={c.id}
-              className="flex items-center gap-1.5 rounded-lg border border-hairline bg-surface-2 px-3 py-1.5 text-xs font-medium text-slate-600"
-            >
-              <span
-                className="h-3 w-3 rounded-sm ring-1 ring-black/10"
-                style={{ background: c.color }}
-              />
-              {c.short}
-            </span>
-          ))}
-        </div>
-
         <h2 className="mx-auto max-w-2xl font-display text-3xl font-medium tracking-tight text-navy-950 sm:text-4xl">
           Ready to grow your practice?
         </h2>
@@ -481,7 +458,13 @@ function Footer() {
           © {new Date().getFullYear()} WealthFlow · AI Sales OS for Filipino
           financial advisors · Powered by Llama 3.3 on Groq
         </p>
-        <div className="flex gap-5 text-sm">
+        <div className="flex flex-wrap justify-center gap-5 text-sm">
+          <Link href="/privacy" className="text-slate-500 hover:text-navy-900">
+            Privacy
+          </Link>
+          <Link href="/terms" className="text-slate-500 hover:text-navy-900">
+            Terms
+          </Link>
           <Link href="/login" className="text-slate-500 hover:text-navy-900">
             Sign in
           </Link>

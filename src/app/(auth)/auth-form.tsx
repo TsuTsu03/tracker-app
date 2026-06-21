@@ -2,13 +2,9 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
-import { Loader2, Check, ChevronDown, Building2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { signIn, signUp, type AuthState } from "@/app/actions/auth";
 import { createClient } from "@/lib/supabase/client";
-import {
-  COMPANIES,
-  THEME_COOKIE,
-} from "@/lib/insurance-companies";
 
 export function AuthForm({
   mode,
@@ -89,25 +85,16 @@ export function AuthForm({
       </div>
 
       {mode === "signup" && (
-        <>
-          <Field label="Full name">
-            <input
-              name="name"
-              type="text"
-              autoComplete="name"
-              required
-              placeholder="Den Jansen Flores"
-              className={inputCls}
-            />
-          </Field>
-
-          <Field label="Your insurance company">
-            <CompanySelect />
-            <span className="mt-1 block text-xs text-slate-400">
-              Your products and app colors are set to this company.
-            </span>
-          </Field>
-        </>
+        <Field label="Full name">
+          <input
+            name="name"
+            type="text"
+            autoComplete="name"
+            required
+            placeholder="Den Jansen Flores"
+            className={inputCls}
+          />
+        </Field>
       )}
 
       <Field label="Email">
@@ -133,6 +120,29 @@ export function AuthForm({
       </Field>
 
       {next && <input type="hidden" name="next" value={next} />}
+
+      {mode === "signup" && (
+        <label className="flex items-start gap-2.5 text-sm text-slate-500">
+          <input
+            name="agree"
+            type="checkbox"
+            value="yes"
+            required
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-hairline text-brand-600 focus:ring-brand-500/30"
+          />
+          <span>
+            I agree to the{" "}
+            <Link href="/terms" target="_blank" className="font-semibold text-brand-600 hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" target="_blank" className="font-semibold text-brand-600 hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </span>
+        </label>
+      )}
 
       <button
         type="submit"
@@ -161,84 +171,6 @@ export function AuthForm({
         )}
       </p>
     </form>
-  );
-}
-
-/**
- * Company picker for registration. Submits the chosen id via a hidden input,
- * and previews the brand theme immediately (sets <html data-theme> + cookie)
- * so the rest of the sign-up screen adopts the company's colors.
- */
-function applyThemePreview(id: string) {
-  document.documentElement.dataset.theme = id;
-  document.cookie = `${THEME_COOKIE}=${id}; path=/; max-age=31536000; samesite=lax`;
-}
-
-function CompanySelect() {
-  const [selected, setSelected] = useState<string>("");
-  const [open, setOpen] = useState(false);
-  const current = COMPANIES.find((c) => c.id === selected);
-
-  function choose(id: string) {
-    setSelected(id);
-    setOpen(false);
-    applyThemePreview(id);
-  }
-
-  return (
-    <div className="relative">
-      <input type="hidden" name="company" value={selected} />
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className={`flex w-full items-center gap-2.5 ${inputCls} text-left`}
-      >
-        {current ? (
-          <span
-            className="h-5 w-5 shrink-0 rounded-md ring-1 ring-black/10"
-            style={{ background: current.color }}
-          />
-        ) : (
-          <Building2 className="h-5 w-5 shrink-0 text-slate-400" />
-        )}
-        <span className={current ? "flex-1 text-navy-900" : "flex-1 text-slate-400"}>
-          {current ? current.short : "Select your company"}
-        </span>
-        <ChevronDown className="h-4 w-4 text-slate-400" />
-      </button>
-
-      {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="popover-in absolute z-20 mt-2 max-h-72 w-full origin-top overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-xl">
-            {COMPANIES.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => choose(c.id)}
-                className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition hover:bg-slate-50"
-              >
-                <span
-                  className="h-7 w-7 shrink-0 rounded-lg ring-1 ring-black/10"
-                  style={{ background: c.color }}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold text-navy-900">
-                    {c.short}
-                  </span>
-                  <span className="block truncate text-xs text-slate-500">
-                    {c.tagline}
-                  </span>
-                </span>
-                {c.id === selected && (
-                  <Check className="h-4 w-4 shrink-0 text-brand-600" />
-                )}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
   );
 }
 

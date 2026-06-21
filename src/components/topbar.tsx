@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Avatar } from "./ui";
-import { CompanySwitcher } from "./company-switcher";
 import { signOut } from "@/app/actions/auth";
 import { Bell, Menu, Search, Sparkles, LogOut, ChevronDown } from "lucide-react";
 
@@ -46,7 +45,6 @@ export function Topbar({
             Groq Llama 3.3 Active
           </span>
         </span>
-        <CompanySwitcher />
         <button className="hidden cursor-pointer items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:flex">
           <Sparkles className="h-4 w-4" aria-hidden="true" /> Ask AI
         </button>

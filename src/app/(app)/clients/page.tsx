@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader, Card, Avatar, Badge, Progress, AIBadge } from "@/components/ui";
+import { ImportButton } from "@/components/import-dialog";
 import { getClients } from "@/lib/data";
 import { peso, relativeDays, daysSince, cn } from "@/lib/utils";
 import { UserCheck, ChevronRight, AlertTriangle, Heart } from "lucide-react";
@@ -25,6 +26,7 @@ export default async function ClientsPage() {
         subtitle={`${CLIENTS.length} clients · ${peso(totalAUM, { compact: true })} total coverage`}
         icon={UserCheck}
         accent="money"
+        actions={<ImportButton kind="client" />}
       />
 
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">

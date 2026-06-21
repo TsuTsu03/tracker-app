@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono, Fraunces } from "next/font/google";
-import { cookies } from "next/headers";
 import "./globals.css";
-import {
-  COMPANY_MAP,
-  DEFAULT_COMPANY,
-  THEME_COOKIE,
-} from "@/lib/insurance-companies";
 
 // Body typeface — Inter, per the Stitch design system. Kept on the
 // `--font-geist-sans` variable name so every existing `font-sans` / body
@@ -36,22 +30,15 @@ export const metadata: Metadata = {
     "From lead generation to policy servicing, everything a Financial Advisor needs in one platform.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Render the advisor's chosen company palette on the server (from a cookie)
-  // so there's no flash of the default theme on load.
-  const raw = (await cookies()).get(THEME_COOKIE)?.value;
-  const theme =
-    raw && (raw === DEFAULT_COMPANY || COMPANY_MAP[raw]) ? raw : DEFAULT_COMPANY;
-
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
-      data-theme={theme}
     >
       <body className="min-h-full">{children}</body>
     </html>

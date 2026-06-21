@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHeader, Card, Avatar, Badge, ScoreRing } from "@/components/ui";
+import { ImportButton } from "@/components/import-dialog";
 import type { Lead, Temperature } from "@/lib/types";
 import { peso, relativeDays, daysSince, cn } from "@/lib/utils";
 import {
@@ -54,9 +55,12 @@ export function LeadsClient({ leads: LEADS }: { leads: Lead[] }) {
         subtitle={`${LEADS.length} leads · ${LEADS.filter((l) => l.temperature === "Hot").length} hot prospects`}
         icon={Users}
         actions={
-          <button className="flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-brand-600/20 transition hover:bg-brand-700">
-            <Plus className="h-4 w-4" /> Add Lead
-          </button>
+          <div className="flex items-center gap-2">
+            <ImportButton kind="lead" />
+            <button className="flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-brand-600/20 transition hover:bg-brand-700">
+              <Plus className="h-4 w-4" /> Add Lead
+            </button>
+          </div>
         }
       />
 
