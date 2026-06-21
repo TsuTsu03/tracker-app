@@ -38,7 +38,11 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+  // `/` is the public marketing landing (exact match — not a prefix, or it would
+  // make every route public). Authenticated users on `/` are still sent to the
+  // dashboard below.
+  const isPublic =
+    pathname === "/" || PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
   if (!user && !isPublic) {
     const redirectUrl = request.nextUrl.clone();

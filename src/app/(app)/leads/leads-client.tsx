@@ -193,7 +193,7 @@ function LeadDrawer({ lead, onClose }: { lead: Lead | null; onClose: () => void 
       >
         {lead && (
           <div>
-            <div className="relative bg-gradient-to-br from-brand-600 to-navy-800 p-6 text-white">
+            <div className="relative bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white">
               <button
                 onClick={onClose}
                 className="absolute right-4 top-4 rounded-lg p-1.5 text-white/80 hover:bg-white/10"
@@ -214,7 +214,7 @@ function LeadDrawer({ lead, onClose }: { lead: Lead | null; onClose: () => void 
 
             <div className="space-y-5 p-6">
               {/* AI Score */}
-              <div className="flex items-center gap-4 rounded-xl bg-gradient-to-br from-ai-500/10 to-brand-500/5 p-4 ring-1 ring-ai-500/15">
+              <div className="flex items-center gap-4 rounded-xl bg-ai-500/[0.06] p-4 ring-1 ring-ai-500/15">
                 <ScoreRing score={lead.aiScore} size={64} />
                 <div>
                   <p className="flex items-center gap-1.5 text-sm font-semibold text-ai-700">

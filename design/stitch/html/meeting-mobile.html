@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow AI Meeting Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e8e9",
+            "tertiary-fixed-dim": "#b7cbc3",
+            "secondary-fixed-dim": "#e9c176",
+            "secondary-fixed": "#ffdea5",
+            "primary-fixed": "#cce7f3",
+            "surface-container-low": "#f3f4f5",
+            "on-background": "#191c1d",
+            "secondary-container": "#fed488",
+            "primary-fixed-dim": "#b0cbd6",
+            "on-surface-variant": "#42484a",
+            "on-tertiary-container": "#7a8d86",
+            "on-primary-container": "#748d98",
+            "tertiary": "#000e0a",
+            "surface-container": "#edeeef",
+            "secondary": "#775a19",
+            "on-primary-fixed": "#031f27",
+            "tertiary-container": "#132520",
+            "outline": "#72787b",
+            "on-surface": "#191c1d",
+            "tertiary-fixed": "#d2e7de",
+            "on-tertiary-fixed": "#0d1f1a",
+            "on-secondary-fixed-variant": "#5d4201",
+            "surface-variant": "#e1e3e4",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed": "#261900",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#384b44",
+            "surface": "#f8f9fa",
+            "on-primary": "#ffffff",
+            "primary-container": "#0a252e",
+            "on-secondary-container": "#785a1a",
+            "background": "#f8f9fa",
+            "on-error": "#ffffff",
+            "inverse-primary": "#b0cbd6",
+            "surface-container-highest": "#e1e3e4",
+            "on-tertiary": "#ffffff",
+            "primary": "#000d13",
+            "inverse-on-surface": "#f0f1f2",
+            "outline-variant": "#c2c7ca",
+            "error": "#ba1a1a",
+            "surface-dim": "#d9dadb",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#93000a",
+            "surface-bright": "#f8f9fa",
+            "on-primary-fixed-variant": "#324a54",
+            "surface-tint": "#49626c",
+            "inverse-surface": "#2e3132"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "container-max": "1440px",
+            "stack-unit": "8px",
+            "gutter": "24px",
+            "margin-mobile": "16px",
+            "sidebar-width": "280px",
+            "margin-desktop": "40px"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "display-lg-mobile": ["Fraunces"],
+            "display-lg": ["Fraunces"],
+            "headline-md": ["Fraunces"],
+            "label-caps": ["Inter"]
+          },
+          "fontSize": {
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .active-nav-indicator {
+      view-transition-name: active-nav;
+    }
+    .custom-scroll-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .ai-border-glow {
+      border: 1px solid rgba(94, 113, 106, 0.3);
+      box-shadow: 0 0 15px rgba(94, 113, 106, 0.05);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Fixed Top Header (Contextual Navigation Suppressed per Rules for Sub-page Task Focus) -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-bright/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<div>
+<h1 class="font-headline-md text-body-md leading-none">Meeting Analysis</h1>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase mt-1 tracking-widest">Client Review: Miller Family</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</header>
+<main class="pt-20 pb-32 px-margin-mobile max-w-md mx-auto">
+<!-- Meeting Summary Header -->
+<section class="mb-8">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-16 h-16 rounded-2xl overflow-hidden bg-surface-container shadow-sm border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A professional, high-end headshot of an affluent client, a man in his late 50s with a kind expression, wearing a navy blue cashmere sweater. The lighting is soft and cinematic, with a blurred mahogany library background, reflecting a private wealth management context. The color palette is warm and sophisticated, with muted earth tones and rich textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgmbR_50LosenzzE72vZu31fNHIVVPXbRKB4x_1noXxb50eqmidC4fandUiEq2BF7iWdFtfMnfl-u6gZsaNg9oURn9fg5yi_Q4QpEIT0auNFCiBJ7-Od7vOt_yL08lCOGppQ_WwKVKW1SAtLLWrFz3l8Vi9AAZ3592BW_maxkrjmHJlgrTf5SflTknoN3eI0l2Y5u7umfueFmu3iYn7i3OdV-MqgUP6yqmAznR7JwdrscMNMxQmgn7FhNNKlaRxEQRdgTen2l1dNUu"/>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md">Miller Q3 Portfolio Review</h2>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Oct 24, 2024</span>
+<span class="mx-1">•</span>
+<span>42 mins</span>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Sentiment & Pulse (Bento Style) -->
+<section class="grid grid-cols-2 gap-3 mb-8">
+<div class="col-span-1 bg-surface-container-lowest p-4 rounded-xl ai-border-glow">
+<p class="font-label-caps text-on-surface-variant mb-1">SENTIMENT</p>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-display-lg text-primary leading-none">92</span>
+<span class="text-body-sm text-tertiary-fixed-dim font-bold pb-1">Positive</span>
+</div>
+<div class="w-full h-1 bg-surface-container mt-3 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[92%]"></div>
+</div>
+</div>
+<div class="col-span-1 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10">
+<p class="font-label-caps text-on-surface-variant mb-1">ENGAGEMENT</p>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-display-lg text-primary leading-none">High</span>
+</div>
+<div class="flex gap-1 mt-3">
+<div class="h-2 w-full rounded-full bg-secondary-fixed"></div>
+<div class="h-2 w-full rounded-full bg-secondary-fixed"></div>
+<div class="h-2 w-full rounded-full bg-secondary-fixed"></div>
+<div class="h-2 w-4 rounded-full bg-surface-container"></div>
+</div>
+</div>
+</section>
+<!-- AI Key Insights (Special Card) -->
+<section class="mb-10">
+<div class="bg-primary-container text-on-primary rounded-2xl p-6 shadow-xl relative overflow-hidden">
+
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary-fixed" style="font-variation-settings: 'FILL' 1;">insights</span>
+<h3 class="font-label-caps tracking-widest">AI SUMMARY</h3>
+</div>
+<p class="font-body-md leading-relaxed text-primary-fixed/90">
+            The client expressed significant interest in reallocating 15% of the liquid portfolio into sustainable energy private equity. Concern noted regarding rising tax implications for next year's distributions.
+          </p>
+</div>
+</div>
+</section>
+<!-- Action Items -->
+<section class="mb-10">
+<h3 class="font-label-caps text-on-surface-variant mb-4 px-1">REQUIRED ACTIONS</h3>
+<div class="space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl border-l-4 border-secondary-fixed shadow-sm flex items-start gap-4">
+<div class="mt-1">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Prepare ESG Portfolio Proposal</p>
+<p class="font-body-sm text-on-surface-variant">Due by Oct 28 • High Priority</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border-l-4 border-outline-variant/30 shadow-sm flex items-start gap-4">
+<div class="mt-1">
+<span class="material-symbols-outlined text-on-surface-variant">radio_button_unchecked</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Schedule Call with Tax Attorney</p>
+<p class="font-body-sm text-on-surface-variant">Inquire about 2025 distribution strategy</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border-l-4 border-outline-variant/30 shadow-sm flex items-start gap-4">
+<div class="mt-1">
+<span class="material-symbols-outlined text-on-surface-variant">radio_button_unchecked</span>
+</div>
+<div>
+<p class="font-body-md font-semibold">Send Q3 Performance PDF</p>
+<p class="font-body-sm text-on-surface-variant">Client requested a physical copy</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Focused Transcript View -->
+<section class="mb-10">
+<div class="flex justify-between items-end mb-4 px-1">
+<h3 class="font-label-caps text-on-surface-variant">TRANSCRIPT</h3>
+<button class="text-secondary font-label-caps text-[11px] flex items-center gap-1">
+          FULL VIEW <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</button>
+</div>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">ADVISOR (YOU)</span>
+<span class="text-[10px] text-outline">14:22</span>
+</div>
+<p class="font-body-md text-on-surface bg-surface-container-low p-4 rounded-2xl rounded-tl-none">
+            Mr. Miller, based on your current cash reserves, we could look into some thematic ESG options we discussed last quarter. How does that sound?
+          </p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-outline">14:23</span>
+<span class="font-label-caps text-[10px] text-secondary bg-secondary-fixed/30 px-2 py-0.5 rounded">MR. MILLER</span>
+</div>
+<p class="font-body-md text-on-surface bg-surface-container-highest p-4 rounded-2xl rounded-tr-none">
+            I've been reading more about hydrogen storage specifically. I'm okay with a higher risk profile for that specific 15%. Let's see a formal proposal.
+          </p>
+</div>
+<div class="bg-tertiary-container/5 p-4 rounded-xl border border-tertiary-container/10 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">auto_awesome</span>
+<p class="text-body-sm italic text-on-tertiary-fixed-variant">AI detected intent: "Request for Proposal"</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Persistent Thumb-Reach Footer Actions -->
+<div class="fixed bottom-0 left-0 right-0 bg-surface-bright/95 backdrop-blur-xl border-t border-outline-variant/10 p-4 pb-8 flex items-center gap-3 z-50">
+<button class="flex-1 h-14 bg-surface-container-lowest border border-primary text-primary font-label-caps rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">send</span>
+      SEND SUMMARY
+    </button>
+<button class="flex-1 h-14 bg-primary text-on-primary font-label-caps rounded-xl flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">sync_alt</span>
+      EXPORT TO CRM
+    </button>
+</div>
+<script>
+    // Micro-interactions for button feedback
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('touchstart', () => {
+        button.style.opacity = '0.7';
+      });
+      button.addEventListener('touchend', () => {
+        button.style.opacity = '1';
+      });
+    });
+
+    // Simple intersection observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section').forEach(section => {
+      section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-4');
+      observer.observe(section);
+    });
+  </script>
+</body></html>

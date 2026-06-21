@@ -22,6 +22,7 @@ import {
   Sparkles,
   Clock,
   Flame,
+  Hand,
 } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -114,10 +115,10 @@ export default async function DashboardPage() {
   ];
 
   const toneMap = {
-    brand: "from-brand-500 to-brand-700",
-    ai: "from-ai-500 to-ai-600",
-    money: "from-money-500 to-money-700",
-    gold: "from-gold-400 to-gold-600",
+    brand: "bg-brand-50 text-brand-700 ring-brand-600/15",
+    ai: "bg-ai-500/8 text-ai-600 ring-ai-500/20",
+    money: "bg-money-500/10 text-money-700 ring-money-600/15",
+    gold: "bg-gold-500/10 text-gold-600 ring-gold-600/20",
   };
 
   return (
@@ -132,8 +133,9 @@ export default async function DashboardPage() {
               day: "numeric",
             })}
           </p>
-          <h1 className="text-2xl font-bold tracking-tight text-navy-900">
-            Kumusta, {advisorName.split(" ")[0]}! 👋
+          <h1 className="flex items-center gap-2 font-display text-[1.9rem] font-medium tracking-tight text-navy-900">
+            Kumusta, {advisorName.split(" ")[0]}!
+            <Hand className="h-6 w-6 text-gold-500" aria-hidden="true" />
           </h1>
           <p className="mt-0.5 text-sm text-slate-500">
             You have <b className="text-navy-900">{todayTasks.length} tasks</b>{" "}
@@ -143,20 +145,20 @@ export default async function DashboardPage() {
         </div>
         <Link
           href="/lead-generator"
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90"
+          className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
         >
-          <Sparkles className="h-4 w-4" /> Find New Leads
+          <Sparkles className="h-4 w-4" aria-hidden="true" /> Find New Leads
         </Link>
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s) => (
           <Card key={s.label} className="hover-lift">
             <div className="flex items-start justify-between">
               <div
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow",
+                  "flex h-10 w-10 items-center justify-center rounded-xl ring-1 ring-inset",
                   toneMap[s.tone],
                 )}
               >
@@ -167,9 +169,11 @@ export default async function DashboardPage() {
                 {s.delta}
               </span>
             </div>
-            <p className="mt-4 text-2xl font-bold text-navy-900">{s.value}</p>
-            <p className="text-sm text-slate-500">{s.label}</p>
-            <p className="mt-0.5 text-xs text-slate-400">{s.sub}</p>
+            <p className="mt-4 font-display text-[1.7rem] font-medium leading-none text-navy-900">
+              {s.value}
+            </p>
+            <p className="mt-1.5 text-sm font-medium text-navy-800">{s.label}</p>
+            <p className="mt-0.5 text-xs text-slate-500">{s.sub}</p>
           </Card>
         ))}
       </div>
@@ -229,7 +233,10 @@ export default async function DashboardPage() {
               </Link>
             ))}
             {alerts.length === 0 && (
-              <p className="text-sm text-slate-500">All hot leads engaged 🎉</p>
+              <p className="flex items-center gap-1.5 text-sm text-money-700">
+                <CheckCircle2 className="h-4 w-4" />
+                All hot leads engaged
+              </p>
             )}
           </div>
         </Card>

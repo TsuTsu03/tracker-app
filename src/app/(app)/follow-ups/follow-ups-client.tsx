@@ -270,7 +270,7 @@ function Generator({ leads: LEADS }: { leads: Lead[] }) {
       <button
         onClick={run}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
         Generate Message

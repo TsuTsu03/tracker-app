@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useTheme } from "./theme-provider";
 import {
   LayoutDashboard,
   Users,
@@ -16,6 +17,7 @@ import {
   ShieldCheck,
   Building2,
   BrainCircuit,
+  BookOpen,
   Sparkles,
   X,
 } from "lucide-react";
@@ -27,7 +29,14 @@ type Item = {
   ai?: boolean;
 };
 
-const SECTIONS: { title: string; items: Item[] }[] = [
+type Section = {
+  title: string;
+  items: Item[];
+  /** Only shown once the advisor has registered a company. */
+  requiresCompany?: boolean;
+};
+
+const SECTIONS: Section[] = [
   {
     title: "Overview",
     items: [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
@@ -58,6 +67,13 @@ const SECTIONS: { title: string; items: Item[] }[] = [
     ],
   },
   {
+    title: "Knowledge",
+    requiresCompany: true,
+    items: [
+      { href: "/company", label: "My Company & Products", icon: BookOpen },
+    ],
+  },
+  {
     title: "Management",
     items: [{ href: "/agency", label: "Agency Dashboard", icon: Building2 }],
   },
@@ -71,6 +87,8 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const { company, hasCompany } = useTheme();
+  const sections = SECTIONS.filter((s) => !s.requiresCompany || hasCompany);
   return (
     <>
       {/* mobile backdrop */}
@@ -83,19 +101,23 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-navy-900 text-slate-300 transition-transform duration-300 lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-72 flex-col bg-sidebar text-slate-300 transition-transform duration-300 lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex items-center justify-between px-5 py-5">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 via-ai-500 to-money-500 shadow-lg">
-              <Sparkles className="h-5 w-5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-200 shadow-sm ring-1 ring-white/10">
+              <span className="font-display text-lg font-semibold leading-none text-brand-950">
+                W
+              </span>
             </div>
             <div className="leading-tight">
-              <p className="text-base font-bold text-white">WealthFlow</p>
-              <p className="text-[10px] uppercase tracking-wider text-slate-400">
-                AI Sales OS
+              <p className="font-display text-lg font-semibold text-white">
+                WealthFlow
+              </p>
+              <p className="text-[10px] uppercase tracking-[0.14em] text-sidebar-ink">
+                Sales OS
               </p>
             </div>
           </Link>
@@ -107,10 +129,32 @@ export function Sidebar({
           </button>
         </div>
 
+        {/* Active company chip */}
+        <Link
+          href="/company"
+          onClick={onClose}
+          className="mx-3 mb-3 flex items-center gap-2.5 rounded-xl bg-white/5 px-3 py-2.5 ring-1 ring-white/10 transition hover:bg-white/10"
+        >
+          <span
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20"
+            style={{ background: company ? company.color : "rgba(255,255,255,0.12)" }}
+          >
+            {!company && <BookOpen className="h-3.5 w-3.5 text-white/70" />}
+          </span>
+          <span className="min-w-0 flex-1 leading-tight">
+            <span className="block text-[10px] uppercase tracking-wider text-slate-400">
+              {company ? "Your company" : "Get started"}
+            </span>
+            <span className="block truncate text-sm font-semibold text-white">
+              {company ? company.short : "Choose your company"}
+            </span>
+          </span>
+        </Link>
+
         <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-6">
-          {SECTIONS.map((section) => (
+          {sections.map((section) => (
             <div key={section.title}>
-              <p className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+              <p className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-sidebar-ink/70">
                 {section.title}
               </p>
               <div className="space-y-0.5">
@@ -123,28 +167,26 @@ export function Sidebar({
                       key={item.href}
                       href={item.href}
                       onClick={onClose}
+                      aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                        "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                         active
-                          ? "bg-gradient-to-r from-brand-600/90 to-brand-500/70 text-white shadow-md shadow-brand-900/40"
-                          : "text-slate-300 hover:bg-white/5 hover:text-white",
+                          ? "bg-white/[0.07] font-semibold text-white"
+                          : "font-medium text-sidebar-ink hover:bg-white/[0.04] hover:text-white",
                       )}
                     >
+                      {active && (
+                        <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gold-400" />
+                      )}
                       <item.icon
                         className={cn(
-                          "h-[18px] w-[18px] shrink-0",
-                          active ? "text-white" : "text-slate-400 group-hover:text-white",
+                          "h-[18px] w-[18px] shrink-0 transition-colors",
+                          active
+                            ? "text-gold-400"
+                            : "text-sidebar-ink group-hover:text-white",
                         )}
                       />
                       <span className="flex-1">{item.label}</span>
-                      {item.ai && (
-                        <Sparkles
-                          className={cn(
-                            "h-3.5 w-3.5",
-                            active ? "text-white/90" : "text-ai-400",
-                          )}
-                        />
-                      )}
                     </Link>
                   );
                 })}
@@ -153,12 +195,13 @@ export function Sidebar({
           ))}
         </nav>
 
-        <div className="mx-3 mb-4 rounded-xl bg-gradient-to-br from-ai-600/30 to-brand-600/20 p-4 ring-1 ring-white/10">
-          <p className="flex items-center gap-1.5 text-xs font-semibold text-white">
-            <Sparkles className="h-3.5 w-3.5 text-ai-400" /> Powered by Gemini
+        <div className="mx-3 mb-4 rounded-xl bg-white/[0.04] p-3.5 ring-1 ring-white/[0.07]">
+          <p className="flex items-center gap-1.5 text-xs font-semibold text-white/90">
+            <Sparkles className="h-3.5 w-3.5 text-gold-400" aria-hidden="true" />
+            AI copilots
           </p>
-          <p className="mt-1 text-[11px] leading-relaxed text-slate-300">
-            AI features live on Gemini Flash.
+          <p className="mt-1 text-[11px] leading-relaxed text-sidebar-ink">
+            Running on Groq · Llama 3.3 70B.
           </p>
         </div>
       </aside>

@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Badge } from "@/components/ui";
-import { sleep, AI_THINKING_MS } from "@/lib/ai";
-import { aiStructureNotes, aiMeetingSummary } from "@/app/actions/ai";
+import {
+  aiStructureNotes,
+  aiMeetingSummary,
+  aiMeetingBrief,
+  type MeetingBriefResult,
+} from "@/app/actions/ai";
 import type { Lead } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import {
@@ -61,34 +65,37 @@ export function MeetingsClient({ leads }: { leads: Lead[] }) {
 function Prepare({ leads: LEADS }: { leads: Lead[] }) {
   const [lead, setLead] = useState(LEADS[0]);
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
+  const [brief, setBrief] = useState<MeetingBriefResult | null>(null);
+  const [error, setError] = useState(false);
 
   const generate = async () => {
+    if (!lead) return;
     setLoading(true);
-    setDone(false);
-    await sleep(AI_THINKING_MS);
-    setLoading(false);
-    setDone(true);
+    setBrief(null);
+    setError(false);
+    try {
+      setBrief(
+        await aiMeetingBrief({
+          fullName: lead.fullName,
+          occupation: lead.occupation,
+          age: lead.age,
+          company: lead.company,
+          civilStatus: lead.civilStatus,
+          dependents: lead.dependents,
+          monthlyIncome: lead.monthlyIncome,
+          location: lead.location,
+          stage: lead.stage,
+          temperature: lead.temperature,
+          scoreReasons: lead.scoreReasons,
+        }),
+      );
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const questions = {
-    Protection: [
-      "If your income stopped tomorrow, how long could your family maintain their lifestyle?",
-      "Who relies on you financially today?",
-    ],
-    Retirement: [
-      "At what age do you want the option to stop working?",
-      "What monthly income would you need in retirement?",
-    ],
-    Investment: [
-      "How are you currently growing your savings beyond the bank?",
-      "What's your comfort level with market ups and downs?",
-    ],
-    Education: [
-      "Which schools do you envision for your children?",
-      "Have you estimated the tuition cost 10 years from now?",
-    ],
-  };
+  const done = !!brief;
 
   if (!lead) {
     return (
@@ -123,7 +130,7 @@ function Prepare({ leads: LEADS }: { leads: Lead[] }) {
         <button
           onClick={generate}
           disabled={loading}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -143,7 +150,9 @@ function Prepare({ leads: LEADS }: { leads: Lead[] }) {
           <Card className="flex h-64 flex-col items-center justify-center text-center">
             <Sparkles className="mb-2 h-8 w-8 text-ai-300" />
             <p className="text-sm text-slate-500">
-              Select a lead and generate an AI meeting brief.
+              {error
+                ? "AI is busy right now — please try again in a moment."
+                : "Select a lead and generate an AI meeting brief."}
             </p>
           </Card>
         )}
@@ -181,19 +190,22 @@ function Prepare({ leads: LEADS }: { leads: Lead[] }) {
                 Points
               </h3>
               <ul className="grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-2">
-                <li className="rounded-lg bg-slate-50 px-3 py-2">
-                  Protection gap vs. {lead.dependents ?? 0} dependents
-                </li>
-                <li className="rounded-lg bg-slate-50 px-3 py-2">
-                  No structured retirement vehicle
-                </li>
-                <li className="rounded-lg bg-slate-50 px-3 py-2">
-                  Income concentration risk
-                </li>
-                <li className="rounded-lg bg-slate-50 px-3 py-2">
-                  Estate / wealth-transfer inefficiency
-                </li>
+                {brief!.risks.map((r) => (
+                  <li key={r} className="rounded-lg bg-slate-50 px-3 py-2">
+                    {r}
+                  </li>
+                ))}
               </ul>
+              {brief!.talkingPoints?.length > 0 && (
+                <ul className="mt-3 space-y-1.5 text-sm text-slate-700">
+                  {brief!.talkingPoints.map((t) => (
+                    <li key={t} className="flex items-start gap-2">
+                      <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-400" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </Card>
 
             <Card>
@@ -202,13 +214,13 @@ function Prepare({ leads: LEADS }: { leads: Lead[] }) {
                 Questions
               </h3>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {Object.entries(questions).map(([cat, qs]) => (
-                  <div key={cat}>
+                {brief!.questions.map((group) => (
+                  <div key={group.category}>
                     <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ai-600">
-                      {cat}
+                      {group.category}
                     </p>
                     <ul className="space-y-1.5 text-sm text-slate-700">
-                      {qs.map((q) => (
+                      {group.items.map((q) => (
                         <li key={q} className="flex items-start gap-2">
                           <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-300" />
                           {q}
@@ -227,12 +239,11 @@ function Prepare({ leads: LEADS }: { leads: Lead[] }) {
 }
 
 function Notes() {
-  const [raw, setRaw] = useState(
-    "married, 2 kids 8 and 5, breadwinner, wife stays home. worried about tuition. has small sss only. budget around 10k month. wants to retire 60. interested in vul. follow up next week",
-  );
+  const [raw, setRaw] = useState("");
   const [loading, setLoading] = useState(false);
   const [structured, setStructured] = useState<string | null>(null);
   const convert = async () => {
+    if (!raw.trim() || loading) return;
     setLoading(true);
     setStructured(null);
     setStructured(await aiStructureNotes(raw));
@@ -247,12 +258,13 @@ function Notes() {
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
           rows={10}
+          placeholder="Type your rough notes from the meeting… e.g. married, 2 kids, breadwinner, worried about tuition, budget ~10k/mo, wants to retire at 60, interested in VUL, follow up next week"
           className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-sm outline-none focus:border-ai-400 focus:ring-2 focus:ring-ai-100"
         />
         <button
           onClick={convert}
-          disabled={loading}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+          disabled={loading || !raw.trim()}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -262,10 +274,10 @@ function Notes() {
           {loading ? "Structuring…" : "Convert to CRM Notes"}
         </button>
       </Card>
-      <Card className={structured ? "ai-glow" : ""}>
+      <Card className={structured ? "ai-ring" : ""}>
         <div className="mb-2 flex items-center justify-between">
           <h3 className="font-semibold text-navy-900">Structured CRM notes</h3>
-          <AIBadge>Gemini</AIBadge>
+          <AIBadge>Llama 3.3</AIBadge>
         </div>
         {!structured && !loading && (
           <p className="py-16 text-center text-sm text-slate-400">
@@ -292,7 +304,9 @@ function Notes() {
 }
 
 function Summary() {
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [data, setData] = useState<{
     concerns: string[];
     painPoints: string[];
@@ -302,35 +316,55 @@ function Summary() {
   } | null>(null);
 
   const run = async () => {
+    if (!notes.trim() || loading) return;
     setLoading(true);
     setData(null);
-    setData(await aiMeetingSummary());
-    setLoading(false);
+    setError(false);
+    try {
+      setData(await aiMeetingSummary(notes));
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="mx-auto max-w-3xl">
-      <Card className="mb-4 flex items-center justify-between">
-        <div>
-          <h3 className="font-semibold text-navy-900">
-            Generate Meeting Summary
-          </h3>
-          <p className="text-sm text-slate-500">
-            From your notes, extract the key takeaways and next action.
-          </p>
-        </div>
-        <button
-          onClick={run}
-          disabled={loading}
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
-        >
-          {loading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+      <Card className="mb-4">
+        <h3 className="font-semibold text-navy-900">Generate Meeting Summary</h3>
+        <p className="mb-3 text-sm text-slate-500">
+          Paste your real meeting notes — AI extracts the key takeaways and next
+          action from them.
+        </p>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={6}
+          placeholder="Paste the notes from your meeting here…"
+          className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-sm outline-none focus:border-ai-400 focus:ring-2 focus:ring-ai-100"
+        />
+        <div className="mt-3 flex items-center justify-between gap-3">
+          {error ? (
+            <p className="text-sm text-risk-600">
+              AI is busy — please try again.
+            </p>
           ) : (
-            <Sparkles className="h-4 w-4" />
+            <span />
           )}
-          Summarize
-        </button>
+          <button
+            onClick={run}
+            disabled={loading || !notes.trim()}
+            className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            Summarize
+          </button>
+        </div>
       </Card>
 
       {data && (
@@ -344,7 +378,7 @@ function Summary() {
             </h4>
             <p className="text-lg font-bold text-money-700">{data.budget}</p>
           </Card>
-          <Card className="sm:col-span-2 border-l-4 border-l-brand-500">
+          <Card className="bg-brand-50/60 sm:col-span-2">
             <h4 className="mb-1 flex items-center gap-2 font-semibold text-navy-900">
               <ArrowRight className="h-4 w-4 text-brand-500" /> Next Action
             </h4>

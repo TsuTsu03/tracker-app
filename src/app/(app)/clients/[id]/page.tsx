@@ -53,11 +53,13 @@ export default async function ClientDetailPage({
 
       {/* Header */}
       <Card className="mb-6 overflow-hidden p-0">
-        <div className="bg-gradient-to-br from-brand-600 to-navy-800 p-6 text-white">
+        <div className="bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white">
           <div className="flex flex-wrap items-center gap-4">
             <Avatar name={client.fullName} size={72} />
             <div className="flex-1">
-              <h1 className="text-2xl font-bold">{client.fullName}</h1>
+              <h1 className="font-display text-[1.7rem] font-medium tracking-tight">
+                {client.fullName}
+              </h1>
               <p className="text-white/80">
                 {client.occupation} · {client.location}
               </p>
@@ -90,7 +92,7 @@ export default async function ClientDetailPage({
         {/* Left: details */}
         <div className="space-y-6">
           {/* AI Relationship */}
-          <Card className={cn(client.relationshipScore < 60 && "border-l-4 border-l-risk-500")}>
+          <Card className={cn(client.relationshipScore < 60 && "border-risk-500/30 bg-risk-500/[0.04]")}>
             <div className="mb-3 flex items-center justify-between">
               <h3 className="flex items-center gap-2 font-semibold text-navy-900">
                 <Heart className="h-4 w-4 text-risk-400" /> Relationship Health

@@ -2,21 +2,35 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Badge, Avatar } from "@/components/ui";
-import { aiProspectResearch, type ProspectResearchResult } from "@/app/actions/ai";
+import {
+  aiProspectResearch,
+  aiDiscoverLeads,
+  type ProspectResearchResult,
+} from "@/app/actions/ai";
+import { createLead } from "@/app/actions/crm";
 import { cn } from "@/lib/utils";
 import {
   Radar,
   Search,
   Sparkles,
-  Globe,
-  Phone,
+  Briefcase,
   MapPin,
   Loader2,
   Plus,
   Check,
   Lightbulb,
   MessageSquareQuote,
+  Link as LinkIcon,
 } from "lucide-react";
+
+/** Show a clean host (e.g. "facebook.com") instead of a long raw URL. */
+function sourceHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "source";
+  }
+}
 
 const PROFESSIONS = [
   "Doctors",
@@ -34,65 +48,18 @@ type Discovered = {
   business: string;
   occupation: string;
   location: string;
-  phone: string;
-  website: string;
   temp: "Hot" | "Warm" | "Cold";
   bracket: string;
   reason: string;
+  source?: string;
   added?: boolean;
 };
-
-const SAMPLE: Discovered[] = [
-  {
-    name: "Dr. Camille Bautista",
-    business: "Bautista Dental Care",
-    occupation: "Dentist",
-    location: "Quezon City",
-    phone: "0917 ••• ••42",
-    website: "bautistadental.ph",
-    temp: "Hot",
-    bracket: "₱250k–400k/mo",
-    reason: "Established clinic, 3 branches, strong online reviews → high income, succession need.",
-  },
-  {
-    name: "Dr. Enrique Salonga",
-    business: "Smile Studio Dental",
-    occupation: "Dentist",
-    location: "Quezon City",
-    phone: "0918 ••• ••09",
-    website: "smilestudio.ph",
-    temp: "Hot",
-    bracket: "₱200k–350k/mo",
-    reason: "Premium cosmetic clinic, active FB ads → growing, likely underinsured.",
-  },
-  {
-    name: "Dr. Faith Ledesma",
-    business: "Kids First Dental",
-    occupation: "Pediatric Dentist",
-    location: "Quezon City",
-    phone: "0920 ••• ••77",
-    website: "kidsfirst.ph",
-    temp: "Warm",
-    bracket: "₱150k–250k/mo",
-    reason: "Young practice owner, recently married → protection trigger event.",
-  },
-  {
-    name: "Dr. Marco Venturanza",
-    business: "Ortho Plus Center",
-    occupation: "Orthodontist",
-    location: "Quezon City",
-    phone: "0915 ••• ••31",
-    website: "orthoplus.ph",
-    temp: "Warm",
-    bracket: "₱180k–300k/mo",
-    reason: "Specialist, high-margin services, no visible group plan.",
-  },
-];
 
 export default function LeadGeneratorPage() {
   const [profession, setProfession] = useState("Dentists");
   const [location, setLocation] = useState("Quezon City");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<Discovered[]>([]);
   const [research, setResearch] = useState<{
     name: string;
@@ -102,19 +69,56 @@ export default function LeadGeneratorPage() {
 
   const run = async () => {
     setLoading(true);
+    setError(null);
     setResults([]);
-    setResults(SAMPLE.map((s) => ({ ...s })));
+    setResearch(null);
+    try {
+      const leads = await aiDiscoverLeads(profession, location);
+      setResults(leads.map((l) => ({ ...l })));
+      if (!leads.length)
+        setError(
+          "No real prospects found on the web for that profession + location. Try a broader location or another category.",
+        );
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "";
+      setError(
+        msg.includes("TAVILY")
+          ? "Web search isn't configured yet — add TAVILY_API_KEY to .env.local (free key at app.tavily.com) to pull real prospects."
+          : "Search is busy right now — please try again in a moment.",
+      );
+    }
     setLoading(false);
   };
 
-  const add = (i: number) =>
+  const add = async (i: number) => {
+    const d = results[i];
+    if (!d || d.added) return;
+    // Optimistically mark as added, then persist to the pipeline.
     setResults((r) => r.map((x, idx) => (idx === i ? { ...x, added: true } : x)));
+    const res = await createLead({
+      fullName: d.name,
+      occupation: d.occupation,
+      company: d.business,
+      location: d.location,
+      temperature: d.temp,
+      source: "AI Lead Generator",
+    });
+    if (res?.error) {
+      // Roll back the optimistic flag if the insert failed.
+      setResults((r) => r.map((x, idx) => (idx === i ? { ...x, added: false } : x)));
+      setError("Couldn't add to pipeline — please try again.");
+    }
+  };
 
   const doResearch = async (d: Discovered) => {
     setResearching(true);
     setResearch(null);
-    const data = await aiProspectResearch(d.name, d.occupation);
-    setResearch({ name: d.name, data });
+    try {
+      const data = await aiProspectResearch(d.name, d.occupation, d.business);
+      setResearch({ name: d.name, data });
+    } catch {
+      setError("Couldn't research that prospect right now — please try again.");
+    }
     setResearching(false);
   };
 
@@ -122,14 +126,14 @@ export default function LeadGeneratorPage() {
     <div className="animate-in">
       <PageHeader
         title="AI Lead Generator"
-        subtitle="Discover, qualify, and research public business leads — the killer feature"
+        subtitle="Finds real prospects from the live web by profession & location — research and add them to your pipeline"
         icon={Radar}
         accent="ai"
-        actions={<AIBadge>Killer Feature</AIBadge>}
+        actions={<AIBadge>Live Web Search</AIBadge>}
       />
 
       {/* Search panel */}
-      <Card className="ai-glow mb-6 bg-gradient-to-br from-white to-ai-500/[0.03]">
+      <Card className="ai-ring mb-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.2fr_1fr_auto] md:items-end">
           <div>
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -168,7 +172,7 @@ export default function LeadGeneratorPage() {
           <button
             onClick={run}
             disabled={loading}
-            className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+            className="flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -191,14 +195,21 @@ export default function LeadGeneratorPage() {
         </div>
       )}
 
+      {error && (
+        <p className="rounded-xl border border-risk-500/20 bg-risk-500/5 px-3 py-2.5 text-sm text-risk-700">
+          {error}
+        </p>
+      )}
+
       {results.length > 0 && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
           {/* Results */}
           <div>
             <p className="mb-3 flex items-center gap-2 text-sm text-slate-600">
               <Sparkles className="h-4 w-4 text-ai-500" />
-              Found <b>{results.length}</b> {profession.toLowerCase()} in{" "}
-              {location}, AI-qualified by income bracket & online presence.
+              Found <b>{results.length}</b> real {profession.toLowerCase()}{" "}
+              prospect{results.length === 1 ? "" : "s"} on the web in {location},
+              qualified by AI.
             </p>
             <div className="space-y-3">
               {results.map((d, i) => (
@@ -213,13 +224,10 @@ export default function LeadGeneratorPage() {
                       <p className="text-sm text-slate-500">{d.business}</p>
                       <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
                         <span className="flex items-center gap-1">
+                          <Briefcase className="h-3 w-3" /> {d.occupation}
+                        </span>
+                        <span className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" /> {d.location}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Phone className="h-3 w-3" /> {d.phone}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Globe className="h-3 w-3" /> {d.website}
                         </span>
                       </div>
                       <div className="mt-2 rounded-lg bg-ai-500/5 px-3 py-2 text-xs text-slate-600 ring-1 ring-ai-500/10">
@@ -231,6 +239,19 @@ export default function LeadGeneratorPage() {
                           Est. {d.bracket}
                         </span>
                       </div>
+                      {d.source && (
+                        <a
+                          href={d.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-1.5 inline-flex max-w-full items-center gap-1 truncate text-xs font-medium text-brand-600 hover:underline"
+                        >
+                          <LinkIcon className="h-3 w-3 shrink-0" />
+                          <span className="truncate">
+                            {sourceHost(d.source)}
+                          </span>
+                        </a>
+                      )}
                     </div>
                   </div>
                   <div className="mt-3 flex gap-2">
@@ -268,10 +289,10 @@ export default function LeadGeneratorPage() {
 
           {/* Research panel */}
           <div className="lg:sticky lg:top-20 lg:self-start">
-            <Card className="ai-glow">
+            <Card className="ai-ring">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="font-semibold text-navy-900">AI Prospect Research</h2>
-                <AIBadge>Gemini</AIBadge>
+                <AIBadge>Llama 3.3 + Web</AIBadge>
               </div>
               {researching && (
                 <div className="flex items-center gap-3 py-10 text-sm text-slate-500">
@@ -328,6 +349,28 @@ export default function LeadGeneratorPage() {
                       {research.data.productAngle}
                     </p>
                   </div>
+
+                  {research.data.sources?.length > 0 && (
+                    <div>
+                      <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        Sources
+                      </p>
+                      <div className="space-y-1">
+                        {research.data.sources.map((s) => (
+                          <a
+                            key={s.url}
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 truncate text-xs font-medium text-brand-600 hover:underline"
+                          >
+                            <LinkIcon className="h-3 w-3 shrink-0" />
+                            <span className="truncate">{s.title || sourceHost(s.url)}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </Card>

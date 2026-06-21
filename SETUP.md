@@ -16,13 +16,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...# Supabase → Project Settings → API Keys (a
 ## 2. Create the database
 
 1. Create a free project at https://supabase.com
-2. Open **SQL Editor** and run the migration in
-   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
+2. Open **SQL Editor** and run the migrations in order:
+   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql),
+   then [`supabase/migrations/0002_blank_workspace.sql`](supabase/migrations/0002_blank_workspace.sql).
 
 This creates all tables, Row-Level Security policies (each advisor only sees
 their own data), and a trigger that — on every new signup — creates the
-advisor's profile and seeds a realistic starter book (leads, clients, policies,
-tasks, tickets, claims, team, production trend).
+advisor's profile. New advisors start with a **completely blank workspace**: no
+leads, clients, tasks, tickets, claims, team, or production history. Every
+record on every screen is something you (or the AI) created.
 
 ## 3. Auth settings (recommended for quick start)
 
@@ -38,8 +40,8 @@ npm run dev
 ```
 
 Visit http://localhost:3000 → you'll be redirected to **/login**. Create an
-account at **/signup**; your workspace is seeded automatically and you land on
-the dashboard.
+account at **/signup**; you land on the dashboard with a blank workspace ready
+for your first lead.
 
 ## How it fits together
 

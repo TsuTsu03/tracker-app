@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | WealthFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Literata:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#574500",
+                      "secondary-fixed": "#ffe088",
+                      "on-secondary-fixed": "#241a00",
+                      "secondary": "#735c00",
+                      "on-tertiary-fixed": "#002020",
+                      "surface-bright": "#f8f9fa",
+                      "surface-container": "#edeeef",
+                      "secondary-container": "#fed65b",
+                      "tertiary-fixed-dim": "#abcdcd",
+                      "tertiary-container": "#002020",
+                      "on-tertiary-fixed-variant": "#2c4c4c",
+                      "outline": "#73787a",
+                      "outline-variant": "#c3c7ca",
+                      "inverse-surface": "#2e3132",
+                      "on-background": "#191c1d",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#698a8a",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-primary-fixed": "#0e1e24",
+                      "on-primary-container": "#76868e",
+                      "background": "#f8f9fa",
+                      "on-surface": "#191c1d",
+                      "on-primary": "#ffffff",
+                      "surface": "#f8f9fa",
+                      "on-surface-variant": "#43474a",
+                      "primary-container": "#0e1e24",
+                      "on-primary-fixed-variant": "#394950",
+                      "primary-fixed-dim": "#b8c9d1",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed": "#d4e5ee",
+                      "surface-container-low": "#f3f4f5",
+                      "surface-tint": "#516168",
+                      "inverse-primary": "#b8c9d1",
+                      "primary": "#000000",
+                      "surface-dim": "#d9dadb",
+                      "tertiary-fixed": "#c6e9e9",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e1e3e4",
+                      "tertiary": "#000000",
+                      "on-secondary-container": "#745c00",
+                      "surface-container-high": "#e7e8e9",
+                      "secondary-fixed-dim": "#e9c349"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "display": ["Literata"],
+                      "headline-lg": ["Literata"],
+                      "body-md": ["Hanken Grotesk"],
+                      "headline-md": ["Literata"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "label-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Literata"],
+                      "label-sm": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVievZiAEpW3SCT-KlDDohs62wdd3qN7Ktqll4uWJ3QPHPc3rs9ELBhR5TiJNSbSSaUxgfZd7w_SDRfKUHEwrQDs3NsZJe4MA-kUyI0cBu2SNbSXXrfb8U6UazXT44yFbcLiuEjBSm1v5tJS52fbADztspNUjYt1-cNSb86fdFwxWWC9axtjLLYVDnzsjvch-I3PI2OWvEdwPm8GEBQjfsE9BxnsdDfHQFzPavxcV7NX0s7K3YJ_N0kNeo8HVtDzNppPFzq_xCiVjh');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .login-card {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem; /* ROUND_EIGHT equivalent */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .input-focus-gold:focus {
+            border-color: #e9c349 !important;
+            outline: none;
+            box-shadow: 0 0 0 1px #e9c349;
+        }
+        .bg-overlay {
+            background-color: rgba(14, 30, 36, 0.4); /* Deep trust overlay */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-margin-mobile md:p-gutter relative">
+<!-- Dark Overlay for background contrast -->
+<div class="absolute inset-0 bg-overlay pointer-events-none"></div>
+<!-- Main Authentication Container (Floating Modal) -->
+<main class="relative z-10 w-full max-w-[480px] animate-in fade-in zoom-in-95 duration-700">
+<!-- Login Card -->
+<div class="login-card p-8 md:p-12 overflow-hidden">
+<!-- Brand Identity Section inside modal -->
+<div class="text-center mb-10">
+<div class="inline-flex items-center justify-center w-14 h-14 bg-primary-container text-primary-fixed rounded-lg mb-6 shadow-sm">
+<span class="font-display text-headline-lg font-bold">W</span>
+</div>
+<h1 class="font-display text-headline-lg text-on-surface mb-2">Welcome Back</h1>
+<p class="font-body-md text-on-surface-variant">Access your wealth portfolio and strategic insights.</p>
+</div>
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block font-label-md text-on-surface-variant" for="email">EMAIL ADDRESS</label>
+<input class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline-variant transition-all input-focus-gold" id="email" name="email" placeholder="e.g. name@familyoffice.com" required="" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block font-label-md text-on-surface-variant" for="password">PASSWORD</label>
+<a class="font-label-sm text-secondary hover:text-on-secondary-container transition-colors underline underline-offset-4 decoration-outline-variant" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg font-body-md text-on-surface placeholder:text-outline-variant transition-all input-focus-gold" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center space-x-3">
+<input class="w-5 h-5 rounded border-outline text-primary-container focus:ring-secondary-fixed cursor-pointer transition-all" id="remember" type="checkbox"/>
+<label class="font-body-md text-on-surface-variant cursor-pointer select-none" for="remember">Remember this device</label>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-4 bg-primary text-on-primary font-label-md tracking-widest rounded-lg hover:bg-primary/90 transition-all active:scale-[0.98] duration-150" type="submit">
+                SIGN IN TO WEALTHFLOW
+            </button>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-outline-variant/30"></div>
+<span class="flex-shrink mx-4 font-label-sm text-outline-variant uppercase tracking-widest">or</span>
+<div class="flex-grow border-t border-outline-variant/30"></div>
+</div>
+<!-- Social Authentication -->
+<button class="w-full py-3 px-4 border border-outline-variant rounded-lg flex items-center justify-center gap-3 hover:bg-surface-container-low transition-all group bg-white" type="button">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="font-label-md text-on-surface-variant group-hover:text-on-surface">Continue with Google</span>
+</button>
+</form>
+<div class="mt-10 text-center">
+<p class="font-body-md text-on-surface-variant">
+                New to WealthFlow? 
+                <a class="font-label-md text-secondary hover:text-on-secondary-container transition-colors underline underline-offset-4 decoration-secondary-fixed ml-1" href="#">Create an account</a>
+</p>
+</div>
+<!-- Inline Footer within modal for clean aesthetic -->
+<footer class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 opacity-50 border-t border-outline-variant/10 pt-6">
+<a class="font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy</a>
+<a class="font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms</a>
+<a class="font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Security</a>
+</footer>
+</div>
+</main>
+<script>
+    // Micro-interaction for visibility toggle
+    document.querySelector('button[type="button"]').addEventListener('click', function() {
+        const passInput = document.getElementById('password');
+        const icon = this.querySelector('.material-symbols-outlined');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            icon.textContent = 'visibility_off';
+        } else {
+            passInput.type = 'password';
+            icon.textContent = 'visibility';
+        }
+    });
+
+    // Subtly parallax/tilt for premium feel
+    const card = document.querySelector('.login-card');
+    document.addEventListener('mousemove', (e) => {
+        if (window.innerWidth > 768) {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 120;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 120;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        }
+    });
+
+    document.addEventListener('mouseleave', () => {
+        card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        card.style.transition = 'all 0.5s ease';
+    });
+    
+    document.addEventListener('mouseenter', () => {
+        card.style.transition = 'none';
+    });
+</script>
+</body></html>

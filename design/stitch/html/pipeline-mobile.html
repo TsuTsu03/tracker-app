@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow | Sales Pipeline</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for horizontal swiper */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(248, 249, 250, 0.85);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-fixed-dim": "#b7cbc3",
+                        "secondary-fixed-dim": "#e9c176",
+                        "secondary-fixed": "#ffdea5",
+                        "primary-fixed": "#cce7f3",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#fed488",
+                        "primary-fixed-dim": "#b0cbd6",
+                        "on-surface-variant": "#42484a",
+                        "on-tertiary-container": "#7a8d86",
+                        "on-primary-container": "#748d98",
+                        "tertiary": "#000e0a",
+                        "surface-container": "#edeeef",
+                        "secondary": "#775a19",
+                        "on-primary-fixed": "#031f27",
+                        "tertiary-container": "#132520",
+                        "outline": "#72787b",
+                        "on-surface": "#191c1d",
+                        "tertiary-fixed": "#d2e7de",
+                        "on-tertiary-fixed": "#0d1f1a",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#261900",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#384b44",
+                        "surface": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0a252e",
+                        "on-secondary-container": "#785a1a",
+                        "background": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#b0cbd6",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#000d13",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#c2c7ca",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-fixed-variant": "#324a54",
+                        "surface-tint": "#49626c",
+                        "inverse-surface": "#2e3132"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "stack-unit": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "280px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Fraunces"],
+                        "display-lg": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Mobile Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-header flex items-center justify-between px-margin-mobile h-16 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary-container rounded flex items-center justify-center">
+<span class="text-secondary-fixed font-display-lg text-lg">W</span>
+</div>
+<h1 class="font-headline-md text-body-md tracking-tight">Pipeline</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">search</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior wealth advisor, middle-aged with a confident and warm expression, wearing a tailored navy charcoal suit. The lighting is soft and studio-quality, emphasizing a premium and trustworthy corporate aesthetic. The background is a blurred, high-end office interior with neutral gray and white tones, matching a light-mode modern UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD__gBfWXCabnm89pbdgqJb3AhJkwK-Tba5fg1UUkBUByFp-NzyRB6zOrVccW702S7LcDYZ4WQR0W3D9CT0KDic2u4NO4etuHA3lEGyA0TTQ0jDWXjpbfxplbQOLfZtbDEm8fgAB6BjKqMZAGOOw7cQd7FCKfByrMCd_qorshCERdjL9JvfvJX0bmCOq8P3XMSoZqJMVVIolMiZoZNo76Rk0jGYApHsCl1SCNi0-Dqa-gNznlWZYaoOkGRqD_kCXCxx8CjS36bhVbyS"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 min-h-screen px-margin-mobile">
+<!-- Summary Dashboard (Mini Cards Swiper) -->
+<section class="mb-8">
+<div class="flex justify-between items-end mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Pipeline Overview</span>
+<span class="font-label-caps text-label-caps text-secondary font-bold">$12.4M Total</span>
+</div>
+<div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+<!-- Stat Card 1 -->
+<div class="min-w-[140px] bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1">Qualified</p>
+<p class="text-headline-md font-headline-md">24</p>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-3/4"></div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="min-w-[140px] bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1">Proposal</p>
+<p class="text-headline-md font-headline-md">12</p>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-1/2"></div>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="min-w-[140px] bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1">Closing</p>
+<p class="text-headline-md font-headline-md">5</p>
+<div class="mt-2 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/4"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Pipeline List -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-lg">Active Leads</h2>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1 px-3 py-1.5 bg-surface-container-high rounded-lg text-body-sm font-medium">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filter
+                    </button>
+</div>
+</div>
+<!-- Lead Item 1 (High Score) -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-4 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-secondary-fixed font-bold">
+                            AJ
+                        </div>
+<div>
+<h3 class="font-body-md font-bold text-primary">Arthur J. Sterling</h3>
+<p class="text-body-sm text-on-surface-variant">Family Office Venture</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Proposal</span>
+<p class="text-label-caps font-label-caps text-secondary mt-1">94 Score</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span class="text-body-sm font-medium">$2.4M</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">event</span>
+<span class="text-body-sm">4d ago</span>
+</div>
+</div>
+<button class="text-secondary font-label-caps uppercase tracking-widest text-[11px] font-bold">View Profile</button>
+</div>
+</div>
+<!-- AI Insight Lead (Soft Sage Tint) -->
+<div class="bg-surface-container-lowest rounded-xl border border-tertiary-fixed-dim/40 bg-gradient-to-br from-white to-tertiary-fixed/5 p-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[9px] font-bold rounded-bl-lg flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    AI Suggestion
+                </div>
+<div class="flex justify-between items-start mb-3 mt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container font-bold">
+                            EP
+                        </div>
+<div>
+<h3 class="font-body-md font-bold text-primary">Elena Petrova</h3>
+<p class="text-body-sm text-on-surface-variant">Wealth Transfer Opt.</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="bg-surface-container-high text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Qualified</span>
+<p class="text-label-caps font-label-caps text-on-tertiary-fixed-variant mt-1">88 Score</p>
+</div>
+</div>
+<div class="bg-tertiary-fixed/10 p-2.5 rounded-lg mb-3">
+<p class="text-body-sm text-on-tertiary-fixed-variant leading-snug">
+<strong>Insight:</strong> Client just liquidation $1.2M in assets. High propensity for portfolio rebalancing.
+                    </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span class="text-body-sm font-medium">$1.2M</span>
+</div>
+</div>
+<button class="text-secondary font-label-caps uppercase tracking-widest text-[11px] font-bold">Draft Outreach</button>
+</div>
+</div>
+<!-- Lead Item 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-4 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container font-bold">
+                            BK
+                        </div>
+<div>
+<h3 class="font-body-md font-bold text-primary">Benjamin K. Wright</h3>
+<p class="text-body-sm text-on-surface-variant">Tax Loss Harvesting</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="bg-primary-container text-on-primary text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Closing</span>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">72 Score</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span class="text-body-sm font-medium">$850k</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">event</span>
+<span class="text-body-sm">Today</span>
+</div>
+</div>
+<button class="text-secondary font-label-caps uppercase tracking-widest text-[11px] font-bold">View Profile</button>
+</div>
+</div>
+<!-- Lead Item 4 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-4 opacity-75 grayscale-[0.2]">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container font-bold">
+                            MS
+                        </div>
+<div>
+<h3 class="font-body-md font-bold text-primary">Marcus Sterling</h3>
+<p class="text-body-sm text-on-surface-variant">Real Estate Portfolio</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="bg-surface-container-high text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Qualified</span>
+<p class="text-label-caps font-label-caps text-on-surface-variant mt-1">64 Score</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span class="text-body-sm font-medium">$4.1M</span>
+</div>
+</div>
+<button class="text-secondary font-label-caps uppercase tracking-widest text-[11px] font-bold">View Profile</button>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB: New Lead -->
+<button class="fixed right-6 bottom-24 w-14 h-14 bg-primary-container text-white rounded-2xl shadow-lg flex items-center justify-center active:scale-90 transition-transform z-[60]">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 h-20 bg-surface-container-lowest border-t border-outline-variant/20 flex items-center justify-around px-2 z-50">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Overview</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary font-bold active-pill bg-on-primary-fixed-variant/10 px-4 py-1 rounded-full transition-colors">account_tree</span>
+<span class="text-[10px] font-label-caps text-primary font-bold">Pipeline</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">groups</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Clients</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">smart_toy</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">AI Copilot</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">settings</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Admin</span>
+</a>
+</nav>
+<script>
+        // Simple haptic-like interaction for cards
+        document.querySelectorAll('.active\\:scale-\\[0\\.98\\]').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                // Potential for haptic feedback API if supported
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(5);
+                }
+            });
+        });
+
+        // Dynamic date injection for 'Today' markers if needed
+        const today = new Date();
+        console.log("Advisor OS Mobile Pipeline initialized on: " + today.toLocaleDateString());
+    </script>
+</body></html>

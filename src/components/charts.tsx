@@ -18,11 +18,14 @@ import { peso } from "@/lib/utils";
 
 const tooltipStyle = {
   borderRadius: 12,
-  border: "1px solid rgba(15,24,56,0.08)",
-  boxShadow: "0 10px 30px -10px rgba(15,24,56,0.25)",
+  border: "1px solid var(--color-hairline)",
+  boxShadow: "0 12px 30px -16px rgba(18,38,30,0.30)",
   fontSize: 12,
   padding: "8px 12px",
 };
+
+const GRID = "var(--color-slate-100)";
+const AXIS = "var(--color-slate-400)";
 
 export function ProductionAreaChart({
   data,
@@ -34,18 +37,18 @@ export function ProductionAreaChart({
       <AreaChart data={data} margin={{ top: 10, right: 8, left: 8, bottom: 0 }}>
         <defs>
           <linearGradient id="prod" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.35} />
-            <stop offset="100%" stopColor="#4f46e5" stopOpacity={0} />
+            <stop offset="0%" stopColor="var(--color-brand-500)" stopOpacity={0.35} />
+            <stop offset="100%" stopColor="var(--color-brand-500)" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="#eef0f6" vertical={false} />
-        <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} stroke="#94a3b8" />
+        <CartesianGrid strokeDasharray="3 3" stroke={GRID} vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} stroke={AXIS} />
         <YAxis
           tickFormatter={(v) => peso(v, { compact: true })}
           tickLine={false}
           axisLine={false}
           fontSize={12}
-          stroke="#94a3b8"
+          stroke={AXIS}
           width={48}
         />
         <Tooltip
@@ -55,7 +58,7 @@ export function ProductionAreaChart({
         <Area
           type="monotone"
           dataKey="target"
-          stroke="#cbd5e1"
+          stroke="var(--color-slate-300)"
           strokeDasharray="5 5"
           strokeWidth={2}
           fill="none"
@@ -63,7 +66,7 @@ export function ProductionAreaChart({
         <Area
           type="monotone"
           dataKey="production"
-          stroke="#4f46e5"
+          stroke="var(--color-brand-500)"
           strokeWidth={2.5}
           fill="url(#prod)"
         />
@@ -77,7 +80,13 @@ export function FunnelBars({
 }: {
   data: { stage: string; value: number }[];
 }) {
-  const colors = ["#6366f1", "#7c3aed", "#8b5cf6", "#f59e0b", "#10b981"];
+  const colors = [
+    "var(--color-brand-700)",
+    "var(--color-brand-500)",
+    "var(--color-brand-400)",
+    "var(--color-gold-500)",
+    "var(--color-money-500)",
+  ];
   return (
     <ResponsiveContainer width="100%" height={240}>
       <BarChart data={data} layout="vertical" margin={{ left: 8, right: 24 }}>
@@ -89,9 +98,9 @@ export function FunnelBars({
           axisLine={false}
           width={92}
           fontSize={12}
-          stroke="#64748b"
+          stroke={AXIS}
         />
-        <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "#f8fafc" }} />
+        <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "var(--color-slate-50)" }} />
         <Bar dataKey="value" radius={[0, 8, 8, 0]} barSize={22}>
           {data.map((_, i) => (
             <Cell key={i} fill={colors[i % colors.length]} />
@@ -104,7 +113,7 @@ export function FunnelBars({
 
 export function MiniSpark({
   data,
-  color = "#10b981",
+  color = "var(--color-money-500)",
 }: {
   data: { v: number }[];
   color?: string;
@@ -132,28 +141,28 @@ export function ForecastChart({
   return (
     <ResponsiveContainer width="100%" height={280}>
       <LineChart data={data} margin={{ top: 10, right: 8, left: 8, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#eef0f6" vertical={false} />
-        <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} stroke="#94a3b8" />
+        <CartesianGrid strokeDasharray="3 3" stroke={GRID} vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} stroke={AXIS} />
         <YAxis
           tickFormatter={(v) => peso(v, { compact: true })}
           tickLine={false}
           axisLine={false}
           fontSize={12}
-          stroke="#94a3b8"
+          stroke={AXIS}
           width={48}
         />
         <Tooltip contentStyle={tooltipStyle} formatter={(v) => peso(Number(v))} />
         <Line
           type="monotone"
           dataKey="actual"
-          stroke="#4f46e5"
+          stroke="var(--color-brand-500)"
           strokeWidth={2.5}
           dot={{ r: 3 }}
         />
         <Line
           type="monotone"
           dataKey="forecast"
-          stroke="#8b5cf6"
+          stroke="var(--color-ai-500)"
           strokeWidth={2.5}
           strokeDasharray="6 5"
           dot={{ r: 3 }}

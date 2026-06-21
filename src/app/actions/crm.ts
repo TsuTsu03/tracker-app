@@ -7,10 +7,15 @@ import type { PipelineStage } from "@/lib/types";
 /** Move a lead to a new pipeline stage (drag & drop). */
 export async function updateLeadStage(id: string, stage: PipelineStage) {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated." };
   const { error } = await supabase
     .from("leads")
     .update({ stage, last_contact: new Date().toISOString() })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("advisor_id", user.id);
   if (error) return { error: error.message };
   revalidatePath("/pipeline");
   revalidatePath("/dashboard");
@@ -20,7 +25,15 @@ export async function updateLeadStage(id: string, stage: PipelineStage) {
 /** Toggle a task's done state. */
 export async function toggleTask(id: string, done: boolean) {
   const supabase = await createClient();
-  const { error } = await supabase.from("tasks").update({ done }).eq("id", id);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated." };
+  const { error } = await supabase
+    .from("tasks")
+    .update({ done })
+    .eq("id", id)
+    .eq("advisor_id", user.id);
   if (error) return { error: error.message };
   revalidatePath("/follow-ups");
   revalidatePath("/dashboard");
@@ -33,10 +46,15 @@ export async function updateTicketStatus(
   status: "Open" | "In Progress" | "Resolved",
 ) {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not authenticated." };
   const { error } = await supabase
     .from("tickets")
     .update({ status })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("advisor_id", user.id);
   if (error) return { error: error.message };
   revalidatePath("/servicing");
   return { ok: true };

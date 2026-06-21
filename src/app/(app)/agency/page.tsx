@@ -156,7 +156,7 @@ export default async function AgencyPage() {
         </Card>
 
         {/* AI Manager Insights */}
-        <Card className="ai-glow">
+        <Card className="ai-ring">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-navy-900">Manager Insights</h3>
             <AIBadge />
@@ -222,24 +222,26 @@ function Kpi({
   tone: "money" | "brand" | "ai" | "gold";
 }) {
   const colors = {
-    money: "from-money-500 to-money-700",
-    brand: "from-brand-500 to-brand-700",
-    ai: "from-ai-500 to-ai-600",
-    gold: "from-gold-400 to-gold-600",
+    money: "bg-money-500/10 text-money-700 ring-money-600/15",
+    brand: "bg-brand-50 text-brand-700 ring-brand-600/15",
+    ai: "bg-ai-500/8 text-ai-600 ring-ai-500/20",
+    gold: "bg-gold-500/10 text-gold-600 ring-gold-600/20",
   };
   return (
     <Card className="hover-lift">
       <div
         className={cn(
-          "mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow",
+          "mb-3 flex h-10 w-10 items-center justify-center rounded-xl ring-1 ring-inset",
           colors[tone],
         )}
       >
         <Icon className="h-5 w-5" />
       </div>
-      <p className="text-2xl font-bold text-navy-900">{value}</p>
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="text-xs text-slate-400">{sub}</p>
+      <p className="font-display text-[1.7rem] font-medium leading-none text-navy-900">
+        {value}
+      </p>
+      <p className="mt-1.5 text-sm font-medium text-navy-800">{label}</p>
+      <p className="mt-0.5 text-xs text-slate-500">{sub}</p>
     </Card>
   );
 }

@@ -1,69 +1,136 @@
 @import "tailwindcss";
 
 /*
-  WealthFlow — Color Psychology for Financial Advisors
-  ----------------------------------------------------
-  Navy / Indigo  → trust, stability, security, authority (the bedrock of finance)
-  Emerald        → growth, money, prosperity, "go", positive performance
-  Gold / Amber   → premium, wealth, optimism, high-value highlights
-  Violet         → intelligence & AI features (innovation, the "magic")
-  Slate          → calm, clarity, professional neutral canvas
-  Rose           → risk, churn, urgency (used sparingly)
+  WealthFlow — Stitch "Advisor OS" system
+  ---------------------------------------
+  Source of truth: the Google Stitch design (Material-3 token set). Premium is
+  carried by an editorial serif (Fraunces) for display headings over an Inter
+  body, a deep navy-teal brand (#0a252e) used for the sidebar + primary actions,
+  and a warm gold accent (#e9c176 / #ffdea5) for highlights — over a cool
+  near-white canvas (#f8f9fa) with crisp white cards.
+
+  Navy-teal  → the brand: sidebar, primary actions, active state, links
+  Gold       → premium highlights / CTAs / logo (used with intent)
+  Sage       → AI / intelligence — a calm category tint, never theatre
+  Clay-red   → error, risk, churn, urgency
+  Cool gray  → the whole neutral system (M3 neutral ramp)
 */
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-hairline: var(--hairline);
 
-  /* Brand scale — Navy/Indigo (trust) */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-300: #a5b4fc;
-  --color-brand-400: #818cf8;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #312e81;
-  --color-brand-900: #1e1b4b;
-  --color-brand-950: #0f0d2e;
+  /*
+    Brand — Stitch navy-teal ramp built around primary-container (#0a252e),
+    the sidebar + primary-action color, down to primary (#000d13). Used only
+    for primary actions, active state, links and selection — never decoration.
+    `brand-600` is the canonical primary-button fill (matches Stitch exactly).
+  */
+  --color-brand-50: #eef4f6;
+  --color-brand-100: #d3e6ec;
+  --color-brand-200: #a9ccd6;
+  --color-brand-300: #79aab8;
+  --color-brand-400: #487f90;
+  --color-brand-500: #205666;
+  --color-brand-600: #0a252e;
+  --color-brand-700: #07191f;
+  --color-brand-800: #051418;
+  --color-brand-900: #030f12;
+  --color-brand-950: #000d13;
 
-  /* Navy — deep trust surface */
-  --color-navy-700: #16224a;
-  --color-navy-800: #0f1838;
-  --color-navy-900: #0a1027;
-  --color-navy-950: #060a1a;
+  /* Stitch sidebar = primary-container (#0a252e). */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-ink: #93a7ae;
 
-  /* Money / growth (emerald) */
+  /*
+    Ink — Stitch on-surface (#191c1d) for body/headings, primary (#000d13)
+    for the darkest display text. Re-pointed onto the legacy `navy-*` token
+    names so existing `text-navy-900` usages adopt the new ink with no edits.
+  */
+  --color-navy-700: #353a3c;
+  --color-navy-800: #25292a;
+  --color-navy-900: #191c1d;
+  --color-navy-950: #000d13;
+
+  /* Money / growth (emerald) — positive deltas, matches Stitch green-600. */
   --color-money-400: #34d399;
   --color-money-500: #10b981;
   --color-money-600: #059669;
   --color-money-700: #047857;
 
-  /* Premium (gold/amber) */
-  --color-gold-400: #fbbf24;
-  --color-gold-500: #f59e0b;
-  --color-gold-600: #d97706;
+  /*
+    Premium gold — Stitch secondary family. `gold-200` (#ffdea5,
+    secondary-fixed) for the logo/CTA fills, `gold-400` (#e9c176) for accents,
+    `gold-600` (#775a19, secondary) for readable gold text on light surfaces.
+  */
+  --color-gold-200: #ffdea5;
+  --color-gold-400: #e9c176;
+  --color-gold-500: #d9a441;
+  --color-gold-600: #775a19;
 
-  /* AI (violet) */
-  --color-ai-400: #a78bfa;
-  --color-ai-500: #8b5cf6;
-  --color-ai-600: #7c3aed;
+  /*
+    AI / intelligence — Stitch tertiary (sage / deep green). A calm category
+    tint, not a purple. Never a gradient, never a glow — AI looks like the
+    rest of the product.
+  */
+  --color-ai-400: #7a8d86;
+  --color-ai-500: #5e716a;
+  --color-ai-600: #384b44;
+  --color-ai-700: #132520;
 
-  /* Risk (rose) */
-  --color-risk-400: #fb7185;
-  --color-risk-500: #f43f5e;
-  --color-risk-600: #e11d48;
+  /* Risk / error (clay-red) — Stitch error (#ba1a1a) family. */
+  --color-risk-400: #ff5449;
+  --color-risk-500: #de3730;
+  --color-risk-600: #ba1a1a;
+  --color-risk-700: #93000a;
+
+  /*
+    Neutral system — the entire `slate` ramp re-pointed to Stitch's Material-3
+    neutral ramp (cool gray), so every border, label and panel shares one
+    undertone. Steps track Tailwind's lightness so contrast holds.
+  */
+  --color-slate-50: #f8f9fa;
+  --color-slate-100: #f3f4f5;
+  --color-slate-200: #e1e3e4;
+  --color-slate-300: #c2c7ca;
+  --color-slate-400: #9ca2a5;
+  --color-slate-500: #72787b;
+  --color-slate-600: #42484a;
+  --color-slate-700: #353a3c;
+  --color-slate-800: #25292a;
+  --color-slate-900: #191c1d;
+  --color-slate-950: #0f1112;
 
   --radius-xl2: 1.25rem;
+
+  /*
+    Motion language — custom easing curves. The built-in CSS easings
+    (ease, ease-out) are too weak; these stronger curves give animations
+    the intentional "snap" that makes an interface feel crafted.
+  */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 :root {
-  --background: #f6f7fb;
-  --foreground: #0f1838;
+  /* Stitch sidebar = primary-container, a deep navy-teal. */
+  --sidebar: #0a252e;
+
+  /* Canvas — Stitch surface (#f8f9fa), a cool near-white. True-white cards
+     (#ffffff = surface-container-lowest) layer crisply over it. */
+  --background: #f8f9fa;
+  --surface: #ffffff;
+  --surface-2: #f3f4f5;
+  --hairline: #e4e7e8;
+  --foreground: #191c1d;
 }
 
 html {
@@ -75,68 +142,212 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Thin, elegant scrollbars */
+/* Display headings — the editorial serif, opsz-tuned for premium warmth. */
+.font-display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/*
+  Keyboard accessibility — a visible, brand-tinted focus ring on every
+  interactive element. Mouse users never see it (focus-visible only), so
+  the clean look is preserved while keyboard/AT users get clear orientation.
+*/
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/*
+  Global interactive affordances. Buttons and links get a snappy press-scale
+  so every tap feels acknowledged, and a smooth focus-ring transition. Kept
+  out of form fields (where a scale would feel wrong) by targeting only
+  button/role=button/anchor elements.
+*/
+button:not(:disabled),
+[role="button"],
+a {
+  transition:
+    transform 0.16s var(--ease-out),
+    opacity 0.16s var(--ease-out),
+    color 0.16s ease,
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s var(--ease-out);
+}
+button:not(:disabled):active,
+[role="button"]:active {
+  transform: scale(0.98);
+}
+
+/*
+  Respect the user's motion preference. Anyone who has reduced motion
+  enabled gets near-instant, non-animated transitions across the app.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Thin, elegant scrollbars (sage-gray to match the neutral system). */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c7cbe0 transparent;
+  scrollbar-color: hsl(150 11% 79%) transparent;
 }
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #c7cbe0;
+  background: hsl(150 11% 79%);
   border-radius: 9999px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #a5abce;
+  background: hsl(150 9% 68%);
 }
 
 @layer utilities {
+  /*
+    Glass — kept as a rare, purposeful material (not a default). Used only
+    where a translucent overlay genuinely reads better than a solid panel.
+  */
   .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
   }
+
+  /*
+    Editorial card — true-white surface, a single hairline, and a restrained
+    two-layer shadow for gentle depth. Crisper and quieter than the previous
+    soft-UI triple shadow.
+  */
   .card {
-    background: #ffffff;
-    border: 1px solid rgba(15, 24, 56, 0.06);
-    border-radius: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 0.75rem;
     box-shadow:
-      0 1px 2px rgba(15, 24, 56, 0.04),
-      0 8px 24px -12px rgba(15, 24, 56, 0.12);
+      0 1px 2px rgba(10, 37, 46, 0.04),
+      0 14px 30px -22px rgba(10, 37, 46, 0.16);
   }
+
+  /* `.text-gradient` retired to a solid brand color — kept as a no-break
+     alias so any remaining references render cleanly, not as gradient text. */
   .text-gradient {
-    background: linear-gradient(90deg, #4f46e5, #8b5cf6 60%, #10b981);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--color-brand-700);
   }
-  .ai-glow {
-    box-shadow:
-      0 0 0 1px rgba(139, 92, 246, 0.25),
-      0 8px 30px -8px rgba(139, 92, 246, 0.35);
+
+  /* Quiet emphasis ring for AI surfaces — a hairline sage tint, no glow. */
+  .ai-ring {
+    box-shadow: inset 0 0 0 1px rgba(94, 113, 106, 0.24);
   }
+
   .animate-in {
-    animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeUp 0.4s var(--ease-out) both;
   }
+
+  /*
+    Hover-lift — interactive cards rise slightly on hover. Gated behind a
+    fine-pointer media query so touch devices don't trigger a sticky lift on
+    tap, and only `transform`/`box-shadow` animate (GPU-friendly, no layout).
+  */
   .hover-lift {
     transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+      transform 0.22s var(--ease-out),
+      box-shadow 0.22s var(--ease-out),
+      border-color 0.22s var(--ease-out);
   }
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 40px -16px rgba(15, 24, 56, 0.25);
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      border-color: hsl(156 16% 84%);
+      box-shadow:
+        0 2px 4px rgba(18, 38, 30, 0.05),
+        0 22px 44px -26px rgba(18, 38, 30, 0.26);
+    }
   }
+
+  /*
+    Press feedback — any pressable element scales down a touch on :active,
+    confirming the UI heard the tap.
+  */
+  .press {
+    transition: transform 0.16s var(--ease-out);
+  }
+  .press:active {
+    transform: scale(0.98);
+  }
+
+  /*
+    Popover entrance — scales in from its trigger, not from nothing. Starts at
+    0.96 + faint blur so it never appears out of thin air, and reads instantly
+    thanks to the strong ease-out.
+  */
+  .popover-in {
+    animation: popIn 0.16s var(--ease-out) both;
+  }
+
+  /*
+    Stagger — direct children fade up in a short cascade (≤80ms apart). State
+    reveal only; never blocks interaction. Capped at 8.
+  */
+  .stagger > * {
+    animation: fadeUpItem 0.42s var(--ease-out) both;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .stagger > *:nth-child(2) { animation-delay: 45ms; }
+  .stagger > *:nth-child(3) { animation-delay: 90ms; }
+  .stagger > *:nth-child(4) { animation-delay: 135ms; }
+  .stagger > *:nth-child(5) { animation-delay: 180ms; }
+  .stagger > *:nth-child(6) { animation-delay: 225ms; }
+  .stagger > *:nth-child(7) { animation-delay: 270ms; }
+  .stagger > *:nth-child(n + 8) { animation-delay: 300ms; }
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Popover/dropdown entrance — never from scale(0); starts barely-deflated
+   with a faint blur so the swap reads as one smooth motion, not two objects. */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Staggered list entrance — children fade up in sequence via animation-delay. */
+@keyframes fadeUpItem {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;

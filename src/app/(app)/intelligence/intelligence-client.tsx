@@ -29,11 +29,13 @@ export function IntelligenceClient({
   clients: CLIENTS,
   forecast,
   metrics,
+  growthPct,
 }: {
   leads: Lead[];
   clients: Client[];
   forecast: { month: string; actual?: number; forecast?: number }[];
   metrics: { thisMonth: number; nextQuarter: number; annual: number };
+  growthPct: number;
 }) {
   const FORECAST = forecast;
   const [q, setQ] = useState("");
@@ -87,7 +89,7 @@ export function IntelligenceClient({
       />
 
       {/* Personal AI Advisor */}
-      <Card className="ai-glow mb-6 bg-gradient-to-br from-white to-ai-500/[0.03]">
+      <Card className="ai-ring mb-6">
         <h3 className="mb-3 flex items-center gap-2 font-semibold text-navy-900">
           <Sparkles className="h-4 w-4 text-ai-500" /> Personal AI Advisor
         </h3>
@@ -102,7 +104,7 @@ export function IntelligenceClient({
           <button
             onClick={() => ask(q)}
             disabled={loading || !q}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 px-5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-2 rounded-lg bg-brand-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </button>
@@ -151,11 +153,19 @@ export function IntelligenceClient({
                 AI projection — next 3 months
               </p>
             </div>
-            <Badge tone="In Force">
-              <TrendingUp className="h-3 w-3" /> +26% projected
-            </Badge>
+            {growthPct > 0 && (
+              <Badge tone="In Force">
+                <TrendingUp className="h-3 w-3" /> +{growthPct}% projected
+              </Badge>
+            )}
           </div>
-          <ForecastChart data={FORECAST} />
+          {FORECAST.length > 0 ? (
+            <ForecastChart data={FORECAST} />
+          ) : (
+            <div className="flex h-48 items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 text-center text-sm text-slate-400">
+              Close your first cases to unlock revenue forecasting.
+            </div>
+          )}
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
             <Forecast label="This Month" value={peso(metrics.thisMonth, { compact: true })} />
             <Forecast label="Next Quarter" value={peso(metrics.nextQuarter, { compact: true })} />

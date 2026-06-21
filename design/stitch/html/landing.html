@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow | The Intelligent Operating System for Wealth Advisors</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Scripts -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container-lowest": "#ffffff",
+                "on-secondary-fixed-variant": "#574500",
+                "secondary-fixed": "#ffe088",
+                "on-secondary-fixed": "#241a00",
+                "secondary": "#735c00",
+                "on-tertiary-fixed": "#002020",
+                "surface-bright": "#f8f9fa",
+                "surface-container": "#edeeef",
+                "secondary-container": "#fed65b",
+                "tertiary-fixed-dim": "#abcdcd",
+                "tertiary-container": "#002020",
+                "on-tertiary-fixed-variant": "#2c4c4c",
+                "outline": "#73787a",
+                "outline-variant": "#c3c7ca",
+                "inverse-surface": "#2e3132",
+                "on-background": "#191c1d",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "on-tertiary-container": "#698a8a",
+                "on-error": "#ffffff",
+                "inverse-on-surface": "#f0f1f2",
+                "on-primary-fixed": "#0e1e24",
+                "on-primary-container": "#76868e",
+                "background": "#f8f9fa",
+                "on-surface": "#191c1d",
+                "on-primary": "#ffffff",
+                "surface": "#f8f9fa",
+                "on-surface-variant": "#43474a",
+                "primary-container": "#0e1e24",
+                "on-primary-fixed-variant": "#394950",
+                "primary-fixed-dim": "#b8c9d1",
+                "on-secondary": "#ffffff",
+                "primary-fixed": "#d4e5ee",
+                "surface-container-low": "#f3f4f5",
+                "surface-tint": "#516168",
+                "inverse-primary": "#b8c9d1",
+                "primary": "#000000",
+                "surface-dim": "#d9dadb",
+                "tertiary-fixed": "#c6e9e9",
+                "error-container": "#ffdad6",
+                "surface-variant": "#e1e3e4",
+                "on-tertiary": "#ffffff",
+                "surface-container-highest": "#e1e3e4",
+                "tertiary": "#000000",
+                "on-secondary-container": "#745c00",
+                "surface-container-high": "#e7e8e9",
+                "secondary-fixed-dim": "#e9c349"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "margin-desktop": "48px",
+                "margin-mobile": "16px",
+                "gutter": "24px",
+                "container-max": "1280px",
+                "unit": "8px"
+            },
+            "fontFamily": {
+                "display": ["Literata"],
+                "headline-lg": ["Literata"],
+                "body-md": ["Hanken Grotesk"],
+                "headline-md": ["Literata"],
+                "body-lg": ["Hanken Grotesk"],
+                "label-md": ["Hanken Grotesk"],
+                "headline-lg-mobile": ["Literata"],
+                "label-sm": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .perspective-text {
+            perspective: 1000px;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(233, 195, 73, 0.05), transparent),
+                        radial-gradient(circle at bottom left, rgba(14, 30, 36, 0.03), transparent);
+        }
+    </style>
+</head>
+<body class="bg-surface selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop py-4">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md font-bold text-primary">WealthFlow</span>
+<div class="hidden md:flex gap-6">
+<a class="font-display text-body-md font-medium text-primary font-bold border-b-2 border-secondary" href="#">Platform</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Resources</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-display text-body-md font-medium text-on-surface-variant hover:text-primary transition-all">Login</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-display text-body-md font-medium active:scale-95 duration-150 ease-in-out transition-all">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center overflow-hidden hero-gradient">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="z-10">
+<div class="inline-flex items-center gap-2 bg-secondary-fixed px-3 py-1 rounded-full mb-8">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-sm text-on-secondary-fixed uppercase tracking-widest">New: Intelligence by Llama 3.3</span>
+</div>
+<h1 class="font-display text-display text-primary mb-6 max-w-xl">
+                        The Intelligent Operating System for High-Net-Worth Advisors.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed">
+                        Automate your pipeline, deepen relationships, and scale your practice with private-wealth AI engineered for the world's most demanding clients.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-label-md text-body-md font-semibold flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-all">
+                            Get Started
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border border-outline-variant text-primary px-8 py-4 rounded-lg font-label-md text-body-md font-semibold flex items-center gap-2 hover:bg-surface-container-low transition-all">
+                            Watch Demo
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</button>
+</div>
+<div class="mt-12 flex items-center gap-4">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a senior wealth advisor in a modern light-filled office, professional attire, soft focus background, corporate editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJqbwVLjgwi2bp8Xbcqccm8-N8BFNGRWshOAKb_irJPI6cTu1X0C1kXOyBMdxK2PsNAKVQezYN5hVV7qsC7GWs8QH7SSyDdROXmwnX-lBOSw91_xeseddCoJFrtKrzUaudoKWyhi1sS3BKvQ2QBQQQeiH2hCLrUYPDmW3uUqGVLKWyDCxBpXQzN3bSitVzZFLdZP9ynbyaZU1bSJPaDIlQNhrY6YXu_8Wk7ZIriYD8-17CEKca3K96b2Nsn8iapoSVVDF8hODfJA9L"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-slate-300 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of a female financial executive smiling, wearing high-end business attire, natural window lighting, premium high-contrast photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbZIO3DIaMmLY36Ig23jHESOPBuMytJJwTnWDHzvgCXqS59vB7NgvwhuLHBX6pql9Z5hYU6RJSEzU6XcauTjGR2v6_RbhXa3axL-WQ_FeKFn2FkoZdsWdxWb6NYxxpvbei2pfu8_KyGU8fVUqNHsvyFS7fAye__p1OqDgwLJSh-G5ncQnoi66ub7od-vrXtK8hsShYPrAiUfb5m5Q4OyqPIrBneXZJx1vFBZc1ggBe1-gT5c8Cy0U8t91AdGXKxyonfbRC35sWabUK"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface bg-slate-400 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Headshot of a modern investor, sophisticated appearance, soft studio lighting, muted professional colors, clear skin textures, high-end commercial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDksXlfyj0Xq2A7L6PMa5aKtoy-9K_ZBaazfwgGsu_mORGATob9Sp_27RXaqMMZ9f0pKBN3j6bLPyJTgXL8Ik9efiI5zwQGH--dMETeJTzFC2y1rNk_gtLcWo68pjT_Xf2HB9Pxz-8wCo0jngs0vjti02uSZDAwZnQOKMp3WBW5-rbiEYSFAhP0hc9i3Lf9ieORGX_r9wYUDpYgSktd013gFGFD_bLJsdPbzncdYpZDHQrw3v8suo-DV7KxS9Xov6k5i165l_XyZv_J"/>
+</div>
+</div>
+<p class="text-label-sm text-on-surface-variant font-medium">Trusted by 500+ Family Offices &amp; RIAs</p>
+</div>
+</div>
+<div class="relative">
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-[0_10px_30px_rgba(6,22,28,0.08)] transform md:rotate-2 hover:rotate-0 transition-transform duration-500">
+<img class="w-full rounded-lg" data-alt="A sophisticated UI dashboard for wealth management showing portfolio performance graphs, AI-driven lead insights, and task lists. The interface is clean, predominantly white with slate teal and advisor gold accents, featuring sharp typography and a premium, high-net-worth aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnlfxCJv4Szfo_5NazddHM2q2NS3jAFJaAGiDcalQTLAEZ7MMJIcemidMBv5tzOzR-69hUAPqmJ5_4kD-yl30amXXIvQlICxEewG8u4KCQN91rEGWD5sxcU45syR2nBzY_5uJFlwptDov0VRJ-5PI9Jn1jdODNkEPwR6DOloFMnAqz7Cfdu320vmU00Ps9BzILMPqiyilVT3dHGXrhLfSHF3hmMTaFi-v-QNvd1c2q3n-PRYCr1Dav8SXMZGKANaEKIMPGvmdxr90C"/>
+</div>
+<!-- Floating Stats Card -->
+<div class="absolute -bottom-8 -left-8 bg-primary text-on-primary p-6 rounded-lg shadow-xl hidden lg:block">
+<p class="text-label-sm font-semibold uppercase tracking-tighter mb-1 opacity-80">Portfolio Alpha</p>
+<p class="font-display text-headline-md font-bold text-secondary-fixed">+12.4%</p>
+<div class="w-24 h-1 bg-on-primary-fixed-variant mt-3 rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-secondary-fixed"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Built for Performance Section -->
+<section class="py-24 bg-surface-container-low overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant mb-4">Built for Performance</h2>
+<div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
+<span class="font-display text-headline-md font-bold italic tracking-tighter">Goldman &amp; Co.</span>
+<span class="font-display text-headline-md font-bold tracking-widest">VERITAS</span>
+<span class="font-display text-headline-md font-bold underline decoration-4 decoration-secondary">MERIDIAN</span>
+<span class="font-display text-headline-md font-bold lowercase italic">atlas capital</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="p-8 bg-surface border border-outline-variant/30 rounded-lg text-center hover:border-secondary transition-colors group">
+<p class="font-display text-display text-primary mb-2 group-hover:scale-110 transition-transform">42%</p>
+<p class="font-label-md text-body-md text-on-surface-variant">Efficiency Gain in Onboarding</p>
+</div>
+<div class="p-8 bg-surface border border-outline-variant/30 rounded-lg text-center hover:border-secondary transition-colors group">
+<p class="font-display text-display text-primary mb-2 group-hover:scale-110 transition-transform">$2.4B</p>
+<p class="font-label-md text-body-md text-on-surface-variant">AUM Powered by WealthFlow</p>
+</div>
+<div class="p-8 bg-surface border border-outline-variant/30 rounded-lg text-center hover:border-secondary transition-colors group">
+<p class="font-display text-display text-primary mb-2 group-hover:scale-110 transition-transform">8.5x</p>
+<p class="font-label-md text-body-md text-on-surface-variant">Lead Conversion Multiplier</p>
+</div>
+</div>
+</div>
+</section>
+<!-- The Advisor OS Section -->
+<section class="py-32 bg-surface">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-2xl">
+<h2 class="font-display text-headline-lg text-primary mb-6">The Advisor OS</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">A unified ecosystem where client intelligence meets operational mastery. We've removed the friction so you can focus on the advice.</p>
+</div>
+<a class="font-label-md text-body-md text-primary flex items-center gap-2 hover:underline decoration-secondary decoration-2 underline-offset-8" href="#">
+                        Explore the Platform
+                        <span class="material-symbols-outlined">north_east</span>
+</a>
+</div>
+<div class="bento-grid">
+<!-- Feature 1: AI Meeting Assistant -->
+<div class="col-span-12 md:col-span-8 bg-surface-container border border-outline-variant p-10 rounded-xl relative overflow-hidden group">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-[48px] text-primary mb-6 group-hover:scale-110 transition-transform duration-300">transcribe</span>
+<h3 class="font-display text-headline-md text-primary mb-4">AI Meeting Assistant</h3>
+<p class="font-body-md text-on-surface-variant max-w-md leading-relaxed mb-8">
+                                Automatically capture client sentiment, extract action items, and sync perfectly formatted notes directly to your CRM before the call ends.
+                            </p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 font-label-md text-label-md text-primary">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    Real-time Compliance Monitoring
+                                </li>
+<li class="flex items-center gap-3 font-label-md text-label-md text-primary">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    Sentiment &amp; Emotion Analytics
+                                </li>
+</ul>
+</div>
+<div class="absolute right-0 bottom-0 w-1/2 h-full opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of high-tech circuit patterns etched in dark glass, illuminated by soft golden light, creating a sense of sophisticated machinery and private-wealth AI power." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAecQ04EEo56OwBo7YNjCwdtm7Yk9-owcbzAb8EDLQ51G_eTmIjYdYg0VsAO5sgIFyJ0ZJG_xVTzY2sqW8ofSA71tOmT1MrOldtuKHH0xNuoQX1n-JnrG3X3nI89wuEHJ5NYU6iBoMueXGVjsc0lJ_xYggj-XBdisCDEzuWTuQsTH58JEDuYjLoLCsevhpZjTb9pnSK40nJXN5Ez5KybBJq3MV6rVht2N8MgRU3sTUkUmS2SEvRkwgLp_qJ8LBPd1HpHXks3R9iH_nZ"/>
+</div>
+</div>
+<!-- Feature 2: Lead Gen -->
+<div class="col-span-12 md:col-span-4 bg-primary text-on-primary p-10 rounded-xl flex flex-col justify-between group">
+<div>
+<span class="material-symbols-outlined text-[48px] text-secondary-fixed mb-6">hub</span>
+<h3 class="font-display text-headline-md mb-4">Predictive Lead Gen</h3>
+<p class="font-body-md text-on-primary-fixed-variant leading-relaxed">
+                                Identify wealth triggers—from IPOs to property sales—before they hit the public wire.
+                            </p>
+</div>
+<button class="mt-8 self-start border border-on-primary-fixed-variant px-6 py-2 rounded-lg text-label-md hover:bg-on-primary-fixed hover:text-white transition-all">
+                            Learn More
+                        </button>
+</div>
+<!-- Feature 3: Portfolio Intelligence -->
+<div class="col-span-12 md:col-span-4 bg-surface-container border border-outline-variant p-10 rounded-xl group">
+<span class="material-symbols-outlined text-[48px] text-primary mb-6">insights</span>
+<h3 class="font-display text-headline-md text-primary mb-4">Portfolio Intelligence</h3>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                            Contextual risk assessment that understands your client’s unique psychological tolerance, not just their age.
+                        </p>
+</div>
+<!-- Feature 4: CRM Integration -->
+<div class="col-span-12 md:col-span-8 bg-secondary-fixed/20 border border-secondary/20 p-10 rounded-xl flex flex-col md:flex-row gap-10 items-center overflow-hidden">
+<div class="flex-1">
+<h3 class="font-display text-headline-md text-primary mb-4">Seamless Core Integration</h3>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                                WealthFlow doesn't replace your CRM—it completes it. Native integrations with Salesforce, Wealthbox, and Redtail.
+                            </p>
+</div>
+<div class="flex-1 relative">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white p-4 rounded-lg shadow-sm border border-outline-variant flex items-center justify-center">
+<span class="font-display font-bold text-slate-400">SALESFORCE</span>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-sm border border-outline-variant flex items-center justify-center">
+<span class="font-display font-bold text-slate-400">REDTAIL</span>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-sm border border-outline-variant flex items-center justify-center col-span-2">
+<span class="font-display font-bold text-slate-400">WEALTHBOX</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Intelligence by Llama 3.3 Section -->
+<section class="relative py-32 bg-primary-container text-on-primary overflow-hidden">
+
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
+<div>
+<div class="inline-flex items-center gap-2 mb-8">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed">psychology</span>
+</div>
+<span class="font-label-md text-label-md uppercase tracking-widest text-on-primary-fixed-variant">Powering the Future</span>
+</div>
+<h2 class="font-display text-display text-on-primary mb-8 leading-tight">
+                            Intelligence by Llama 3.3
+                        </h2>
+<p class="font-body-lg text-body-lg text-on-primary-fixed-variant mb-12 leading-relaxed">
+                            WealthFlow utilizes a proprietary fine-tuned instance of Llama 3.3, specifically trained on wealth management protocols, compliance standards, and high-net-worth psychographics. This is not generic AI; this is your most brilliant analyst working 24/7.
+                        </p>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 border border-on-primary-fixed-variant rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">shield_person</span>
+</div>
+<div>
+<h4 class="font-display text-headline-md text-on-primary mb-2">Sovereign Privacy</h4>
+<p class="font-body-md text-on-primary-fixed-variant">Your data never trains the global model. Client information remains strictly within your firm's private cloud environment.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 border border-on-primary-fixed-variant rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">verified</span>
+</div>
+<div>
+<h4 class="font-display text-headline-md text-on-primary mb-2">Institutional Accuracy</h4>
+<p class="font-body-md text-on-primary-fixed-variant">Hallucination-free architecture backed by rigorous financial verification layers and RAG (Retrieval-Augmented Generation).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative flex justify-center">
+<div class="w-full aspect-square max-w-lg rounded-full border border-on-primary-fixed-variant/20 flex items-center justify-center p-12">
+<div class="w-full h-full rounded-full border border-on-primary-fixed-variant/40 flex items-center justify-center p-12 animate-pulse">
+<div class="w-full h-full rounded-full bg-gradient-to-tr from-secondary-fixed/30 to-transparent flex items-center justify-center">
+<span class="font-display text-headline-lg font-bold text-secondary-fixed">WF.AI</span>
+</div>
+</div>
+</div>
+<!-- Floating Data Points -->
+<div class="absolute top-1/4 right-0 bg-white/5 backdrop-blur-md p-4 rounded-lg border border-white/10 text-on-primary shadow-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span class="text-label-sm font-medium">Processing Strategy...</span>
+</div>
+<p class="text-body-md font-display italic">"Tax-loss harvesting optimized for Q4."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="py-32 bg-surface overflow-hidden relative">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center relative z-10">
+<h2 class="font-display text-display text-primary mb-8">Ready to evolve your practice?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto">
+                    Join the top 1% of advisors who are leveraging AI to deliver unprecedented value to their clients.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center gap-6">
+<button class="bg-primary text-on-primary px-12 py-5 rounded-lg font-label-md text-body-md font-bold shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+                        Request Private Access
+                    </button>
+<button class="border border-outline-variant text-primary px-12 py-5 rounded-lg font-label-md text-body-md font-bold hover:bg-surface-container-low transition-all">
+                        Talk to an Expert
+                    </button>
+</div>
+<p class="mt-8 text-label-sm text-on-surface-variant uppercase tracking-widest">No credit card required • 14-day premium trial</p>
+</div>
+<!-- Atmospheric background element -->
+<div class="absolute -bottom-64 -left-64 w-[600px] h-[600px] bg-secondary-fixed/10 rounded-full blur-3xl"></div>
+<div class="absolute -top-64 -right-64 w-[600px] h-[600px] bg-primary-fixed/20 rounded-full blur-3xl"></div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container-highest border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-desktop py-12">
+<div class="md:col-span-1">
+<span class="font-display text-headline-sm font-bold text-primary mb-6 block">WealthFlow</span>
+<p class="font-body-md text-label-sm text-on-surface-variant max-w-xs leading-relaxed">
+                    Elevating the standard of private wealth management through responsible, high-performance artificial intelligence.
+                </p>
+</div>
+<div>
+<h4 class="font-label-md text-label-sm uppercase tracking-widest text-primary font-bold mb-6">Product</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">AI Meeting Assistant</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Client Portal</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Lead Intelligence</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Integrations</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-sm uppercase tracking-widest text-primary font-bold mb-6">Company</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">About Us</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Security Trust Center</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Advisor Blog</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-sm uppercase tracking-widest text-primary font-bold mb-6">Legal</h4>
+<ul class="space-y-4">
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+<li><a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Compliance</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body-md text-label-sm text-on-surface-variant opacity-70">© 2024 WealthFlow AI. All rights reserved. Powered by Llama 3.3</p>
+<div class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">language</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for scrolling effects
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+
+        // Simple reveal animation observer
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section > div').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body></html>

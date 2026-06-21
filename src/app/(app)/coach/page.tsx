@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import { PageHeader, Card, AIBadge, Progress, Avatar } from "@/components/ui";
-import { sleep, AI_THINKING_MS } from "@/lib/ai";
-import { aiObjectionResponses } from "@/app/actions/ai";
+import {
+  aiObjectionResponses,
+  aiRoleplayReply,
+  aiScoreCall,
+  type RoleplayTurn,
+  type CallScoreResult,
+} from "@/app/actions/ai";
 import { cn } from "@/lib/utils";
 import {
   GraduationCap,
@@ -74,10 +79,10 @@ function Objections() {
   };
 
   const toneStyles: Record<string, string> = {
-    Soft: "border-l-money-400",
-    Consultative: "border-l-brand-400",
-    Aggressive: "border-l-risk-400",
-    Educational: "border-l-ai-400",
+    Soft: "bg-money-500",
+    Consultative: "bg-brand-500",
+    Aggressive: "bg-risk-500",
+    Educational: "bg-ai-500",
   };
 
   return (
@@ -96,7 +101,7 @@ function Objections() {
         <button
           onClick={() => run(input)}
           disabled={loading}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
           Get Responses
@@ -130,12 +135,17 @@ function Objections() {
         )}
         {responses &&
           Object.entries(responses).map(([tone, text]) => (
-            <Card
-              key={tone}
-              className={cn("border-l-4", toneStyles[tone])}
-            >
+            <Card key={tone}>
               <div className="mb-1.5 flex items-center justify-between">
-                <p className="text-sm font-bold text-navy-900">{tone}</p>
+                <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
+                  <span
+                    className={cn(
+                      "h-2 w-2 shrink-0 rounded-full",
+                      toneStyles[tone],
+                    )}
+                  />
+                  {tone}
+                </p>
                 <button className="text-xs font-semibold text-brand-600 hover:underline">
                   Copy
                 </button>
@@ -156,33 +166,38 @@ const PERSONAS = [
   { name: "Business Owner", desc: "Thinks ROI, cashflow, continuity", seed: "Biz Owner" },
 ];
 
+const OPENER = "Honestly, I've heard all the sales pitches before. Why should I even consider this?";
+
 function Roleplay() {
   const [persona, setPersona] = useState(PERSONAS[0]);
-  const [messages, setMessages] = useState<{ role: "ai" | "me"; text: string }[]>([
-    { role: "ai", text: "Honestly, I've heard all the sales pitches before. Why should I even consider this?" },
+  const [messages, setMessages] = useState<RoleplayTurn[]>([
+    { role: "ai", text: OPENER },
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
 
-  const replies = [
-    "Hmm, that's a fair point. But how do I know this isn't just another policy that won't pay out?",
-    "Okay, you're making sense. But what if I can't keep up with the payments later?",
-    "Alright, you've got my attention. What would the next step look like?",
-  ];
-
   const send = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || typing) return;
     const mine = input;
-    setMessages((m) => [...m, { role: "me", text: mine }]);
+    const history: RoleplayTurn[] = [...messages, { role: "me", text: mine }];
+    setMessages(history);
     setInput("");
     setTyping(true);
-    await sleep(AI_THINKING_MS);
-    const idx = messages.filter((m) => m.role === "me").length;
-    setMessages((m) => [
-      ...m,
-      { role: "ai", text: replies[Math.min(idx, replies.length - 1)] },
-    ]);
-    setTyping(false);
+    try {
+      const reply = await aiRoleplayReply({
+        persona: persona.name,
+        personaDesc: persona.desc,
+        history,
+      });
+      setMessages((m) => [...m, { role: "ai", text: reply }]);
+    } catch {
+      setMessages((m) => [
+        ...m,
+        { role: "ai", text: "(Roleplay paused — AI unavailable. Subukan ulit mamaya.)" },
+      ]);
+    } finally {
+      setTyping(false);
+    }
   };
 
   return (
@@ -197,9 +212,7 @@ function Roleplay() {
               key={p.name}
               onClick={() => {
                 setPersona(p);
-                setMessages([
-                  { role: "ai", text: "Honestly, I've heard all the sales pitches before. Why should I even consider this?" },
-                ]);
+                setMessages([{ role: "ai", text: OPENER }]);
               }}
               className={cn(
                 "flex w-full items-center gap-3 rounded-xl border p-3 text-left transition",
@@ -272,23 +285,40 @@ function Roleplay() {
   );
 }
 
+function toneFor(value: number) {
+  if (value >= 75) return "money" as const;
+  if (value >= 60) return "gold" as const;
+  return "risk" as const;
+}
+
 function CallReview() {
+  const [transcript, setTranscript] = useState("");
   const [loading, setLoading] = useState(false);
-  const [scored, setScored] = useState(false);
-  const scores = [
-    { label: "Rapport", value: 82, tone: "money" as const },
-    { label: "Discovery", value: 68, tone: "gold" as const },
-    { label: "Closing", value: 54, tone: "risk" as const },
-    { label: "Confidence", value: 76, tone: "brand" as const },
-  ];
+  const [result, setResult] = useState<CallScoreResult | null>(null);
+  const [error, setError] = useState(false);
 
   const run = async () => {
+    if (!transcript.trim() || loading) return;
     setLoading(true);
-    setScored(false);
-    await sleep(AI_THINKING_MS);
-    setLoading(false);
-    setScored(true);
+    setResult(null);
+    setError(false);
+    try {
+      setResult(await aiScoreCall(transcript));
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const scores = result
+    ? [
+        { label: "Rapport", value: result.scores.rapport },
+        { label: "Discovery", value: result.scores.discovery },
+        { label: "Closing", value: result.scores.closing },
+        { label: "Confidence", value: result.scores.confidence },
+      ]
+    : [];
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -297,43 +327,48 @@ function CallReview() {
           <ClipboardCheck className="h-4 w-4 text-ai-500" /> Paste call transcript
         </h3>
         <textarea
-          defaultValue={"Advisor: Hi po, thanks for your time today...\nClient: Sure, but I only have a few minutes.\nAdvisor: No problem! So tell me about your family...\n[transcript continues]"}
+          value={transcript}
+          onChange={(e) => setTranscript(e.target.value)}
           rows={12}
+          placeholder="Paste a real call transcript here (Advisor: … / Client: …) and AI will score it like an MDRT mentor."
           className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-sm outline-none focus:border-ai-400 focus:ring-2 focus:ring-ai-100"
         />
         <button
           onClick={run}
           disabled={loading}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
           Score My Call
         </button>
       </Card>
 
-      <Card className={scored ? "ai-glow" : ""}>
+      <Card className={result ? "ai-ring" : ""}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-semibold text-navy-900">AI Scorecard</h3>
           <AIBadge />
         </div>
-        {!scored && !loading && (
+        {!result && !loading && !error && (
           <p className="py-16 text-center text-sm text-slate-400">
             AI scores Rapport, Discovery, Closing & Confidence with coaching
             tips.
           </p>
         )}
+        {error && (
+          <p className="py-16 text-center text-sm text-risk-500">
+            AI scoring failed — subukan ulit mamaya.
+          </p>
+        )}
         {loading && <div className="h-64 animate-pulse rounded-xl bg-slate-50" />}
-        {scored && (
+        {result && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 rounded-xl bg-gradient-to-br from-ai-500/10 to-brand-500/5 p-4">
-              <span className="text-3xl font-bold text-ai-700">70</span>
+            <div className="flex items-center gap-3 rounded-xl bg-ai-500/[0.06] p-4">
+              <span className="text-3xl font-bold text-ai-700">{result.overall}</span>
               <div>
                 <p className="text-sm font-semibold text-navy-900">
-                  Overall: Solid call
+                  {result.verdict}
                 </p>
-                <p className="text-xs text-slate-600">
-                  Strong rapport, but work on your closing.
-                </p>
+                <p className="text-xs text-slate-600">{result.summary}</p>
               </div>
             </div>
             {scores.map((s) => (
@@ -342,14 +377,31 @@ function CallReview() {
                   <span className="font-medium text-navy-900">{s.label}</span>
                   <span className="font-semibold text-slate-600">{s.value}/100</span>
                 </div>
-                <Progress value={s.value} tone={s.tone} />
+                <Progress value={s.value} tone={toneFor(s.value)} />
               </div>
             ))}
+            {result.strengths.length > 0 && (
+              <div className="rounded-xl bg-money-500/10 p-3 text-sm text-slate-700 ring-1 ring-money-500/20">
+                <b className="text-money-700">What worked:</b>
+                <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                  {result.strengths.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {result.improvements.length > 0 && (
+              <div className="rounded-xl bg-risk-500/10 p-3 text-sm text-slate-700 ring-1 ring-risk-500/20">
+                <b className="text-risk-700">Fix next time:</b>
+                <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                  {result.improvements.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className="rounded-xl bg-gold-500/10 p-3 text-sm text-slate-700 ring-1 ring-gold-500/20">
-              <b className="text-gold-700">Coaching tip:</b> You asked great
-              discovery questions but didn&apos;t ask for the close. Next time, try
-              a trial close: &quot;Does this feel like something that fits your
-              family&apos;s needs?&quot;
+              <b className="text-gold-700">Coaching tip:</b> {result.tip}
             </div>
           </div>
         )}

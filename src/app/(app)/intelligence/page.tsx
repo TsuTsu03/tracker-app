@@ -23,13 +23,15 @@ export default async function IntelligencePage() {
     return { month: MONTHS[(lastIdx + i + 1) % 12], forecast: running };
   });
 
-  const forecast = [...actuals, ...projected];
+  const hasTrend = trend.length > 0;
+  const forecast = hasTrend ? [...actuals, ...projected] : [];
   const nextQuarter = projected.reduce((s, p) => s + (p.forecast ?? 0), 0);
   const metrics = {
     thisMonth: last,
     nextQuarter,
     annual: Math.round(((last + nextQuarter / 3) / 2) * 12),
   };
+  const growthPct = hasTrend ? Math.round(growth * 100) : 0;
 
   return (
     <IntelligenceClient
@@ -37,6 +39,7 @@ export default async function IntelligencePage() {
       clients={clients}
       forecast={forecast}
       metrics={metrics}
+      growthPct={growthPct}
     />
   );
 }

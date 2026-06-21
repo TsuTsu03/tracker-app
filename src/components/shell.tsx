@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
+import { BottomNav } from "./bottom-nav";
+import { ThemeProvider } from "./theme-provider";
 
 export function Shell({
   children,
@@ -17,19 +19,22 @@ export function Shell({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen">
-      <Sidebar open={open} onClose={() => setOpen(false)} />
-      <div className="lg:pl-72">
-        <Topbar
-          onMenu={() => setOpen(true)}
-          name={name}
-          role={role}
-          avatarSeed={avatarSeed}
-        />
-        <main className="mx-auto max-w-[1400px] px-4 py-6 lg:px-8 lg:py-8">
-          {children}
-        </main>
+    <ThemeProvider>
+      <div className="min-h-screen">
+        <Sidebar open={open} onClose={() => setOpen(false)} />
+        <div className="lg:pl-72">
+          <Topbar
+            onMenu={() => setOpen(true)}
+            name={name}
+            role={role}
+            avatarSeed={avatarSeed}
+          />
+          <main className="mx-auto max-w-[1400px] px-4 py-6 pb-28 lg:px-8 lg:py-8 lg:pb-8">
+            {children}
+          </main>
+        </div>
+        <BottomNav onMenu={() => setOpen(true)} />
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

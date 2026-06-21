@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow | Relationships &amp; Clients</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #ffdea5;
+        }
+        /* Custom scrollbar for data tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c2c7ca;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #72787b;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "tertiary": "#000e0a",
+                        "primary-container": "#0a252e",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "tertiary-fixed": "#d2e7de",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#031f27",
+                        "on-surface": "#191c1d",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#384b44",
+                        "outline-variant": "#c2c7ca",
+                        "surface-tint": "#49626c",
+                        "inverse-primary": "#b0cbd6",
+                        "tertiary-fixed-dim": "#b7cbc3",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-tertiary-container": "#7a8d86",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#775a19",
+                        "outline": "#72787b",
+                        "on-surface-variant": "#42484a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed-variant": "#324a54",
+                        "on-secondary-fixed": "#261900",
+                        "secondary-fixed": "#ffdea5",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#b0cbd6",
+                        "secondary-container": "#fed488",
+                        "primary-fixed": "#cce7f3",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f8f9fa",
+                        "surface-variant": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#132520",
+                        "on-tertiary-fixed": "#0d1f1a",
+                        "on-primary-container": "#748d98",
+                        "on-error-container": "#93000a",
+                        "primary": "#000d13",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-container": "#785a1a",
+                        "on-background": "#191c1d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-unit": "8px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "280px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Fraunces"],
+                        "display-lg-mobile": ["Fraunces"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface-bright text-on-surface">
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary-container flex flex-col py-stack-unit border-r border-outline-variant/10 z-50">
+<div class="px-6 py-8 flex flex-col gap-1">
+<h1 class="font-display-lg text-display-lg text-secondary-fixed leading-tight">WealthFlow</h1>
+<p class="font-label-caps text-label-caps text-secondary-fixed-dim/70 tracking-widest">ADVISOR OS</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<!-- Overview -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</a>
+<!-- Pipeline -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-body-md text-body-md">Pipeline</span>
+</a>
+<!-- Relationships (Active) -->
+<a class="relative flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary font-bold border-l-4 border-secondary-fixed bg-on-primary-fixed-variant/20 transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-body-md text-body-md">Relationships</span>
+</a>
+<!-- AI Copilots -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-body-md text-body-md">AI Copilots</span>
+</a>
+<!-- Knowledge -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="book">book</span>
+<span class="font-body-md text-body-md">Knowledge</span>
+</a>
+<!-- Management -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Management</span>
+</a>
+</nav>
+<div class="px-6 pb-6">
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-secondary-container transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>New Client</span>
+</button>
+</div>
+<div class="px-3 border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md text-body-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-primary/80 font-medium hover:bg-on-primary-fixed-variant/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md">Log Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="h-16 flex justify-between items-center px-margin-desktop bg-surface-bright border-b border-outline-variant/30 sticky top-0 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-secondary-container rounded-lg overflow-hidden transition-all">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none pl-10 pr-4 py-2 text-body-sm font-body-sm focus:ring-0 outline-none placeholder:text-on-surface-variant/50" placeholder="Search relationships, portfolios, or history..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-6 items-center">
+<span class="text-secondary font-bold text-label-caps font-label-caps">Groq Llama 3.3 Active</span>
+</nav>
+<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
+<button class="text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior financial advisor in a modern, light-filled office. He wears a tailored navy suit and looks confidently at the camera. The background is a blurred cityscape through floor-to-ceiling windows. The image has a premium, high-contrast, and airy feel consistent with a luxury wealth management brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZvEHr9Blt8APe9caZ1Jb0tNLIbrJw84voc_IdUeI81vfSS0w6z02D8qb5T7xxA7NE_7344hpOSv9y_YdEK9T79fnPeWUtyUDuKG0ZltLV1345OWFvHdXReQU5kEeoyVsgWJ5-l6ieanXm6tvwoO7KI_x3JA4JTFbGxhxSiWj9uJnjFqGHLu3nL9MgeH-loMqoJmsbfa5It0bzLLrBMonlU9CibdM6uzhNV04VXQJ8gV5X-WgvDjbOtQd4vaRR8cvKvV8vsYvIlv3g"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-margin-desktop space-y-8 max-w-[container-max]">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps mb-2">
+<span>OPERATIONS</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-secondary">CLIENT BOOK</span>
+</nav>
+<h2 class="font-headline-md text-headline-md text-primary">Relationships</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">Managing 124 primary household relationships across $1.2B AUM.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline text-on-surface font-medium rounded-lg hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="text-body-sm font-body-sm">Filters</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline text-on-surface font-medium rounded-lg hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="file_download">file_download</span>
+<span class="text-body-sm font-body-sm">Export Book</span>
+</button>
+</div>
+</div>
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">TOTAL ASSETS</p>
+<h3 class="font-headline-md text-headline-md text-primary">$1.24B</h3>
+<p class="text-tertiary-container text-[12px] font-medium mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+                        +4.2% vs last quarter
+                    </p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">AVG. RELATIONSHIP</p>
+<h3 class="font-headline-md text-headline-md text-primary">$10.2M</h3>
+<p class="text-on-surface-variant text-[12px] font-medium mt-2">Focused on HNW segments</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">CLIENT RETENTION</p>
+<h3 class="font-headline-md text-headline-md text-primary">99.4%</h3>
+<p class="text-on-surface-variant text-[12px] font-medium mt-2">YTD satisfaction high</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">PENDING REVIEWS</p>
+<h3 class="font-headline-md text-headline-md text-primary">12</h3>
+<p class="text-error text-[12px] font-medium mt-2">3 critical items required</p>
+</div>
+</div>
+<!-- Client Table Section -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50 border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">CLIENT NAME</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">ACCOUNT TYPE</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">TOTAL ASSETS</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">LAST CONTACT</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">WEALTH TIER</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Client Row 1 -->
+<tr class="hover:bg-surface-container-low/30 transition-all group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant/50 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A sophisticated headshot of an elderly woman with silver hair, wearing an elegant cream silk blouse and pearl necklace. She is smiling warmly in a bright, minimalist setting that exudes quiet luxury and wealth. The style is editorial, clean, and high-end corporate photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrX5Nt5Gc06iOt0UbtXuvnvdLQf4NBY-A7l2aXRGLPu7oKHIL4DtiMO4vlkvopkS0izzFGkL9uI0OaVUSnEKnA6vtYnDXy-jEGLBQB5AmrxQOe4KtVOeS8xNXLeAP0jXX4IQ3MTXox9Biq8c6dexr2yGNjwlQrG_NA6OzaSyOKxP_Jum-ysIznK_XlPg-E8o5wkXmDEihM-u0ceUCR2X_wemEyjR4hcfACkgiH5BHbpcsWOIW8dwblKgko4FsOxrYXydFmIdvs7KTs"/>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary italic leading-none">Eleanor Pemberton</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant/70 mt-1">Pemberton Estate Trust</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-body-md text-on-surface">Multi-Generational Trust</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-body-md text-body-md text-primary font-semibold">$42.8M</p>
+<span class="text-[11px] text-tertiary-container font-medium">+1.2% (30d)</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Oct 24, 2024</span>
+<span class="text-[11px] text-on-surface-variant/60">Via Video Conference</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary-container text-secondary-fixed text-[11px] font-bold rounded-full">UHNW</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 text-body-sm font-medium text-secondary hover:bg-secondary-fixed/10 rounded-lg transition-all">Review</button>
+<button class="px-3 py-1.5 bg-primary text-white text-body-sm font-medium rounded-lg hover:bg-primary/90 transition-all">Servicing</button>
+</div>
+</td>
+</tr>
+<!-- Client Row 2 -->
+<tr class="hover:bg-surface-container-low/30 transition-all group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant/50 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a middle-aged male executive with glasses, wearing a sharp charcoal grey suit. He has a professional and approachable expression. The lighting is soft and natural, coming from a side window in a high-end architectural office. Minimalist, premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJe3ASJa0Hw05Re2X4lq2pEFNRcaQuy9FVTX8F_nmseD3uHq317QUx-FxWbMjfQBxMPZdZnT59ioQ9ptnYZKESrPtcbdShXwlXjK9TuNayChMjfyB8TAcCByyno_F8yFucPXNfg-zExNrpqiRZbqeP7WgMRMYT4mvfj8dMzQVUdIZ9HOcoMFGQ6c6XooA14kevolWVQpU43_nUv3ttqM7NO-wjhhSq45SlG8FQT33uO2B9DqwGJHVoQHemw9Ct4mq6p_6gqIGPDUM0"/>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary italic leading-none">Marcus Sterling</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant/70 mt-1">Corporate Retained</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-body-md text-on-surface">Qualified Retirement</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-body-md text-body-md text-primary font-semibold">$8.4M</p>
+<span class="text-[11px] text-on-surface-variant font-medium">Stable</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Nov 02, 2024</span>
+<span class="text-[11px] text-on-surface-variant/60">Phone Call</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-full">HNW</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 text-body-sm font-medium text-secondary hover:bg-secondary-fixed/10 rounded-lg transition-all">Review</button>
+<button class="px-3 py-1.5 bg-primary text-white text-body-sm font-medium rounded-lg hover:bg-primary/90 transition-all">Servicing</button>
+</div>
+</td>
+</tr>
+<!-- Client Row 3 -->
+<tr class="hover:bg-surface-container-low/30 transition-all group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant/50 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young tech entrepreneur woman with a confident smile, wearing a simple but high-quality black cashmere sweater. The background is a clean, white-walled studio with subtle shadows. Modern, intelligent, and minimalist photography suitable for a high-end wealth platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgVv5qV3miI16CzyRlZfNxLtB33yaeRYb8zHsC0OWd2HBoXGdq4R4kOdGNzU0Ob2aNJvY1E5HokLKN0AgpWNfP9YYlaTiTDgo6UzI7VnOBJMZhOSFqOKfSQ5CjI8PNcUIIEFL-B0GJ3SzqOdJKrpd5DaLfZM08tfcB8PUF9pdioa0LCQBzHybIyRYR6NUuxJBzAzDIpGBCn08PR4c042zLumajoR5w086NdfIesn3pODQbhr-PYTfxdy92wOJ6UVDAO24YEOPzA9TS"/>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary italic leading-none">Aria Chen</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant/70 mt-1">Venture Liquidity</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-body-md text-on-surface">Brokerage/Active</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-body-md text-body-md text-primary font-semibold">$15.2M</p>
+<span class="text-[11px] text-error font-medium">-0.8% (30d)</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Oct 12, 2024</span>
+<span class="text-[11px] text-error font-bold">Overdue (90 Days)</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-full">HNW</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 text-body-sm font-medium text-secondary hover:bg-secondary-fixed/10 rounded-lg transition-all">Review</button>
+<button class="px-3 py-1.5 bg-primary text-white text-body-sm font-medium rounded-lg hover:bg-primary/90 transition-all">Servicing</button>
+</div>
+</td>
+</tr>
+<!-- Client Row 4 -->
+<tr class="hover:bg-surface-container-low/30 transition-all group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant/50 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of an older gentleman with a distinguished beard, wearing a brown tweed jacket and a white dress shirt. He has a warm, wise expression. The setting is a private library with blurred book-filled shelves in the background, lit by a classic table lamp. Intellectual and wealthy vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuQcfixupewIQha3Nx1MdVtolsSram7tPdxTPqNDINoYaGMTijDHel8ebEq3H3N2I1ieM4CkHr2GfxQulyhm-dJX-0V2mIotXDYlGJtt_e6YqUOWCIiAEGY5RAVr4NHdnOVaoAG2L1tWGuGrVEemiG3sE5j-NwFBZ0RNkEqZQtrJgHkIK_QLmc0VhuoZaF-yMyS9i18iuqYQ9Pr4GH4pzqvFGf6Qih2KmHuMY4pUHmeDaqFhNiw7ePFxXl14fnGxcVnxxEwM5pXfcg"/>
+</div>
+<div>
+<p class="font-headline-md text-[18px] text-primary italic leading-none">Julian Vane</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant/70 mt-1">Philanthropic Fund</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-body-md text-on-surface">DAF / Foundation</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-body-md text-body-md text-primary font-semibold">$112.5M</p>
+<span class="text-[11px] text-tertiary-container font-medium">+3.4% (30d)</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Today</span>
+<span class="text-[11px] text-on-surface-variant/60">In-Person Meeting</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary-container text-secondary-fixed text-[11px] font-bold rounded-full">UHNW</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1.5 text-body-sm font-medium text-secondary hover:bg-secondary-fixed/10 rounded-lg transition-all">Review</button>
+<button class="px-3 py-1.5 bg-primary text-white text-body-sm font-medium rounded-lg hover:bg-primary/90 transition-all">Servicing</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-between">
+<p class="text-body-sm text-on-surface-variant">Showing 1 to 4 of 124 clients</p>
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant hover:text-primary disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-secondary-fixed text-on-secondary-fixed text-body-sm font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant text-body-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant text-body-sm">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant text-body-sm">31</button>
+<button class="p-2 text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Side Cards: AI Insights & Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- AI Insight Card -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-6 rounded-2xl border-l-4 border-l-[#5E716A] border-y border-r border-outline-variant/30 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="auto_awesome">auto_awesome</span>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">RELATIONSHIP INTELLIGENCE</h4>
+</div>
+<div class="space-y-4">
+<p class="font-body-lg text-body-lg text-primary">Potential liquidity event detected for <span class="italic font-headline-md text-body-lg">Marcus Sterling</span> based on regional SEC filings and board movements.</p>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-body-sm font-medium hover:bg-primary/90 transition-all">Prepare Outlook Brief</button>
+<button class="text-secondary font-medium text-body-sm hover:underline">Dismiss Insight</button>
+</div>
+</div>
+</div>
+<!-- Active Requests -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(10,37,46,0.04)]">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4">ACTIVE REQUESTS</h4>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+</div>
+<div>
+<p class="text-body-sm font-bold text-primary">Tax Harvesting Review</p>
+<p class="text-[12px] text-on-surface-variant">Pemberton Estate • 2h ago</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="sync_alt">sync_alt</span>
+</div>
+<div>
+<p class="text-body-sm font-bold text-primary">Asset Transfer (Inbound)</p>
+<p class="text-[12px] text-on-surface-variant">Julian Vane • Yesterday</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-outline text-on-surface font-medium rounded-lg hover:bg-surface-container-low transition-all text-body-sm">
+                        View All Tasks
+                    </button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto bg-surface-container-lowest border-t border-outline-variant/20 py-4 px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 WealthFlow AI. All rights reserved.</p>
+<div class="flex items-center gap-8">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-all" href="#">Security</a>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant/50">SYSTEM STABLE 2.4.12</div>
+</footer>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple search highlight effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('shadow-md');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('shadow-md');
+        });
+
+        // Add client click handler
+        const addClientBtn = document.querySelector('button:has(span[data-icon="add"])');
+        addClientBtn.addEventListener('click', () => {
+            addClientBtn.classList.add('scale-95');
+            setTimeout(() => addClientBtn.classList.remove('scale-95'), 150);
+            console.log('Opening "New Client" drawer...');
+        });
+    </script>
+</body></html>

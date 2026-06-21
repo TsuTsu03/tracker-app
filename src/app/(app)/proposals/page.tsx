@@ -75,7 +75,7 @@ export default function ProposalsPage() {
             <button
               onClick={run}
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ai-500 to-ai-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-ai-500/25 transition hover:opacity-90 disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
               {loading ? "Building proposal…" : "Generate Proposal"}
@@ -97,7 +97,7 @@ export default function ProposalsPage() {
           {result && (
             <>
               {/* Protection gap */}
-              <Card className="ai-glow">
+              <Card className="ai-ring">
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="flex items-center gap-2 font-semibold text-navy-900">
                     <ShieldCheck className="h-4 w-4 text-ai-500" /> Protection Gap
@@ -164,7 +164,7 @@ export default function ProposalsPage() {
               </Card>
 
               {/* Presentation script */}
-              <Card className="border-l-4 border-l-ai-500">
+              <Card className="ai-ring bg-ai-500/[0.03]">
                 <h3 className="mb-2 flex items-center gap-2 font-semibold text-navy-900">
                   <Sparkles className="h-4 w-4 text-ai-500" /> Presentation Script
                 </h3>

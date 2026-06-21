@@ -40,7 +40,7 @@ export default async function ClientsPage() {
 
       {/* AI Relationship Manager banner — derived from live data */}
       {atRisk && (
-        <Card className="mb-6 flex flex-wrap items-center gap-3 border-l-4 border-l-ai-500 bg-gradient-to-r from-ai-500/5 to-transparent">
+        <Card className="ai-ring mb-6 flex flex-wrap items-center gap-3 bg-ai-500/[0.04]">
           <AIBadge>Relationship Manager</AIBadge>
           <p className="flex-1 text-sm text-slate-700">
             <b>{atRisk.fullName}</b> hasn&apos;t been contacted in{" "}

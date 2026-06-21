@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow Mobile Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:wght@500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-fixed-dim": "#b7cbc3",
+                        "secondary-fixed-dim": "#e9c176",
+                        "secondary-fixed": "#ffdea5",
+                        "primary-fixed": "#cce7f3",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#fed488",
+                        "primary-fixed-dim": "#b0cbd6",
+                        "on-surface-variant": "#42484a",
+                        "on-tertiary-container": "#7a8d86",
+                        "on-primary-container": "#748d98",
+                        "tertiary": "#000e0a",
+                        "surface-container": "#edeeef",
+                        "secondary": "#775a19",
+                        "on-primary-fixed": "#031f27",
+                        "tertiary-container": "#132520",
+                        "outline": "#72787b",
+                        "on-surface": "#191c1d",
+                        "tertiary-fixed": "#d2e7de",
+                        "on-tertiary-fixed": "#0d1f1a",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#261900",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#384b44",
+                        "surface": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0a252e",
+                        "on-secondary-container": "#785a1a",
+                        "background": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#b0cbd6",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#000d13",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#c2c7ca",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-fixed-variant": "#324a54",
+                        "surface-tint": "#49626c",
+                        "inverse-surface": "#2e3132",
+                        "sidebar-width": "280px",
+                        "stack-unit": "8px",
+                        "margin-desktop": "40px"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Fraunces"],
+                        "display-lg": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Premium Ambient Shadow */
+        .premium-shadow {
+            box-shadow: 0px 4px 20px rgba(10, 37, 46, 0.04);
+        }
+        
+        /* Subtle Gold Focus Ring */
+        .focus-gold:focus-within {
+            outline: none;
+            box-shadow: 0 0 0 2px #C5A059;
+        }
+
+        /* Glass effect for Bottom Nav */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary-fixed">
+<!-- Mobile Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-surface-bright z-50 flex items-center justify-between px-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="text-secondary-fixed font-display-lg-mobile text-lg">W</span>
+</div>
+<h1 class="font-headline-md text-xl tracking-tight text-primary-container">WealthFlow</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of a high-net-worth financial advisor Julian, wearing a tailored charcoal suit against a soft-focus minimalist office backdrop. The lighting is warm and cinematic, reflecting a modern corporate aesthetic with deep navy and gold accents in the environment. High-end editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj6oEJicAjqK7EnNPTQy72OVFNvOd19HuiHwNFyxkVFmjKwZQfmANH4wwH15nGR-UsW-RvyVX37t7QHJlptIKGsUSj0pz64WEiPQcBlgJZAU_0fNBQaODnCRDy7LChQ4TgKOXfPHumZTCJyX1kXcDbeyLwh9aTCdp_0Te8KYkqHiBz8wc7IA668TQJqpC7lvn8-_38cEPfx1Hh7WsJpbQBNvosDOMB6bGHULGY_JWR2MnNgqD7RYe7Uj3lsoWr3_9s_9EYa98P87ov"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-20 pb-24 px-4 min-h-screen">
+<!-- Welcome Section -->
+<section class="mb-8">
+<p class="font-label-caps text-on-surface-variant mb-1 uppercase tracking-widest">Monday, May 14</p>
+<h2 class="font-display-lg-mobile text-primary-container">Welcome back, Julian</h2>
+<p class="font-body-md text-on-surface-variant mt-2">You have 4 client reviews today. Your AI Copilot has drafted briefings for each.</p>
+</section>
+<!-- KPI Carousel (Mobile Adaptation) -->
+<section class="mb-8 -mx-4">
+<div class="flex overflow-x-auto no-scrollbar gap-4 px-4 pb-2">
+<!-- KPI Card 1 -->
+<div class="min-w-[280px] bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 premium-shadow">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-primary-fixed rounded-lg text-on-primary-fixed">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</span>
+<span class="text-green-600 font-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            +2.4%
+                        </span>
+</div>
+<p class="font-label-caps text-on-surface-variant uppercase">Total AUM</p>
+<h3 class="font-display-lg-mobile text-2xl mt-1">$442.8M</h3>
+</div>
+<!-- KPI Card 2 -->
+<div class="min-w-[280px] bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 premium-shadow">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-secondary-container rounded-lg text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="group_add">group_add</span>
+</span>
+<span class="text-primary-container font-label-caps">12 Target</span>
+</div>
+<p class="font-label-caps text-on-surface-variant uppercase">Pipeline Value</p>
+<h3 class="font-display-lg-mobile text-2xl mt-1">$18.5M</h3>
+</div>
+<!-- KPI Card 3 -->
+<div class="min-w-[280px] bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 premium-shadow">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-tertiary-fixed rounded-lg text-on-tertiary-fixed">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</span>
+<span class="text-on-surface-variant font-label-caps">High Impact</span>
+</div>
+<p class="font-label-caps text-on-surface-variant uppercase">AI Actions</p>
+<h3 class="font-display-lg-mobile text-2xl mt-1">14 Alerts</h3>
+</div>
+</div>
+</section>
+<!-- AI Insight Card (Special Style) -->
+<section class="mb-8">
+<div class="bg-surface-container-lowest rounded-xl border-l-4 border-[#5E716A] p-5 premium-shadow relative overflow-hidden">
+<div class="absolute top-0 right-0 opacity-10">
+<span class="material-symbols-outlined text-6xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-on-tertiary-container uppercase tracking-widest">AI Copilot Priority</span>
+</div>
+<p class="font-body-md text-primary-container leading-relaxed">
+                    The Henderson family trust has a <span class="font-bold text-secondary">rebalancing opportunity</span> due to recent volatility. Expected tax savings: <span class="font-bold">$12,400</span>.
+                </p>
+<div class="mt-4 flex gap-3">
+<button class="bg-primary-container text-on-primary px-4 py-2 rounded-lg font-label-caps text-[11px] uppercase tracking-wider">Review Draft</button>
+<button class="border border-outline-variant text-on-surface-variant px-4 py-2 rounded-lg font-label-caps text-[11px] uppercase tracking-wider">Dismiss</button>
+</div>
+</div>
+</section>
+<!-- Timeline / Daily Schedule -->
+<section class="mb-8">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-primary-container">Today's Timeline</h3>
+<button class="text-secondary font-label-caps text-xs flex items-center gap-1">
+                    CALENDAR <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Timeline Item 1 -->
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 bg-secondary-fixed border-2 border-secondary rounded-full"></div>
+<div class="w-[1px] h-full bg-outline-variant/30 mt-1"></div>
+</div>
+<div class="pb-6">
+<p class="font-label-caps text-on-surface-variant mb-1">09:00 AM</p>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+<h4 class="font-bold text-primary-container">Client Review: Sarah Jenkins</h4>
+<p class="text-body-sm text-on-surface-variant mt-1">Focus: Retirement distribution planning and estate tax update.</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 bg-surface-variant border-2 border-outline-variant rounded-full"></div>
+<div class="w-[1px] h-full bg-outline-variant/30 mt-1"></div>
+</div>
+<div class="pb-6">
+<p class="font-label-caps text-on-surface-variant mb-1">11:30 AM</p>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+<h4 class="font-bold text-primary-container">Prospect Call: Liam O'Connor</h4>
+<p class="text-body-sm text-on-surface-variant mt-1">Introduction to Private Wealth Management services.</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 (Active Item) -->
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 bg-primary-container border-2 border-primary-container rounded-full animate-pulse"></div>
+</div>
+<div>
+<p class="font-label-caps text-secondary mb-1">02:00 PM (UPCOMING)</p>
+<div class="bg-primary-container text-on-primary p-4 rounded-xl shadow-lg ring-1 ring-secondary/20">
+<h4 class="font-bold">Portfolio Analysis Review</h4>
+<p class="text-body-sm text-on-primary/70 mt-1">Internal meeting with CIO regarding tech sector rotation.</p>
+<div class="mt-3 flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-primary-container" data-alt="Portrait of a male financial executive in his 50s, refined features, studio lighting, corporate editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmJbKJwFKK1oLmppGrnE6qu6r9eEaPvB9g39Eh9nD4GrAJAYXqe5IZob7E1rQZekara2FAII1FG-ZjPrqgmr92QLisTXRLkNrIUcwvGhvYyipVKA2ZvgANCRD2rwORzIUEC7H_1H3hQN2CX2oEMsiPJJchFmpai8kajTcTM4Xutz31dBjHvxDPxU85tvpR4-dPCqNze3CHfbwgRh5PMCVU550j-ZassFMyHmBBgOPpQgUBK2Jw3__ly0w7gMQ9dU8zOUPprucjHIjf"/>
+<img class="w-6 h-6 rounded-full border-2 border-primary-container" data-alt="Portrait of a female portfolio manager, intelligent expression, minimalist office environment, sharp focus, modern banking aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB89ZTqoq-jGhnC04DnOQSgQ4nxWRdnAGeOuBuZqXRsy5wvJYgEVVcXFQxc1xggXi0s1q0-vTdw1VzcZ4fkW-y9EZmrLeH8gjeBxwSUHWv0Ku25GcCRPnwCr6LnJQv86X5i1NpAeKuAvuip9v7paw-L1V9UnWemIpcJAh-mS0onKclN0JFBDuChC2abMvvnMMnDPFhPcws7cZQKwxktz0vtfVuUEWIDc4l4C5n8299x0HHfKwZbd0Gmc4Qrj8LPrauNOnt6FqkalAvz"/>
+<div class="w-6 h-6 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] flex items-center justify-center border-2 border-primary-container">+2</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Market Quick View -->
+<section>
+<div class="bg-surface-container-highest rounded-2xl p-6 border border-outline-variant/50">
+<h3 class="font-headline-md text-primary-container mb-4">Market Pulse</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<div>
+<p class="font-bold text-sm">S&P 500</p>
+<p class="text-xs text-on-surface-variant">Standard & Poor's</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">5,222.68</p>
+<p class="text-xs text-green-600">+0.12%</p>
+</div>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<div>
+<p class="font-bold text-sm">NASDAQ</p>
+<p class="text-xs text-on-surface-variant">Composite Index</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">16,388.24</p>
+<p class="text-xs text-red-600">-0.05%</p>
+</div>
+</div>
+<div class="flex justify-between items-center py-2">
+<div>
+<p class="font-bold text-sm">US 10Y</p>
+<p class="text-xs text-on-surface-variant">Treasury Yield</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">4.481%</p>
+<p class="text-xs text-secondary">+0.002</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-3 bg-on-primary-fixed-variant/10 text-primary-container font-label-caps text-xs rounded-xl tracking-widest hover:bg-on-primary-fixed-variant/20 transition-all">
+                    VIEW FULL MARKET DASHBOARD
+                </button>
+</div>
+</section>
+</main>
+<!-- Mobile Navigation Shell (Bottom Navigation) -->
+<nav class="fixed bottom-0 left-0 right-0 h-20 glass-nav border-t border-outline-variant/20 z-50 flex items-center justify-around px-2 pb-safe">
+<!-- Overview (Active) -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-primary font-bold transition-transform active:scale-[0.98]">
+<div class="bg-primary-container text-secondary-fixed p-1.5 rounded-xl">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+</div>
+<span class="text-[10px] font-label-caps">Overview</span>
+</button>
+<!-- Pipeline -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-surface-variant transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="text-[10px] font-label-caps">Pipeline</span>
+</button>
+<!-- Search (Floating style in center) -->
+<button class="flex flex-col items-center justify-center -mt-8">
+<div class="w-14 h-14 bg-primary-container text-secondary-fixed rounded-full shadow-lg flex items-center justify-center border-4 border-surface ring-2 ring-primary-container/20">
+<span class="material-symbols-outlined text-2xl" data-icon="search">search</span>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant mt-2">Explore</span>
+</button>
+<!-- Relationships -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-surface-variant transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-[10px] font-label-caps">Clients</span>
+</button>
+<!-- Settings -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 h-full text-on-surface-variant transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label-caps">Settings</span>
+</button>
+</nav>
+<!-- Floating Action Button (FAB) - Contextual -->
+<div class="fixed bottom-24 right-4 z-40">
+<button class="w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Horizontal scrolling snapping for KPI cards
+            const scroller = document.querySelector('.no-scrollbar');
+            if(scroller) {
+                scroller.style.scrollSnapType = 'x mandatory';
+                scroller.querySelectorAll(':scope > div').forEach(card => {
+                    card.style.scrollSnapAlign = 'center';
+                });
+            }
+
+            // Click interaction for cards
+            document.querySelectorAll('.premium-shadow').forEach(card => {
+                card.addEventListener('touchstart', () => {
+                    card.style.transform = 'scale(0.98)';
+                    card.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                });
+                card.addEventListener('touchend', () => {
+                    card.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body></html>

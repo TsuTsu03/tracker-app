@@ -1,4 +1,5 @@
 import { AuthForm } from "../auth-form";
+import { AuthStage } from "../auth-stage";
 
 export default async function LoginPage({
   searchParams,
@@ -6,5 +7,9 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string }>;
 }) {
   const { next } = await searchParams;
-  return <AuthForm mode="login" next={next} />;
+  return (
+    <AuthStage mode="login">
+      <AuthForm mode="login" next={next} />
+    </AuthStage>
+  );
 }

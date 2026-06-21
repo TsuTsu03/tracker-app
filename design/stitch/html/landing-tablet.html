@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow | Premium Financial Advisory</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9fa",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#241a00",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#2c4c4c",
+                    "background": "#f8f9fa",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#b8c9d1",
+                    "primary-container": "#0e1e24",
+                    "on-secondary-container": "#745c00",
+                    "inverse-on-surface": "#f0f1f2",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#000000",
+                    "surface-tint": "#516168",
+                    "inverse-surface": "#2e3132",
+                    "outline-variant": "#c3c7ca",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d9dadb",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#f8f9fa",
+                    "on-primary-fixed-variant": "#394950",
+                    "surface-container-low": "#f3f4f5",
+                    "on-background": "#191c1d",
+                    "secondary-container": "#fed65b",
+                    "primary-fixed-dim": "#b8c9d1",
+                    "on-surface-variant": "#43474a",
+                    "surface-container-high": "#e7e8e9",
+                    "tertiary-fixed-dim": "#abcdcd",
+                    "secondary-fixed-dim": "#e9c349",
+                    "secondary-fixed": "#ffe088",
+                    "primary-fixed": "#d4e5ee",
+                    "surface-container": "#edeeef",
+                    "secondary": "#735c00",
+                    "on-primary-fixed": "#0e1e24",
+                    "on-tertiary-container": "#698a8a",
+                    "on-primary-container": "#76868e",
+                    "tertiary": "#000000",
+                    "tertiary-container": "#002020",
+                    "outline": "#73787a",
+                    "on-surface": "#191c1d",
+                    "on-tertiary-fixed": "#002020",
+                    "on-secondary-fixed-variant": "#574500",
+                    "surface-variant": "#e1e3e4",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#c6e9e9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "unit": "8px",
+                    "margin-desktop": "48px",
+                    "container-max": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Literata"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-lg": ["Literata"],
+                    "display": ["Literata"],
+                    "headline-md": ["Literata"],
+                    "label-md": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f8f9fa;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(6, 22, 28, 0.08);
+        }
+        .glass-header {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 glass-header border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-8 md:px-margin-desktop py-4">
+<span class="font-display text-headline-md font-bold text-primary">WealthFlow</span>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="font-display text-body-md font-bold text-primary border-b-2 border-secondary py-1" href="#">Platform</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-secondary transition-all" href="#">Solutions</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-secondary transition-all" href="#">Resources</a>
+<a class="font-display text-body-md font-medium text-on-surface-variant hover:text-secondary transition-all" href="#">Pricing</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="font-display text-body-md font-medium text-on-surface-variant hover:text-primary transition-colors">Login</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-display text-body-md font-medium active:scale-95 transition-all">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section - Tablet Optimized Side-by-Side -->
+<section class="max-w-container-max mx-auto px-8 md:px-margin-desktop py-12 md:py-20">
+<div class="grid md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-6 lg:col-span-5 space-y-8">
+<div class="inline-flex items-center space-x-2 bg-secondary-container px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant text-[18px]">verified</span>
+<span class="font-label-md text-label-sm uppercase tracking-widest text-on-secondary-fixed-variant">Institutional Grade Platform</span>
+</div>
+<h1 class="font-display text-[42px] md:text-[56px] leading-[1.1] font-bold text-primary">
+                        Generational wealth, <br/>
+<span class="text-secondary italic">intelligently</span> managed.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-md">
+                        WealthFlow AI combines elite financial expertise with deep-learning algorithms to secure your legacy in an evolving global economy.
+                    </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md shadow-lg active:scale-95 transition-transform">
+                            Request Advisory Access
+                        </button>
+<button class="border border-outline px-8 py-4 rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors">
+                            Explore Solutions
+                        </button>
+</div>
+</div>
+<div class="md:col-span-6 lg:col-span-7 relative">
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A high-end, sophisticated digital wealth management interface displayed on a premium tablet device. The UI features clean data visualizations, elegant serif typography, and a muted color palette of deep navy and gold. The background shows a luxurious private home office with soft, natural morning light casting gentle shadows across a mahogany desk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXLpcZB_503l3RiziA7hN2e5QdDq96YLW6aCZyNAKKJoSidkGUlP8neKRtgYho974Dq5QrU-ucvlfpa55QN_xnnqnhxMJkdbi4gnlEO5VsrBS7oEpjrhUrgp_zc-XZVZkGlDdR3TM3A12wHcZkfFSk-qGKG_W6YEGflsA7QnxHFtDF6aFlsFRhDb-vH3HxZmPvV2BlG5YpcTTelVTbwQVqBvoDgrjydUUeKmJ49EN8KOnTqRvJZIn1Lsu7T1FakaZ20I41nVTZVJZl"/>
+<div class="absolute bottom-6 left-6 right-6 p-6 glass-header border border-white/20 rounded-xl flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-sm text-on-surface-variant uppercase mb-1">Portfolio Growth</p>
+<p class="font-display text-headline-md font-bold text-primary">+12.84% <span class="text-secondary text-sm">YTD</span></p>
+</div>
+<div class="h-12 w-24">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Features - Tablet Balanced -->
+<section class="bg-surface-container-low py-20">
+<div class="max-w-container-max mx-auto px-8 md:px-margin-desktop">
+<div class="mb-12">
+<p class="font-label-md text-label-md text-secondary uppercase tracking-[0.2em] mb-4">Precision Engineering</p>
+<h2 class="font-display text-headline-lg font-bold text-primary">Comprehensive Asset Governance</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl bento-card relative overflow-hidden group">
+<div class="relative z-10 space-y-6">
+<span class="material-symbols-outlined text-primary text-[40px]" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<h3 class="font-display text-headline-md font-bold">Tax-Optimized Global Custody</h3>
+<p class="font-body-md text-on-surface-variant max-w-sm">Automated rebalancing across international jurisdictions ensuring minimum drag and maximum security for family office holdings.</p>
+<ul class="space-y-3 pt-4">
+<li class="flex items-center space-x-3 text-label-md text-primary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Cross-border Compliance Monitoring</span>
+</li>
+<li class="flex items-center space-x-3 text-label-md text-primary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Real-time Risk Attribution</span>
+</li>
+</ul>
+</div>
+<div class="absolute bottom-[-10%] right-[-5%] w-1/2 h-2/3 opacity-10 group-hover:opacity-20 transition-opacity">
+
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="md:col-span-2 bg-primary-container p-8 rounded-xl bento-card text-on-primary">
+<span class="material-symbols-outlined text-secondary-container text-[40px]">insights</span>
+<h3 class="font-display text-headline-md font-bold mt-6">Predictive AI Insights</h3>
+<p class="font-body-md text-on-primary-container mt-4 leading-relaxed">Early detection of market anomalies using Llama-powered sentiment analysis.</p>
+<div class="mt-12 h-1 bg-on-primary-container/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-3/4"></div>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl bento-card">
+<span class="material-symbols-outlined text-secondary text-[40px]">lock</span>
+<h3 class="font-display text-headline-md font-bold mt-6">Legacy Preservation</h3>
+<p class="font-body-md text-on-surface-variant mt-4">Encrypted digital vaults for multi-generational estate plans and legal documents.</p>
+</div>
+<!-- Medium Card -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl bento-card flex flex-col md:flex-row items-center gap-8">
+<div class="flex-1 space-y-4">
+<h3 class="font-display text-headline-md font-bold">24/7 Concierge Network</h3>
+<p class="font-body-md text-on-surface-variant">Direct access to a human-led advisory team supported by the most advanced financial models in the industry.</p>
+<button class="text-label-md font-bold text-primary flex items-center space-x-2 group">
+<span>Learn about our partners</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="w-48 h-48 rounded-full overflow-hidden flex-shrink-0 border-4 border-surface shadow-lg">
+<img class="w-full h-full object-cover" data-alt="A portrait of a sophisticated, professional financial advisor in a light-filled modern office. The advisor, an elegantly dressed woman in her late 40s, exudes confidence and wisdom. She is smiling warmly at the camera, representing the high-touch human element of the WealthFlow brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbH5Ua8DWYkAWUmliX4YJhYXje2bAWR_4Ym2lTNEhty8W9XAcXf8hH-S9pt9JUwffx28IjFYIVPL372XiNGTZzCy7GzvR_wyrQJZK33tz0CJENKFWKJluHbypl36LJnVoXJOZG2TKOB3lq5QiPQ6qpE4UGnksejOEvL3vJhZH7KthGOdh5iigbOo9smbIMMIMkpwciEiQ8FW_xpicwtQK1Y4WEv6yQwDSXoL0H9dQYcbS3JoGT-wUc6ZYaInessCXygPcwHiIigsqu"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials - Horizontal Scroll/Swipe Optimized -->
+<section class="py-24 bg-surface overflow-hidden">
+<div class="max-w-container-max mx-auto px-8 md:px-margin-desktop mb-12 flex justify-between items-end">
+<div>
+<p class="font-label-md text-label-md text-secondary uppercase tracking-[0.2em] mb-4">Client Voices</p>
+<h2 class="font-display text-headline-lg font-bold text-primary">Trusted by Global Legacies</h2>
+</div>
+<div class="flex space-x-4">
+<button class="p-3 rounded-full border border-outline-variant hover:bg-surface-container transition-colors active:scale-90" id="prev-test">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-3 rounded-full border border-outline-variant hover:bg-surface-container transition-colors active:scale-90" id="next-test">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex space-x-6 overflow-x-auto px-8 md:px-margin-desktop no-scrollbar pb-12 snap-x" id="testimonial-scroll">
+<!-- Testimonial 1 -->
+<div class="min-w-[400px] md:min-w-[450px] bg-surface-container-highest/50 p-10 rounded-2xl snap-start border border-outline-variant/10">
+<div class="flex space-x-1 text-secondary-container mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-display text-[22px] italic text-primary leading-relaxed mb-8">
+                        "The level of algorithmic precision combined with the personal touch of their advisors is unprecedented. My family's foundation has seen more stability in two years with WealthFlow than the previous decade."
+                    </p>
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-display font-bold">AL</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Anders Lindqvist</p>
+<p class="font-body-md text-label-sm text-on-surface-variant">Global Logistics Entrepreneur</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="min-w-[400px] md:min-w-[450px] bg-surface-container-highest/50 p-10 rounded-2xl snap-start border border-outline-variant/10">
+<div class="flex space-x-1 text-secondary-container mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-display text-[22px] italic text-primary leading-relaxed mb-8">
+                        "WealthFlow doesn't just manage assets; they manage peace of mind. The real-time reporting on cross-border tax compliance alone has saved us countless hours of administrative friction."
+                    </p>
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-display font-bold">SC</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Sarah Chen-Walton</p>
+<p class="font-body-md text-label-sm text-on-surface-variant">Managing Partner, SCW Heritage</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="min-w-[400px] md:min-w-[450px] bg-surface-container-highest/50 p-10 rounded-2xl snap-start border border-outline-variant/10">
+<div class="flex space-x-1 text-secondary-container mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-display text-[22px] italic text-primary leading-relaxed mb-8">
+                        "Finally, a digital platform that understands the nuance of illiquid assets and alternative investments. The dashboard gives me a total view I've never had before."
+                    </p>
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-display font-bold">JM</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Julian Moreau</p>
+<p class="font-body-md text-label-sm text-on-surface-variant">Real Estate Portfolio Principal</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA - Tablet Centered -->
+<section class="max-w-container-max mx-auto px-8 md:px-margin-desktop py-24">
+<div class="bg-primary-container rounded-3xl p-16 text-center relative overflow-hidden">
+
+<div class="relative z-10 space-y-8">
+<h2 class="font-display text-display text-on-primary max-w-2xl mx-auto">Build your family’s digital legacy today.</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container max-w-xl mx-auto">Exclusive access is limited to ensuring the highest quality of advisory service for each client portfolio.</p>
+<div class="pt-4 flex justify-center space-x-4">
+<button class="bg-secondary-container text-on-secondary-container px-10 py-5 rounded-lg font-label-md text-label-md font-bold shadow-xl active:scale-95 transition-transform">
+                            Apply for Invitation
+                        </button>
+<button class="border border-on-primary-container/30 text-on-primary px-10 py-5 rounded-lg font-label-md text-label-md hover:bg-white/5 transition-colors">
+                            View Performance Data
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container-highest border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-desktop py-12">
+<div class="col-span-1 md:col-span-1 space-y-6">
+<span class="font-display text-headline-sm font-bold text-primary">WealthFlow</span>
+<p class="font-body-md text-label-sm text-on-surface-variant max-w-xs">
+                    Redefining wealth management for the next generation of global citizens.
+                </p>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-primary uppercase">Offerings</h4>
+<nav class="flex flex-col space-y-2">
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Family Office</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">AI Analytics</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Tax Strategy</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-primary uppercase">Foundation</h4>
+<nav class="flex flex-col space-y-2">
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">About Us</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Leadership</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Contact Support</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-primary uppercase">Legal</h4>
+<nav class="flex flex-col space-y-2">
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Terms of Service</a>
+<a class="font-body-md text-label-sm text-on-surface-variant hover:text-secondary underline decoration-secondary-container underline-offset-4 transition-all" href="#">Compliance</a>
+</nav>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop py-8 border-t border-outline-variant/30 text-center md:text-left">
+<p class="font-body-md text-label-sm text-on-surface-variant opacity-60">© 2024 WealthFlow AI. All rights reserved. Powered by Llama 3.3</p>
+</div>
+</footer>
+<script>
+        const scrollContainer = document.getElementById('testimonial-scroll');
+        const nextBtn = document.getElementById('next-test');
+        const prevBtn = document.getElementById('prev-test');
+
+        nextBtn.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: 450, behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: -450, behavior: 'smooth' });
+        });
+
+        // Hide navigation on scroll down for focused reading
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+            lastScroll = currentScroll;
+        });
+    </script>
+</body></html>
