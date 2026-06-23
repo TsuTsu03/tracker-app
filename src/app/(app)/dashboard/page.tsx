@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, AIBadge, Avatar, Badge, ScoreRing } from "@/components/ui";
+import { Card, AIBadge, Avatar, Badge, ScoreRing, Delta } from "@/components/ui";
 import { ProductionAreaChart, FunnelBars } from "@/components/charts";
 import {
   getLeads,
@@ -16,7 +16,6 @@ import {
   Users,
   Target,
   Banknote,
-  ArrowUpRight,
   AlertTriangle,
   CheckCircle2,
   Sparkles,
@@ -50,10 +49,19 @@ export default async function DashboardPage() {
   const conversion = decided ? Math.round((wonLeads / decided) * 100) : 0;
 
   const lastMonth = PRODUCTION_TREND[PRODUCTION_TREND.length - 1];
+  const prevMonth = PRODUCTION_TREND[PRODUCTION_TREND.length - 2];
   const mtdProduction = lastMonth?.production ?? 0;
   const mtdPctOfTarget = lastMonth?.target
     ? Math.round((mtdProduction / lastMonth.target) * 100)
     : 0;
+  // Honest month-over-month production delta — derived from the real trend, not
+  // a decorative figure. `null` when there's no prior month to compare against.
+  const productionDelta =
+    prevMonth && prevMonth.production
+      ? (mtdProduction - prevMonth.production) / prevMonth.production
+      : null;
+
+  const openLeads = LEADS.filter((l) => l.stage !== "Closed Lost").length;
 
   // Live activity derived from real records
   const ACTIVITY_FEED = [
@@ -79,6 +87,9 @@ export default async function DashboardPage() {
     })),
   ].slice(0, 5);
 
+  // KPI cards. `delta` is an honest fractional MoM change (only where the data
+  // supports a real comparison); `meta` is a quiet, neutral context figure.
+  // No metric ever fabricates a green up-trend to look healthy.
   const stats = [
     {
       label: "Active Leads",
@@ -86,7 +97,7 @@ export default async function DashboardPage() {
       sub: `${hotLeads} hot`,
       icon: Users,
       tone: "brand" as const,
-      delta: `${LEADS.length} total`,
+      meta: `${LEADS.length} total`,
     },
     {
       label: "Pipeline Value",
@@ -94,7 +105,7 @@ export default async function DashboardPage() {
       sub: "potential APE",
       icon: Target,
       tone: "ai" as const,
-      delta: "+8%",
+      meta: `${openLeads} open`,
     },
     {
       label: "MTD Production",
@@ -102,7 +113,7 @@ export default async function DashboardPage() {
       sub: `${mtdPctOfTarget}% of target`,
       icon: Banknote,
       tone: "money" as const,
-      delta: "+24%",
+      delta: productionDelta,
     },
     {
       label: "Conversion Rate",
@@ -110,7 +121,7 @@ export default async function DashboardPage() {
       sub: `${wonLeads} closed won`,
       icon: TrendingUp,
       tone: "gold" as const,
-      delta: `${decided} decided`,
+      meta: `${decided} decided`,
     },
   ];
 
@@ -164,10 +175,13 @@ export default async function DashboardPage() {
               >
                 <s.icon className="h-5 w-5" />
               </div>
-              <span className="flex items-center gap-0.5 rounded-full bg-money-500/10 px-2 py-0.5 text-xs font-semibold text-money-700">
-                <ArrowUpRight className="h-3 w-3" />
-                {s.delta}
-              </span>
+              {"delta" in s && s.delta != null ? (
+                <Delta value={s.delta} />
+              ) : "meta" in s && s.meta ? (
+                <span className="rounded-full bg-slate-500/10 px-2 py-0.5 text-xs font-medium tabular-nums text-slate-600">
+                  {s.meta}
+                </span>
+              ) : null}
             </div>
             <p className="mt-4 font-display text-[1.7rem] font-medium leading-none text-navy-900">
               {s.value}

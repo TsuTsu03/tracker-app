@@ -8,6 +8,7 @@
 import { promptJSON, promptText } from "@/lib/groq";
 import { tavilySearch, formatResultsForPrompt } from "@/lib/tavily";
 import { calcProposal } from "@/lib/proposal";
+import { getLeads, getProductionTrend } from "@/lib/data";
 import { requireUser, clamp } from "@/lib/ai-guard";
 import {
   MDRT_CORE,
@@ -367,6 +368,110 @@ Coach THIS advisor using THIS data. Return a JSON object:
 Reference the actual numbers. NEVER invent client or prospect names — refer to
 people only generically (e.g. "your stale hot leads", "an at-risk client") since
 you don't have their real names. Sound like a real MDRT mentor, not a generic chatbot.`);
+}
+
+export type GoalPlanResult = {
+  /** Honest read on whether the remaining APE is realistic in the time left. */
+  verdict: string;
+  assessment: string;
+  /** The required activity, in plain words, derived from real averages. */
+  activity: string;
+  /** 2-3 highest-leverage focus areas given THIS advisor's funnel. */
+  focus: string[];
+  /** Concrete weekly action items tied to real numbers. */
+  plan: string[];
+};
+
+/**
+ * AI game plan for hitting a production goal (incentive trip / MDRT / quota).
+ * The hard math — remaining APE, weekly pace, estimated closings — is computed
+ * deterministically from the advisor's REAL pipeline here, then handed to the
+ * model so the strategy is grounded and the numbers are honest (not invented).
+ */
+export async function aiGoalPlan(goal: {
+  title: string;
+  targetApe: number;
+  currentApe: number;
+  deadline: string;
+}): Promise<GoalPlanResult> {
+  await requireUser();
+  const title = clamp(goal.title, 200);
+
+  const [leads, trend] = await Promise.all([getLeads(), getProductionTrend()]);
+
+  const remaining = Math.max(0, goal.targetApe - goal.currentApe);
+  const now = new Date();
+  const end = new Date(goal.deadline);
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((end.getTime() - now.getTime()) / 86_400_000),
+  );
+  const weeksLeft = Math.max(1, Math.ceil(daysLeft / 7));
+  const monthsLeft = Math.max(1, Math.round(daysLeft / 30));
+  const apePerWeek = Math.round(remaining / weeksLeft);
+
+  const open = leads.filter((l) => !l.stage.startsWith("Closed"));
+  const closedWon = leads.filter((l) => l.stage === "Closed Won");
+  const avgCase = closedWon.length
+    ? Math.round(
+        closedWon.reduce((s, l) => s + l.potentialPremium, 0) / closedWon.length,
+      )
+    : open.length
+      ? Math.round(open.reduce((s, l) => s + l.potentialPremium, 0) / open.length)
+      : 0;
+  const closingsNeeded = avgCase ? Math.ceil(remaining / avgCase) : 0;
+  const hotOpen = leads.filter(
+    (l) => l.temperature === "Hot" && !l.stage.startsWith("Closed"),
+  ).length;
+  const pipelineValue = open.reduce((s, l) => s + l.potentialPremium, 0);
+  const decided =
+    closedWon.length + leads.filter((l) => l.stage === "Closed Lost").length;
+  const conversion = decided
+    ? Math.round((closedWon.length / decided) * 100)
+    : 0;
+  const recentProduction = trend.slice(-3).map((t) => t.production);
+  const avgMonthly = recentProduction.length
+    ? Math.round(
+        recentProduction.reduce((s, p) => s + p, 0) / recentProduction.length,
+      )
+    : 0;
+
+  const peso = (n: number) => `₱${n.toLocaleString()}`;
+
+  return promptJSON<GoalPlanResult>(`${MDRT_CORE}
+
+You are an MDRT mentor coaching a Filipino financial advisor toward a production
+goal. Use ONLY the real numbers below. The math is already computed for you — do
+NOT recompute or contradict it, and NEVER invent client names or fake figures.
+
+GOAL: "${title}"
+- Target APE: ${peso(goal.targetApe)}
+- Current credited APE: ${peso(goal.currentApe)}
+- REMAINING APE: ${peso(remaining)}
+- Time left: ${daysLeft} days (~${weeksLeft} weeks)
+- Required pace: ${peso(apePerWeek)} of APE per week
+${
+  avgCase
+    ? `- Their average case size: ${peso(avgCase)} → about ${closingsNeeded} more closings needed`
+    : "- Not enough closed cases yet to estimate average case size"
+}
+
+THEIR REAL PIPELINE RIGHT NOW:
+- Open leads: ${open.length} (${hotOpen} are Hot and open)
+- Open pipeline value (potential APE): ${peso(pipelineValue)}
+- Conversion so far: ${conversion}% (${closedWon.length} won of ${decided} decided)
+- Recent avg monthly production: ${peso(avgMonthly)}
+
+Coach THIS advisor. Return a JSON object:
+{
+  "verdict": "4-7 word honest verdict on feasibility (e.g. 'Tight but reachable with focus')",
+  "assessment": "2-3 sentences: is the ${peso(apePerWeek)}/week pace realistic given their ${peso(pipelineValue)} open pipeline, ${hotOpen} hot leads and ${conversion}% conversion? Be honest — say if the pipeline is too thin and they must prospect.",
+  "activity": "1-2 sentences translating the goal into weekly activity (appointments, presentations, closings) using their real average case size and conversion. Reference the ~${closingsNeeded} closings figure where it applies.",
+  "focus": ["2-3 highest-leverage moves for THIS funnel — e.g. work the ${hotOpen} hot leads first, fix conversion, or prospect to widen the top"],
+  "plan": ["3-4 specific action items framed as This week / next ${monthsLeft > 1 ? `${monthsLeft} months` : "month"}, each tied to a real number above"]
+}
+Reference the actual numbers. Refer to people only generically ("your hot leads",
+"stale opportunities"). Sound like a real MDRT mentor, not a generic chatbot.`);
 }
 
 export async function aiGenerateProposal(input: {

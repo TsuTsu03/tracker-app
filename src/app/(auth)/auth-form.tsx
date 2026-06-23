@@ -20,8 +20,13 @@ export function AuthForm({
   );
   const [googleLoading, setGoogleLoading] = useState(false);
   const [googleError, setGoogleError] = useState(false);
+  // Signup must capture Terms/Privacy consent before EITHER path (email or
+  // Google). The checkbox is controlled so it can gate the OAuth button too.
+  const [agreed, setAgreed] = useState(false);
+  const needsConsent = mode === "signup" && !agreed;
 
   const signInWithGoogle = async () => {
+    if (needsConsent) return; // button is disabled, but guard anyway
     setGoogleLoading(true);
     setGoogleError(false);
     const supabase = createClient();
@@ -61,12 +66,40 @@ export function AuthForm({
         </p>
       )}
 
+      {/* Consent gate (signup only) — sits above both auth paths so it gates
+          the Google button as well as the email form. */}
+      {mode === "signup" && (
+        <label className="flex items-start gap-2.5 text-sm text-slate-500">
+          <input
+            name="agree"
+            type="checkbox"
+            value="yes"
+            required
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-hairline text-brand-600 focus:ring-brand-500/30"
+          />
+          <span>
+            I agree to the{" "}
+            <Link href="/terms" target="_blank" className="font-semibold text-brand-600 hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" target="_blank" className="font-semibold text-brand-600 hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </span>
+        </label>
+      )}
+
       {/* Continue with Google — works for both sign-in and sign-up. */}
       <button
         type="button"
         onClick={signInWithGoogle}
-        disabled={googleLoading}
-        className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-hairline bg-surface py-2.5 text-sm font-semibold text-navy-900 transition hover:bg-surface-2 disabled:opacity-60"
+        disabled={googleLoading || needsConsent}
+        title={needsConsent ? "Please agree to the Terms and Privacy Policy first" : undefined}
+        className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-hairline bg-surface py-2.5 text-sm font-semibold text-navy-900 transition hover:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {googleLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -120,29 +153,6 @@ export function AuthForm({
       </Field>
 
       {next && <input type="hidden" name="next" value={next} />}
-
-      {mode === "signup" && (
-        <label className="flex items-start gap-2.5 text-sm text-slate-500">
-          <input
-            name="agree"
-            type="checkbox"
-            value="yes"
-            required
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-hairline text-brand-600 focus:ring-brand-500/30"
-          />
-          <span>
-            I agree to the{" "}
-            <Link href="/terms" target="_blank" className="font-semibold text-brand-600 hover:underline">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy" target="_blank" className="font-semibold text-brand-600 hover:underline">
-              Privacy Policy
-            </Link>
-            .
-          </span>
-        </label>
-      )}
 
       <button
         type="submit"

@@ -93,6 +93,46 @@ export interface TimelineEvent {
   type: "meeting" | "application" | "approval" | "payment" | "claim" | "milestone";
 }
 
+export type EventCategory =
+  | "Personal"
+  | "Meeting"
+  | "Follow-up"
+  | "Review"
+  | "Reminder";
+
+export const EVENT_CATEGORIES: EventCategory[] = [
+  "Personal",
+  "Meeting",
+  "Follow-up",
+  "Review",
+  "Reminder",
+];
+
+/** A personal calendar entry the advisor creates and owns (editable). */
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  startsAt: string; // ISO
+  endsAt: string; // ISO
+  allDay: boolean;
+  category: EventCategory;
+}
+
+/** A production goal — a target APE to hit by a deadline (incentive trip, MDRT,
+ *  quota). `currentApe` is advisor-editable because credited APE differs from
+ *  raw policy APE (double/triple-credit closings). */
+export interface Goal {
+  id: string;
+  title: string;
+  targetApe: number;
+  currentApe: number;
+  deadline: string; // ISO date (YYYY-MM-DD)
+  note: string;
+  createdAt: string;
+}
+
 export interface Task {
   id: string;
   title: string;

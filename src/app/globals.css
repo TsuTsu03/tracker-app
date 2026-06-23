@@ -260,6 +260,35 @@ button:not(:disabled):active,
   }
 
   /*
+    Skeleton — content-shaped loading placeholder. A neutral fill with a single
+    light sweep travelling across it (the `shimmer` keyframe below), so loading
+    reads as "this surface is arriving" rather than a spinner adrift in space.
+    Reduced-motion users get the static fill (the global media query stills the
+    sweep). Always pair with real layout — a skeleton that mirrors the final
+    composition is the difference between calm and janky.
+  */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    /* slate-200, not slate-100 — the fill has to read clearly against white
+       cards on its own, since reduced-motion users never get the sweep. */
+    background: var(--color-slate-200);
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.65),
+      transparent
+    );
+    animation: shimmer 1.6s var(--ease-in-out) infinite;
+  }
+
+  /*
     Hover-lift — interactive cards rise slightly on hover. Gated behind a
     fine-pointer media query so touch devices don't trigger a sticky lift on
     tap, and only `transform`/`box-shadow` animate (GPU-friendly, no layout).

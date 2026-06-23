@@ -1,8 +1,11 @@
 import { createClient } from "./supabase/server";
 import type {
   Advisor,
+  CalendarEvent,
   Claim,
   Client,
+  EventCategory,
+  Goal,
   Lead,
   PipelineStage,
   ServiceTicket,
@@ -87,6 +90,31 @@ function toTask(r: any): Task {
     relatedTo: r.related_to ?? "",
     priority: r.priority,
     done: !!r.done,
+  };
+}
+
+function toEvent(r: any): CalendarEvent {
+  return {
+    id: r.id,
+    title: r.title,
+    description: r.description ?? "",
+    location: r.location ?? "",
+    startsAt: iso(r.starts_at),
+    endsAt: iso(r.ends_at),
+    allDay: !!r.all_day,
+    category: (r.category ?? "Personal") as EventCategory,
+  };
+}
+
+function toGoal(r: any): Goal {
+  return {
+    id: r.id,
+    title: r.title,
+    targetApe: Number(r.target_ape ?? 0),
+    currentApe: Number(r.current_ape ?? 0),
+    deadline: r.deadline,
+    note: r.note ?? "",
+    createdAt: iso(r.created_at),
   };
 }
 
@@ -201,6 +229,24 @@ export async function getTasks(): Promise<Task[]> {
     .select("*")
     .order("due", { ascending: true });
   return (data ?? []).map(toTask);
+}
+
+export async function getEvents(): Promise<CalendarEvent[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .order("starts_at", { ascending: true });
+  return (data ?? []).map(toEvent);
+}
+
+export async function getGoals(): Promise<Goal[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("goals")
+    .select("*")
+    .order("deadline", { ascending: true });
+  return (data ?? []).map(toGoal);
 }
 
 export async function getTickets(): Promise<ServiceTicket[]> {

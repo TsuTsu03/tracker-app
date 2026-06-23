@@ -1,5 +1,55 @@
 import { cn, initials, stringToHue } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowUpRight, ArrowDownRight } from "lucide-react";
+
+/**
+ * Skeleton — a content-shaped loading placeholder (see `.skeleton` in
+ * globals.css). Compose several to mirror a page's real layout while its data
+ * streams in. `aria-hidden` because the shape carries no semantic content; the
+ * route's own loading affordance is the live region.
+ */
+export function Skeleton({ className }: { className?: string }) {
+  return (
+    <div className={cn("skeleton rounded-md", className)} aria-hidden="true" />
+  );
+}
+
+/**
+ * Delta — an honest change indicator. Takes a fractional change (0.24 → "+24%")
+ * and colors itself by sign: money-green up, clay-red down. Render this ONLY
+ * when a real prior-period comparison exists — never fabricate a delta to
+ * decorate a metric. Pass `neutralZero` to render exact-zero change in a quiet
+ * neutral tone instead of green.
+ */
+export function Delta({
+  value,
+  neutralZero = true,
+}: {
+  value: number;
+  neutralZero?: boolean;
+}) {
+  const isZero = Math.round(value * 100) === 0;
+  const up = value >= 0;
+  const tone =
+    isZero && neutralZero
+      ? "bg-slate-500/10 text-slate-600"
+      : up
+        ? "bg-money-500/10 text-money-700"
+        : "bg-risk-500/10 text-risk-600";
+  const Icon = up ? ArrowUpRight : ArrowDownRight;
+  const pctValue = Math.round(value * 100);
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums",
+        tone,
+      )}
+    >
+      {!isZero && <Icon className="h-3 w-3" aria-hidden="true" />}
+      {pctValue > 0 ? "+" : ""}
+      {pctValue}%
+    </span>
+  );
+}
 
 export function Avatar({
   name,

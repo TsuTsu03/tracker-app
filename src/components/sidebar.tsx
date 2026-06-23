@@ -9,7 +9,9 @@ import {
   KanbanSquare,
   Radar,
   UserCheck,
+  CalendarDays,
   CalendarClock,
+  Target,
   GraduationCap,
   FileText,
   Send,
@@ -35,7 +37,11 @@ type Section = {
 const SECTIONS: Section[] = [
   {
     title: "Overview",
-    items: [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+    items: [
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/calendar", label: "Calendar", icon: CalendarDays },
+      { href: "/goals", label: "Goals", icon: Target },
+    ],
   },
   {
     title: "Pipeline",

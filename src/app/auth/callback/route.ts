@@ -19,9 +19,18 @@ export async function GET(request: Request) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
     return NextResponse.redirect(`${origin}/login?error=oauth`);
+  }
+
+  // Record consent on first OAuth login (the user had to tick the Terms/Privacy
+  // box to reach Google). Stamp it once so OAuth signups have the same
+  // demonstrable-consent audit trail as email signups.
+  if (data.user && !data.user.user_metadata?.terms_accepted_at) {
+    await supabase.auth.updateUser({
+      data: { terms_accepted_at: new Date().toISOString() },
+    });
   }
 
   return NextResponse.redirect(`${origin}${next}`);
